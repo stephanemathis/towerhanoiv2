@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/flDiskNumber"
+    android:layout_width="56dp"
+    android:layout_height="match_parent"
+    android:background="?android:attr/selectableItemBackgroundBorderless" >
+
+    <TextView
+        android:id="@+id/tvDiskNumber"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_round_gray"
+        android:gravity="center"
+        android:text="15"
+        android:textColor="@android:color/white" />
+</FrameLayout>
+
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dark_modes">
+        <item>Auto</item>
+        <item>Mode nuit</item>
+        <item>Mode clair</item>
+    </string-array>
+
+    <string-array name="dark_modes_values">
+        <item>auto</item>
+        <item>always_on</item>
+        <item>always_off</item>
+    </string-array>
+
+    <array name="themeColors">
+        <item>@color/colorPrimary0</item>
+        <item>@color/colorPrimary1</item>
+        <item>@color/colorPrimary2</item>
+        <item>@color/colorPrimary3</item>
+        <item>@color/colorPrimary4</item>
+        <item>@color/colorPrimary5</item>
+        <item>@color/colorPrimary6</item>
+        <item>@color/colorPrimary7</item>
+        <item>@color/colorPrimary8</item>
+        <item>@color/colorPrimary9</item>
+    </array>
+</resources>

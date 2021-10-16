@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_play"
+            android:title="@string/menu_home"
+            app:actionLayout="@layout/m_disk_count" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/menu_settings" />
+    </group>
+
+    <item android:title="@string/menu_play_games">
+        <menu>
+            <item
+                android:id="@+id/nav_connect"
+                android:icon="@drawable/ic_menu_play_games"
+                android:onClick="drawerConnectClick"
+                android:title="@string/menu_connect" />
+            <item
+                android:id="@+id/nav_achivements"
+                android:icon="@drawable/ic_menu_achievements"
+                android:onClick="drawerAchivementsClick"
+                android:title="@string/menu_achivements" />
+            <item
+                android:id="@+id/nav_leaderboard"
+                android:icon="@drawable/ic_menu_leaderboards"
+                android:onClick="drawerLeaderboardsClick"
+                android:title="@string/menu_leaderboards" />
+        </menu>
+    </item>
+
+</menu>

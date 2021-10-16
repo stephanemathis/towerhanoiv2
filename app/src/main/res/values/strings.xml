@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Tour de Hanoi Pro</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="play_games_connection_error">Impossible de se connecter à Play Games</string>
+
+    <string name="menu_home">Nouvelle partie</string>
+
+    <string name="menu_settings">Paramètres</string>
+    <string name="menu_connect">Se connecter</string>
+    <string name="menu_play_games">Play Games</string>
+    <string name="menu_achivements">Succès</string>
+    <string name="menu_leaderboards">Classements</string>
+
+    <string name="disk_nb_picker_title">Nombre de disques</string>
+    <string name="disk_nb_picker_ok">C\'est parti !</string>
+    <string name="disk_nb_picker_cancel">Annuler</string>
+    <string name="pref_drawer_title">Menu latéral</string>
+    <string name="pref_drawer_touch">Bloquer l\'ouverture par glissement du menu latéral</string>
+    <string name="pref_drawer_touch_off">Vous pouvez glisser votre doigt pour ouvrir</string>
+    <string name="pref_drawer_touch_on">Vous devez cliquer sur l\'icône pour ouvrir</string>
+    <string name="pref_theme_title">Thème</string>
+    <string name="pref_theme_dark">Thème sombre</string>
+    <string name="pref_theme_style">Couleur</string>
+    <string name="pref_key_color">prefKeyColor</string>
+
+    <string name="quick_touch_enable">Activer le mode Touche Rapide</string>
+    <string name="quick_touch_delete">Désactiver le mode Touche Rapide</string>
+</resources>

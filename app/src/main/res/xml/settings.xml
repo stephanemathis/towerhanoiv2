@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory android:title="@string/pref_drawer_title">
+
+    </PreferenceCategory>
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_key_drawer_touch_enabled"
+        android:switchTextOff="@string/pref_drawer_touch_off"
+        android:switchTextOn="@string/pref_drawer_touch_on"
+        android:title="@string/pref_drawer_touch" />
+    <PreferenceCategory android:title="@string/pref_theme_title">
+
+    </PreferenceCategory>
+    <ListPreference
+        android:defaultValue="false"
+        android:entries="@array/dark_modes"
+        android:entryValues="@array/dark_modes_values"
+        android:key="pref_key_dark_theme"
+        android:title="@string/pref_theme_dark" />
+    <Preference
+        android:id="@+id/prefThemeStyle"
+        android:title="@string/pref_theme_style"
+        android:key="@string/pref_key_color"></Preference>
+</PreferenceScreen>
