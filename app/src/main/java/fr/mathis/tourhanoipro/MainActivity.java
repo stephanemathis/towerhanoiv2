@@ -47,9 +47,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import fr.mathis.tourhanoipro.ui.picker.NumberPickerDialog;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
-import fr.mathis.tourhanoipro.ui.picker.NumberPickerDialog;
 
 
 public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {

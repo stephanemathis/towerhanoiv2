@@ -1,7 +1,5 @@
 package fr.mathis.tourhanoipro;
 
-import android.app.Application;
-
 import fr.mathis.tourhanoipro.core.tools.Tools;
 
 public class AppApplication extends android.app.Application {

@@ -3,16 +3,9 @@ package fr.mathis.tourhanoipro.ui.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.function.Function;
 
 import dev.sasikanth.colorsheet.ColorSheet;
 import fr.mathis.tourhanoipro.MainActivity;

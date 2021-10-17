@@ -1,6 +1,5 @@
 package fr.mathis.tourhanoipro.ui.home;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,9 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
@@ -141,7 +137,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
     @Override
     public void turnPlayed(int nbCoup, int nbTotal) {
-        ((MainActivity)getActivity()).updateMainTitle(nbCoup + " / " + nbTotal);
+        ((MainActivity)getActivity()).updateMainTitle(nbCoup + " sur " + nbTotal + "(min)");
     }
 
     @Override

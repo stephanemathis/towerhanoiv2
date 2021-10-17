@@ -2,10 +2,8 @@ package fr.mathis.tourhanoipro.view.game;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -16,7 +14,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -27,8 +24,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import java.util.ArrayList;
 
-import fr.mathis.tourhanoipro.R;
-import fr.mathis.tourhanoipro.core.tools.Tools;
 import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
@@ -36,6 +31,8 @@ import fr.mathis.tourhanoipro.view.game.model.ClassCircle;
 import fr.mathis.tourhanoipro.view.game.model.ClassField;
 import fr.mathis.tourhanoipro.view.game.model.ClassTower;
 import fr.mathis.tourhanoipro.view.game.model.QuickTouch;
+import fr.mathis.tourhanoipro.R;
+import fr.mathis.tourhanoipro.core.tools.Tools;
 
 public class GameView extends View {
 
