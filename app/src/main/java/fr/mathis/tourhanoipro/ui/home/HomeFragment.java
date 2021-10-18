@@ -1,5 +1,7 @@
 package fr.mathis.tourhanoipro.ui.home;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,12 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
+import fr.mathis.tourhanoipro.CongratsActivity;
 import fr.mathis.tourhanoipro.MainActivity;
 import fr.mathis.tourhanoipro.R;
 import fr.mathis.tourhanoipro.core.tools.DataManager;
@@ -37,9 +44,17 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     private int currentGameIndex = 0;
     ArrayList<String> allGames;
 
+    private ActivityResultLauncher<Intent> congratsLauncher;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        congratsLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    restartGame();
+                });
 
         setHasOptionsMenu(true);
     }
@@ -137,13 +152,23 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
     @Override
     public void turnPlayed(int nbCoup, int nbTotal) {
-        ((MainActivity)getActivity()).updateMainTitle(nbCoup + " sur " + nbTotal + "(min)");
+
+        ((MainActivity)getActivity()).updateMainTitle(nbCoup + " / " + nbTotal);
     }
 
     @Override
     public void gameFinished(int nbCoup, int nbTotal, long miliseconds) {
-        Toast.makeText(getActivity(), "Terminé ! Bravo !", Toast.LENGTH_SHORT).show();
 
+        ((MainActivity)getActivity()).onGameFinished(nbCoup, nbTotal, miliseconds);
+
+        Intent i = new Intent(getActivity(), CongratsActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("userMovements", nbCoup);
+        b.putInt("totalMovements", nbTotal);
+        b.putLong("time", miliseconds);
+        i.putExtras(b);
+
+        congratsLauncher.launch(i);
     }
 
     @Override
@@ -163,6 +188,18 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         // pour avertir du succès, ajouter un truc en fond (sans popup) avec la tour en transparent derrière et des feux d'artifices !
 
 
+    }
+
+    private void restartGame() {
+
+        boolean oldGameIsContinuable = !(gvMain.isJustStarted() || gvMain.isFinished());
+        String sOldGame = gvMain.saveGameAsString();
+        allGames.set(currentGameIndex, sOldGame);
+        gvMain.createNewGame(PrefHelper.ReadInt(getContext(), PrefHelper.KEY_DISK_COUNT, 5));
+        String s2 = gvMain.saveGameAsString();
+        allGames.add(0, s2);
+        DataManager.SaveAllGames(allGames, getContext());
+        allGames = DataManager.GetAllSavedGames(getContext());
     }
 
     //#endregion

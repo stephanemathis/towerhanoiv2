@@ -30,4 +30,12 @@
 
     <string name="quick_touch_enable">Activer le mode Touche Rapide</string>
     <string name="quick_touch_delete">Désactiver le mode Touche Rapide</string>
+
+    <string name="congrats_done">Terminé !</string>
+    <string name="congrats_summary">La tour était formée de :tower disques.</string>
+    <string name="congrats_seconds">secondes</string>
+    <string name="congrats_perfect">Score parfait !</string>
+    <string name="congrats_mouvements">mouvements</string>
+    <string name="congrats_sec">sec</string>
+    <string name="congrats_min">min</string>
 </resources>
