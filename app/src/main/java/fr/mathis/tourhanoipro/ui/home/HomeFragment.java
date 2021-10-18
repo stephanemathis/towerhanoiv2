@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 
@@ -41,10 +42,8 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     private MenuItem menuItemSmallTouchModify;
     private MenuItem menuItemSmallTouchRemove;
 
-    private int currentGameIndex = 0;
-    ArrayList<String> allGames;
-
     private ActivityResultLauncher<Intent> congratsLauncher;
+    private HomeViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,27 +71,54 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+
+        viewModel.getEvent().observe(requireActivity(), action -> {
+            if(action.getDiskCount() != null) {
+                createNewGame(action.getDiskCount());
+            }
+            else if(action.isRestart())
+                createNewGame(null);
+        });
+    }
+
+    @Override
     public void onResume() {
 
-        allGames = DataManager.GetAllSavedGames(getActivity().getApplicationContext());
+        // sur le clic du chiffre, faire le nouveau data
+        // te juste dire de refresh ?
 
-        if (allGames.size() == 0) {
-            gvMain.createNewGame(PrefHelper.ReadInt(getContext(), PrefHelper.KEY_DISK_COUNT, 5));
-            allGames.add(0, gvMain.saveGameAsString());
+        viewModel.setAllGames(DataManager.GetAllSavedGames(getActivity().getApplicationContext()));
+
+        if (viewModel.getAllGames().size() == 0) {
+            createNewGame(null);
         } else {
-            gvMain.launchGame(allGames.get(0));
+            gvMain.launchGame(viewModel.getAllGames().get(0));
         }
 
 
+
         super.onResume();
+    }
+
+    private void createNewGame(Integer diskCount) {
+
+        int count = diskCount != null ? diskCount : PrefHelper.ReadInt(getContext(), PrefHelper.KEY_DISK_COUNT, 5);
+        gvMain.createNewGame(count);
+        viewModel.getAllGames().add(0, gvMain.saveGameAsString());
+
+        DataManager.SaveAllGames(viewModel.getAllGames(), getContext());
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        allGames.set(currentGameIndex, gvMain.saveGameAsString());
-        DataManager.SaveAllGames(allGames, getActivity().getApplicationContext());
+        viewModel.getAllGames().set(viewModel.getCurrentGameIndex(), gvMain.saveGameAsString());
+        DataManager.SaveAllGames(viewModel.getAllGames(), getActivity().getApplicationContext());
     }
 
     //#region Menus
@@ -194,12 +220,12 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
         boolean oldGameIsContinuable = !(gvMain.isJustStarted() || gvMain.isFinished());
         String sOldGame = gvMain.saveGameAsString();
-        allGames.set(currentGameIndex, sOldGame);
+        viewModel.getAllGames().set(viewModel.getCurrentGameIndex(), sOldGame);
         gvMain.createNewGame(PrefHelper.ReadInt(getContext(), PrefHelper.KEY_DISK_COUNT, 5));
         String s2 = gvMain.saveGameAsString();
-        allGames.add(0, s2);
-        DataManager.SaveAllGames(allGames, getContext());
-        allGames = DataManager.GetAllSavedGames(getContext());
+        viewModel.getAllGames().add(0, s2);
+        DataManager.SaveAllGames(viewModel.getAllGames(), getContext());
+        viewModel.setAllGames(DataManager.GetAllSavedGames(getContext()));
     }
 
     //#endregion

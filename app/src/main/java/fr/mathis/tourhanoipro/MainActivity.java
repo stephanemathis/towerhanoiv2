@@ -34,6 +34,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -47,6 +48,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import fr.mathis.tourhanoipro.ui.home.GameAction;
+import fr.mathis.tourhanoipro.ui.home.HomeViewModel;
 import fr.mathis.tourhanoipro.ui.picker.NumberPickerDialog;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
@@ -76,12 +79,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     private MenuItem miAchievements;
 
     private int mDiskCount = 5;
+    private HomeViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        PrefHelper.SaveInt(MainActivity.this, PrefHelper.KEY_DISK_COUNT, 2);
 
         Tools.applyColoredTheme(this);
 
@@ -94,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         updateDrawerLockMode();
+
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         llDrawer = (LinearLayout) navigationView.getHeaderView(0);
         ivDrawerLogo = llDrawer.findViewById(R.id.ivDrawerLogo);
@@ -110,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
 
         miConnect = navigationView.getMenu().findItem(R.id.nav_connect);
         miLeaderboard = navigationView.getMenu().findItem(R.id.nav_leaderboard);
@@ -129,6 +132,13 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                         PrefHelper.SaveInt(MainActivity.this, PrefHelper.KEY_DISK_COUNT, newVal);
                         mDiskCount = newVal;
                         tvDiskNumber.setText(mDiskCount + "");
+
+                        NavDestination n = navController.getCurrentDestination();
+
+                        if(n.getId() != R.id.nav_home)
+                            navController.navigateUp();
+
+                        viewModel.sendEvent(new GameAction(false, newVal));
                     }
                 });
 
