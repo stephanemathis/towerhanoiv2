@@ -7,9 +7,16 @@
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_action_smalltouch.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_action_smalltouch_daynight.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_action_smalltouch_transparent.xml" value="0.2265625" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/activity_tuto.xml" value="0.3854166666666667" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/content_main.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/fragment_home.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/fragment_step0.xml" value="0.3854166666666667" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/fragment_step1.xml" value="0.3854166666666667" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/fragment_step2.xml" value="0.3854166666666667" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/fragment_step3.xml" value="0.3854166666666667" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/m_disk_count.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/menu/activity_main_drawer.xml" value="0.24358974358974358" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/menu/main.xml" value="0.24739583333333334" />
       </map>
     </option>
   </component>

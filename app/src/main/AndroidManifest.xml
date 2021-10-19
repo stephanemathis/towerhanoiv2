@@ -38,6 +38,9 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.AppCompat.DayNight.Dialog" >
         </activity>
+        <activity
+            android:name=".TutoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest>

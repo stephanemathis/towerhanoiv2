@@ -65,7 +65,9 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
     private int RC_SIGN_IN = 1001;
     private int RC_ACHIVEMENT_UI = 1002;
-    private int RC_LEADERBOARD_UI = 1002;
+    private int RC_LEADERBOARD_UI = 1003;
+    static final int RESULT_TUTORIAL = 1005;
+
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -86,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
     private int mDiskCount = 5;
     private HomeViewModel viewModel;
+
+    boolean tutorialShownWaitForConnectionAfterResume = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +156,17 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         tvDiskNumber.setText(mDiskCount + "");
 
         navController.addOnDestinationChangedListener(this);
+/*
+        if (!DataManager.GetMemorizedValueBoolean("showTutoFirstTime2", getApplicationContext())) {
+            tutorialShownWaitForConnectionAfterResume = true;
+            DataManager.MemorizeValue("showTutoFirstTime2", true, getApplicationContext());
+            showTutorial(false);
+        }*/
+    }
+
+    public void drawerTutoClick(MenuItem menuItem) {
+        showTutorial(true);
+        DataManager.MemorizeValue("helpCompleted", false, getApplicationContext());
     }
 
     /*
@@ -226,7 +241,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     protected void onResume() {
         super.onResume();
 
-        if (mTryReconnectAutomatically)
+        requestSignIn();
+    }
+
+    private void requestSignIn() {
+        if (mTryReconnectAutomatically && !tutorialShownWaitForConnectionAfterResume)
             signInSilently();
         else
             onDisconnected();
@@ -360,6 +379,14 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
             }
         }
+        else if(requestCode == RESULT_TUTORIAL) {
+
+                if (tutorialShownWaitForConnectionAfterResume) {
+                    tutorialShownWaitForConnectionAfterResume = false;
+                    requestSignIn();
+                }
+
+        }
     }
 
     public void onGameFinished(int nbCoup, int nbTotal, long miliseconds)
@@ -454,7 +481,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
     //#endregion
 
-    //#region Tooltip title
+    //#region Toolbar title
 
     private String currentMainTitle = null;
 
@@ -463,8 +490,6 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
         setTitle(this.currentMainTitle);
     }
-
-
 
     @Override
     public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
@@ -482,6 +507,20 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     }
 
     //#endregion
+
+    //#region Tuto
+
+    public void showTutorial(boolean animate) {
+        Intent i = new Intent(MainActivity.this, TutoActivity.class);
+        i.putExtra("connectClient", animate && mPlayersClient != null);
+        startActivityForResult(i, RESULT_TUTORIAL);
+        if (!animate)
+            overridePendingTransition(0, 0);
+
+        mDrawer.closeDrawers();
+    }
+
+    //endregion
 
 
 }

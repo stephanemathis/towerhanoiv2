@@ -16,6 +16,7 @@
     <string name="menu_play_games">Play Games</string>
     <string name="menu_achivements">Succès</string>
     <string name="menu_leaderboards">Classements</string>
+    <string name="menu_tuto">Tutoriel</string>
 
     <string name="disk_nb_picker_title">Nombre de disques</string>
     <string name="disk_nb_picker_ok">C\'est parti !</string>
@@ -43,5 +44,12 @@
     <string name="congrats_mouvements">mouvements</string>
     <string name="congrats_sec">sec</string>
     <string name="congrats_min">min</string>
+
+    <string name="tuto_skip">Passer</string>
+    <string name="tuto_skip_end">Passer</string>
+    <string name="tuto_help1">Le but du jeu est de réussir à déplacer tous les disques sur la tour de droite.</string>
+    <string name="tuto_help2">Vous n\'avez pas le droit de déplacer deux disques en même temps.</string>
+    <string name="tuto_help3">Un disque ne peut être qu\'au dessus d\'un disque plus grand.</string>
+    <string name="tuto_app_name"><b>Tours</b> de <b>Hanoi</b></string>
 
 </resources>
