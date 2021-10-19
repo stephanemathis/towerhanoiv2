@@ -156,12 +156,12 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         tvDiskNumber.setText(mDiskCount + "");
 
         navController.addOnDestinationChangedListener(this);
-/*
+
         if (!DataManager.GetMemorizedValueBoolean("showTutoFirstTime2", getApplicationContext())) {
             tutorialShownWaitForConnectionAfterResume = true;
             DataManager.MemorizeValue("showTutoFirstTime2", true, getApplicationContext());
             showTutorial(false);
-        }*/
+        }
     }
 
     public void drawerTutoClick(MenuItem menuItem) {

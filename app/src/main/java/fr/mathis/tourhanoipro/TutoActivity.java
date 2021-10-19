@@ -40,7 +40,7 @@ public class TutoActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        Tools.applyColoredTheme(this);
+        Tools.applyTranslucentColoredTheme(this);
 
         setContentView(R.layout.activity_tuto);
 

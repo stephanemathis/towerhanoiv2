@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#fff"
+    android:background="?android:attr/colorBackground"
     android:gravity="center"
     android:orientation="vertical" >
 
@@ -42,7 +42,8 @@
                 <fr.mathis.tourhanoipro.view.game.GameView
                     android:id="@+id/gv_tuto_2"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
+                    android:layout_height="fill_parent"
+                    android:background="?android:attr/colorBackground"/>
             </LinearLayout>
 
             <TextView
@@ -64,7 +65,8 @@
                 <fr.mathis.tourhanoipro.view.game.GameView
                     android:id="@+id/gv_tuto_3"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
+                    android:layout_height="fill_parent"
+                    android:background="?android:attr/colorBackground"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

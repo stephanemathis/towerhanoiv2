@@ -20,7 +20,7 @@
         android:id="@+id/rl_indicator_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white" >
+        android:background="?android:attr/colorBackground" >
 
         <TextView
             android:id="@+id/tv_step"
@@ -35,7 +35,6 @@
             android:paddingRight="8dp"
             android:paddingTop="16dp"
             android:text="@string/tuto_skip"
-            android:textColor="#404040"
             android:textSize="18sp" />
 
         <fr.mathis.tourhanoipro.view.CustomPagerIndicator

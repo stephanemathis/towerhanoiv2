@@ -80,7 +80,26 @@ public class Tools {
         };
 
         context.getTheme().applyStyle(themes[index], true);
+    }
 
+    public static void applyTranslucentColoredTheme(Context context)
+    {
+        int index = PrefHelper.ReadInt(context, PrefHelper.KEY_THEME_INDEX, PrefHelper.DEFAULT_THEME_INDEX);
+
+        int[] themes = new int[] {
+                R.style.AppThemeTranslucentColored0,
+                R.style.AppThemeTranslucentColored1,
+                R.style.AppThemeTranslucentColored2,
+                R.style.AppThemeTranslucentColored3,
+                R.style.AppThemeTranslucentColored4,
+                R.style.AppThemeTranslucentColored5,
+                R.style.AppThemeTranslucentColored6,
+                R.style.AppThemeTranslucentColored7,
+                R.style.AppThemeTranslucentColored8,
+                R.style.AppThemeTranslucentColored9
+        };
+
+        context.getTheme().applyStyle(themes[index], true);
     }
 
     public static int findIntIndex(int[] _array, int _value) {
