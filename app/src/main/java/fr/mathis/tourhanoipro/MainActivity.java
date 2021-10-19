@@ -34,6 +34,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -48,11 +49,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
+
+import fr.mathis.tourhanoipro.core.tools.DataManager;
 import fr.mathis.tourhanoipro.ui.home.GameAction;
 import fr.mathis.tourhanoipro.ui.home.HomeViewModel;
 import fr.mathis.tourhanoipro.ui.picker.NumberPickerDialog;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
+import fr.mathis.tourhanoipro.view.game.GameView;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
 
 
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     private ImageView ivDrawerLogo;
     private TextView tvDrawerTitle;
     private TextView tvDrawerSubtitle;
+    NavController navController;
 
     private MenuItem miConnect;
     private MenuItem miLeaderboard;
@@ -98,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         updateDrawerLockMode();
 
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        viewModel.init(this);
 
         llDrawer = (LinearLayout) navigationView.getHeaderView(0);
         ivDrawerLogo = llDrawer.findViewById(R.id.ivDrawerLogo);
@@ -111,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 .setOpenableLayout(mDrawer)
                 .build();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
@@ -133,12 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                         mDiskCount = newVal;
                         tvDiskNumber.setText(mDiskCount + "");
 
-                        NavDestination n = navController.getCurrentDestination();
-
-                        if(n.getId() != R.id.nav_home)
-                            navController.navigateUp();
-
-                        viewModel.sendEvent(new GameAction(false, newVal));
+                        startNewGame();
                     }
                 });
 
@@ -146,11 +148,35 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             }
         });
 
-
         mDiskCount = PrefHelper.ReadInt(this, PrefHelper.KEY_DISK_COUNT, 5);
         tvDiskNumber.setText(mDiskCount + "");
 
         navController.addOnDestinationChangedListener(this);
+    }
+
+    /*
+     * Méthode appelé sur le clic de Nouvelle partie dans le Drawer
+     */
+    public void drawerHomeClick(MenuItem menuItem) {
+        startNewGame();
+    }
+
+    private void startNewGame() {
+
+        // Génère la nouvelle partie
+        ArrayList<String> savedGames = viewModel.getAllGames();
+        savedGames.add(0, GameView.getNewSaveData(getApplicationContext(), mDiskCount));
+        DataManager.SaveAllGames(savedGames, getApplicationContext());
+
+        // Puis gère son affichage
+        NavDestination n = navController.getCurrentDestination();
+
+        if(n.getId() != R.id.nav_home)
+            navController.navigateUp();
+        else
+            viewModel.sendEvent(new GameAction(true));
+
+        mDrawer.closeDrawers();
     }
 
     /*
@@ -437,6 +463,8 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
         setTitle(this.currentMainTitle);
     }
+
+
 
     @Override
     public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {

@@ -9,7 +9,8 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_play"
             android:title="@string/menu_home"
-            app:actionLayout="@layout/m_disk_count" />
+            app:actionLayout="@layout/m_disk_count"
+            android:onClick="drawerHomeClick"/>
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_settings"

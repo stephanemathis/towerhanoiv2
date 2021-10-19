@@ -24,6 +24,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import java.util.ArrayList;
 
+import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
@@ -103,6 +104,13 @@ public class GameView extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
 
         init();
+    }
+
+    public static String getNewSaveData(Context context, int diskCount) {
+        GameView gv = new GameView(context);
+        gv.createNewGame(diskCount);
+
+        return gv.saveGameAsString();
     }
 
     private void init() {
