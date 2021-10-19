@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Tour de Hanoi Pro</string>
+    <string name="nothing"></string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -30,6 +31,10 @@
 
     <string name="quick_touch_enable">Activer le mode Touche Rapide</string>
     <string name="quick_touch_delete">Désactiver le mode Touche Rapide</string>
+    <string name="quick_touch_update">Modifier la zone</string>
+    <string name="quick_touch_help">Besoin d\'aide ?</string>
+    <string name="quick_touch_first">Tracez une zone sur l\'écran en suivant le trait violet</string>
+    <string name="quick_touch_second">Glissez votre doigt à l\'intérieur de la zone pour contrôler les disques !</string>
 
     <string name="congrats_done">Terminé !</string>
     <string name="congrats_summary">La tour était formée de :tower disques.</string>
@@ -38,4 +43,5 @@
     <string name="congrats_mouvements">mouvements</string>
     <string name="congrats_sec">sec</string>
     <string name="congrats_min">min</string>
+
 </resources>

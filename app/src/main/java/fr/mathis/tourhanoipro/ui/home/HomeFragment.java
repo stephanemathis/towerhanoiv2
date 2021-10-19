@@ -1,6 +1,7 @@
 package fr.mathis.tourhanoipro.ui.home;
 
-import android.app.Activity;
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,10 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -28,6 +26,7 @@ import fr.mathis.tourhanoipro.R;
 import fr.mathis.tourhanoipro.core.tools.DataManager;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.view.game.GameView;
+import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
 
@@ -36,6 +35,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     private GameView gvMain;
 
     static final int MENU_QUICK_TOUCH_ENABLE = 1;
+    static final int MENU_QUICK_TOUCH_MODIFY = 4;
     static final int MENU_QUICK_TOUCH_REMOVE = 5;
 
     private MenuItem menuItemSmallTouchEnable;
@@ -44,6 +44,12 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
     private ActivityResultLauncher<Intent> congratsLauncher;
     private HomeViewModel viewModel;
+    boolean wantstoShowHelp;
+
+    View stepContainer;
+    View step0;
+    View step1;
+    View step2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +74,11 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         gvMain = root.findViewById(R.id.gv_main);
+
+        stepContainer = root.findViewById(R.id.rl_help);
+        step0 = root.findViewById(R.id.ll_help_step0);
+        step1 = root.findViewById(R.id.ll_help_step1);
+        step2 = root.findViewById(R.id.ll_help_step2);
 
         gvMain.setTurnListener(this);
         gvMain.setQuickTouchListener(this);
@@ -115,6 +126,9 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         menuItemSmallTouchEnable.setIcon(R.drawable.ic_action_smalltouch);
         menuItemSmallTouchEnable.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
+        menuItemSmallTouchModify = menu.add(0, MENU_QUICK_TOUCH_MODIFY, 0, R.string.quick_touch_update);
+        menuItemSmallTouchModify.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
         menuItemSmallTouchRemove = menu.add(0, MENU_QUICK_TOUCH_REMOVE, 0, R.string.quick_touch_delete);
         menuItemSmallTouchRemove.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
@@ -125,6 +139,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
 
         menu.findItem(MENU_QUICK_TOUCH_REMOVE).setVisible((gvMain != null && gvMain.getQt() != null));
+        menu.findItem(MENU_QUICK_TOUCH_MODIFY).setVisible((gvMain != null && gvMain.getQt() != null));
         menu.findItem(MENU_QUICK_TOUCH_ENABLE).setVisible((gvMain == null || gvMain.getQt() == null));
 
         super.onPrepareOptionsMenu(menu);
@@ -139,11 +154,15 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
                 menuItemSmallTouchEnable.setVisible(false);
 
-                //initHelpPopup(true);
+                initHelpPopup(true);
 
                 return true;
+            case MENU_QUICK_TOUCH_MODIFY:
+                gvMain.enterEditMode();
+                break;
             case MENU_QUICK_TOUCH_REMOVE:
                 gvMain.activateQuickTouchMode();
+                cleanHelpPopup();
 
                 menuItemSmallTouchRemove.setVisible(false);
                 menuItemSmallTouchModify.setVisible(false);
@@ -185,17 +204,147 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
         menuItemSmallTouchRemove.setVisible(true);
         menuItemSmallTouchModify.setVisible(true);
+    }
 
-        // le back du thème qui ne fonctionne pas et drawer lock
-        // besoin de le setter ? pas en trop ?
+    //#endregion
 
+    //#region Popup d'aide Zone Rapide
 
-        // Ajouter dans les settings, de quoi se déconnecter de google play ?
-        // mode sombre dans les settings
-        // choisir la couleur du thème dans les settings
-        // ajouter le menu pour le quick touch
-        // pour avertir du succès, ajouter un truc en fond (sans popup) avec la tour en transparent derrière et des feux d'artifices !
+    private void cleanHelpPopup() {
+        stepContainer.setVisibility(View.GONE);
+        step0.setVisibility(View.GONE);
+        step1.setVisibility(View.GONE);
+        step2.setVisibility(View.GONE);
+    }
 
+    private void initHelpPopup(boolean show) {
+        wantstoShowHelp = false;
+        if (show) {
+            if (!DataManager.GetMemorizedValueBoolean("helpCompleted", getContext())) {
+
+                stepContainer.setVisibility(View.VISIBLE);
+                step0.setVisibility(View.VISIBLE);
+                step1.setVisibility(View.GONE);
+                step2.setVisibility(View.GONE);
+                /*
+                float dpWidth = getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density;
+                if (dpWidth > 400)
+                    stepContainer.getLayoutParams().width = Tools.convertDpToPixel(300);
+                else
+                    findViewById(R.id.rl_help).getLayoutParams().width = -1;
+                */
+                ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(stepContainer, "alpha", 0.0f, 1.0f);
+                alphaAnimator.setDuration(500);
+                alphaAnimator.start();
+
+                step0.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        wantstoShowHelp = true;
+                        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(stepContainer, "alpha", 1.0f, 0.0f);
+                        alphaAnimator.setDuration(500);
+                        alphaAnimator.addListener(new Animator.AnimatorListener() {
+
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                step0.setVisibility(View.GONE);
+                                step1.setVisibility(View.VISIBLE);
+                                step2.setVisibility(View.GONE);
+                                ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(stepContainer, "alpha", 0.0f, 1.0f);
+                                alphaAnimator.setDuration(500);
+                                alphaAnimator.start();
+                                gvMain.setDrawHelpLine(true);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+                            }
+                        });
+                        alphaAnimator.start();
+
+                    }
+                });
+
+                gvMain.setHelpListener(new HelpListener() {
+
+                    @Override
+                    public void stepPassed(int step) {
+
+                        if (step == 0 && wantstoShowHelp) {
+                            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(stepContainer, "alpha", 1.0f, 0.0f);
+                            alphaAnimator.setDuration(500);
+                            alphaAnimator.addListener(new Animator.AnimatorListener() {
+
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    step0.setVisibility(View.GONE);
+                                    step1.setVisibility(View.GONE);
+                                    step2.setVisibility(View.VISIBLE);
+                                    ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(stepContainer, "alpha", 0.0f, 1.0f);
+                                    alphaAnimator.setDuration(500);
+                                    alphaAnimator.start();
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+                                }
+                            });
+                            alphaAnimator.start();
+                        } else {
+                            if (wantstoShowHelp) {
+                                DataManager.MemorizeValue("helpCompleted", true, getContext());
+                            }
+
+                            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(stepContainer, "alpha", 1.0f, 0.0f);
+                            alphaAnimator.setDuration(500);
+                            alphaAnimator.addListener(new Animator.AnimatorListener() {
+
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    step0.setVisibility(View.GONE);
+                                    step1.setVisibility(View.GONE);
+                                    step2.setVisibility(View.GONE);
+                                    stepContainer.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+                                }
+                            });
+                            alphaAnimator.start();
+                        }
+                    }
+
+                });
+            }
+        } else {
+            stepContainer.setVisibility(View.GONE);
+        }
 
     }
 
