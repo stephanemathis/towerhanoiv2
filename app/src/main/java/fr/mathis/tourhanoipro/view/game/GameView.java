@@ -3,6 +3,7 @@ package fr.mathis.tourhanoipro.view.game;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -70,6 +72,7 @@ public class GameView extends View {
     Paint _fingerLinePaint;
     Paint _bitmapPaint;
     Path _fingerLinePath;
+    int helpLineColor;
 
     // touch variables
     float latestTouchPositionX;
@@ -85,25 +88,25 @@ public class GameView extends View {
     public GameView(Context context) {
         super(context);
 
-        init();
+        init(context);
     }
 
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        init();
+        init(context);
     }
 
     public GameView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        init();
+        init(context);
     }
 
     public GameView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        init();
+        init(context);
     }
 
     public static String getNewSaveData(Context context, int diskCount) {
@@ -113,7 +116,7 @@ public class GameView extends View {
         return gv.saveGameAsString();
     }
 
-    private void init() {
+    private void init(Context context) {
         setFocusable(true);
 
         _currentGameSessionDuration = 0;
@@ -148,6 +151,11 @@ public class GameView extends View {
         _fingerLinePaint.setStrokeJoin(Paint.Join.ROUND);
         _fingerLinePaint.setStrokeCap(Paint.Cap.ROUND);
         _fingerLinePaint.setStrokeWidth(Tools.convertDpToPixel(2));
+
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        helpLineColor = typedValue.data;
 
         createNewGame(5);
     }
@@ -803,10 +811,7 @@ public class GameView extends View {
             if (_shouldDrawHelpLine) {
                 Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-
-                // Passer le thème ???
-                int color = ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null);
-                mPaint.setColor(color);
+                mPaint.setColor(helpLineColor);
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setStrokeWidth(Tools.convertDpToPixel(2.0f));
                 mPaint.setPathEffect(new DashPathEffect(new float[]{Tools.convertDpToPixel(3), Tools.convertDpToPixel(1.4f)}, 0));

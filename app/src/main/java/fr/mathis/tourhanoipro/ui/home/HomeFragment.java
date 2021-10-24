@@ -3,6 +3,7 @@ package fr.mathis.tourhanoipro.ui.home;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,10 +59,21 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         congratsLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
+                    boolean more = false;
+
+                    Intent i = result.getData();
+                    if(i != null)
+                        more = i.getBooleanExtra("more", false);
+                    int diskCount = PrefHelper.ReadInt(getContext(), PrefHelper.KEY_DISK_COUNT, -1);
+
+                    if(more) {
+                        diskCount++;
+                        PrefHelper.SaveInt(getContext(), PrefHelper.KEY_DISK_COUNT, diskCount);
+                    }
                     ArrayList<String> savedGames = viewModel.getAllGames();
                     savedGames.set(viewModel.getCurrentGameIndex(), gvMain.saveGameAsString());
 
-                    String newGame = GameView.getNewSaveData(getContext(), PrefHelper.ReadInt(getContext(), PrefHelper.KEY_DISK_COUNT, -1));
+                    String newGame = GameView.getNewSaveData(getContext(), diskCount);
                     viewModel.getAllGames().add(0, newGame);
                     gvMain.launchGame(newGame);
                 });
@@ -107,12 +119,18 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         super.onResume();
     }
 
+    private boolean skipSave = false;
+
     @Override
     public void onPause() {
         super.onPause();
 
-        viewModel.getAllGames().set(viewModel.getCurrentGameIndex(), gvMain.saveGameAsString());
-        DataManager.SaveAllGames(viewModel.getAllGames(), getActivity().getApplicationContext());
+        if(!skipSave) {
+            viewModel.getAllGames().set(viewModel.getCurrentGameIndex(), gvMain.saveGameAsString());
+            DataManager.SaveAllGames(viewModel.getAllGames(), getActivity().getApplicationContext());
+        }
+
+        skipSave = false;
     }
 
     //#region Menus
@@ -188,6 +206,16 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     public void gameFinished(int nbCoup, int nbTotal, long miliseconds) {
 
         ((MainActivity)getActivity()).onGameFinished(nbCoup, nbTotal, miliseconds);
+
+        ArrayList<String> savedGames = viewModel.getAllGames();
+        savedGames.set(viewModel.getCurrentGameIndex(), gvMain.saveGameAsString());
+
+        String newGame = GameView.getNewSaveData(getContext(), PrefHelper.ReadInt(getContext(), PrefHelper.KEY_DISK_COUNT, -1));
+        viewModel.getAllGames().add(0, newGame);
+
+        DataManager.SaveAllGames(viewModel.getAllGames(), getActivity().getApplicationContext());
+
+        skipSave = true;
 
         Intent i = new Intent(getActivity(), CongratsActivity.class);
         Bundle b = new Bundle();

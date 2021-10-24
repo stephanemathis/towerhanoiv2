@@ -14,7 +14,8 @@
         r:duration="2000"
         r:fadeFactor="10.0"
         android:clickable="true"
-        android:focusableInTouchMode="true"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
         r:phase="1.0"
         r:strokeColor="#ffffff"
         r:strokeWidth2="1.5" />

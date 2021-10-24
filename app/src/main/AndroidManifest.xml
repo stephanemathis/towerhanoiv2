@@ -36,13 +36,13 @@
         <activity
             android:name="CongratsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog" >
+            android:theme="@style/AppThemeTranslucentColored3"  >
         </activity>
 
         <activity
             android:name=".TutoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/AppThemeTranslucentColored3"/>
+            android:theme="@style/AppThemeTranslucentColored3" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>

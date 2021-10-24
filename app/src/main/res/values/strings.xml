@@ -8,6 +8,7 @@
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="play_games_connection_error">Impossible de se connecter à Play Games</string>
+    <string name="pick_a_color">Choisissez une couleur</string>
 
     <string name="menu_home">Nouvelle partie</string>
 

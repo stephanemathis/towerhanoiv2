@@ -1,103 +1,79 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_container"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white" >
+    android:layout_height="fill_parent"
+    android:background="@color/transparent_background_gray">
 
-    <LinearLayout
+    <nl.dionsegijn.konfetti.KonfettiView
+        android:id="@+id/kvConfetti"
         android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/rl_help"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="8dp" >
-
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:fontFamily="sans-serif-condansed"
-            android:text="@string/congrats_done"
-            android:textColor="@android:color/black"
-            android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/tv_towerSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/congrats_summary"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_perfect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/congrats_perfect"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
+        android:padding="0dp"
+        app:cardCornerRadius="8dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        app:cardElevation="6dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp" >
+            android:orientation="vertical"
+            android:paddingTop="8dp" >
+
+            <TextView
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:fontFamily="sans-serif-condansed"
+                android:text="@string/congrats_done"
+                android:textColor="@android:color/black"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tv_towerSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/congrats_summary"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_perfect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/congrats_perfect"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="8dp" >
-
-                <TextView
-                    android:id="@+id/tv_movements"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/congrats_mouvements"
-                    android:textColor="#808080"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
-                android:background="?attr/colorPrimaryDark" >
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:orientation="horizontal"
-                android:padding="8dp" >
+                android:layout_marginTop="8dp" >
 
                 <LinearLayout
-                    android:id="@+id/ll_minutes"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:padding="8dp" >
 
                     <TextView
-                        android:id="@+id/tv_minutes"
+                        android:id="@+id/tv_movements"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
@@ -107,36 +83,107 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/congrats_min"
+                        android:text="@string/congrats_mouvements"
                         android:textColor="#808080"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?attr/colorPrimaryDark" >
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="6dp"
+                    android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical" >
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
 
-                    <TextView
-                        android:id="@+id/tv_secondes"
+                    <LinearLayout
+                        android:id="@+id/ll_minutes"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="6dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
 
-                    <TextView
-                        android:id="@+id/tv_secondes_desc"
+                        <TextView
+                            android:id="@+id/tv_minutes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/congrats_min"
+                            android:textColor="#808080"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/congrats_sec"
-                        android:textColor="#808080"
-                        android:textSize="12sp" />
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="6dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/tv_secondes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_secondes_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/congrats_sec"
+                            android:textColor="#808080"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</FrameLayout>
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/spacer"
+        android:layout_width="48dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="48dp"
+        android:layout_below="@id/rl_help" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabRestart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/spacer"
+        android:layout_toLeftOf="@id/spacer"
+        android:src="@drawable/ic_fab_refresh"
+        app:backgroundTint="?attr/colorAccent"
+        android:tint="#ffffff"
+        android:contentDescription="@string/nothing" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabNextLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/spacer"
+        android:layout_toRightOf="@id/spacer"
+        app:backgroundTint="?attr/colorAccent"
+        android:tint="#ffffff"
+        android:src="@drawable/ic_fab_more"
+        android:contentDescription="@string/nothing"/>
+</RelativeLayout>
