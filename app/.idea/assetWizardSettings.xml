@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_fab_more" />
-                            <entry key="sourceFile" value="C:\Users\mathi\Documents\Android\Hanoi\app" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_newicon" />
+                            <entry key="sourceFile" value="C:\Users\mathi\Desktop\newicon.svg" />
                           </map>
                         </option>
                       </PersistentState>

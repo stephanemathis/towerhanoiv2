@@ -15,6 +15,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.LeaderboardsClient;
 import com.google.android.gms.games.Player;
 import com.google.android.gms.games.PlayersClient;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -270,6 +272,10 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
         PlayersClient d = Games.getPlayersClient(this, _signedInAccount);
 
+        GamesClient mGamesClient = Games.getGamesClient(this, _signedInAccount);
+        mGamesClient.setViewForPopups(findViewById(android.R.id.content));
+        mGamesClient.setGravityForPopups(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+
         mAchievementsClient = Games.getAchievementsClient(this, _signedInAccount);
         mLeaderboardsClient = Games.getLeaderboardsClient(this, _signedInAccount);
         mPlayersClient = Games.getPlayersClient(this, _signedInAccount);
@@ -289,8 +295,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                             if (uri != null)
                                 ImageManager.create(MainActivity.this).loadImage(ivDrawerLogo, uri);
 
-
                             mPlayerInfoLoaded = true;
+
+                            miConnect.setVisible(false);
+                            miLeaderboard.setVisible(true);
+                            miAchievements.setVisible(true);
                         } else {
                             Exception e = task.getException();
                         }
@@ -323,6 +332,9 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             } else {
                 // Haven't been signed-in before. Try the silent sign-in first.
                 GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
+
+
+
                 signInClient
                         .silentSignIn()
                         .addOnCompleteListener(
