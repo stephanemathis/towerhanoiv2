@@ -395,11 +395,9 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
                 String message = result.getStatus().getStatusMessage();
                 if (message == null || message.isEmpty()) {
-                    message = getString(R.string.play_games_connection_error);
+                    new AlertDialog.Builder(this).setMessage(message)
+                            .setNeutralButton(android.R.string.ok, null).show();
                 }
-                new AlertDialog.Builder(this).setMessage(message)
-                        .setNeutralButton(android.R.string.ok, null).show();
-
             }
         }
         else if(requestCode == RESULT_TUTORIAL) {

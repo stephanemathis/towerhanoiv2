@@ -265,6 +265,31 @@ public class CongratsActivity extends AppCompatActivity {
                     if (nbCoup == Math.pow(2, 15) - 1)
                         mAchievementsClient.unlock(getString(R.string.achievement_perfect_15));
                     mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_15_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 16) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_16));
+                    if (nbCoup == Math.pow(2, 16) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_16));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_16_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 17) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_15));
+                    if (nbCoup == Math.pow(2, 17) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_15));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_17_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 18) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_16));
+                    if (nbCoup == Math.pow(2, 18) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_15));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_18_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 19) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_15));
+                    if (nbCoup == Math.pow(2, 19) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_15));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_19_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 20) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_15));
+                    if (nbCoup == Math.pow(2, 20) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_15));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_20_disks), miliseconds);
                 }
 
                 if (nbTotal == nbCoup) {
