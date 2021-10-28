@@ -205,8 +205,6 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     @Override
     public void gameFinished(int nbCoup, int nbTotal, long miliseconds) {
 
-        ((MainActivity)getActivity()).onGameFinished(nbCoup, nbTotal, miliseconds);
-
         ArrayList<String> savedGames = viewModel.getAllGames();
         savedGames.set(viewModel.getCurrentGameIndex(), gvMain.saveGameAsString());
 
@@ -225,6 +223,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         i.putExtras(b);
 
         congratsLauncher.launch(i);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override

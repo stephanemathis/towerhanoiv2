@@ -4,35 +4,37 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager.LayoutParams;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.games.AchievementsClient;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.LeaderboardsClient;
 
-import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 public class CongratsActivity extends Activity {
+
+    int userMovements;
+    int totalMovements;
+    long time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +45,9 @@ public class CongratsActivity extends Activity {
 
         setContentView(R.layout.activity_congrats);
 
-        int userMovements = getIntent().getExtras().getInt("userMovements");
-        int totalMovements = getIntent().getExtras().getInt("totalMovements");
-        long time = getIntent().getExtras().getLong("time");
+        userMovements = getIntent().getExtras().getInt("userMovements");
+        totalMovements = getIntent().getExtras().getInt("totalMovements");
+        time = getIntent().getExtras().getLong("time");
 
         KonfettiView konfetti = findViewById(R.id.kvConfetti);
 
@@ -168,10 +170,107 @@ public class CongratsActivity extends Activity {
                         .addSizes(new Size(12, 10f), new Size(10, 10f), new Size(14, 10f))
                         .setPosition(-50f, konfetti.getWidth() + 50f, -50f, -50f)
                         .streamFor(200, time);
+
+
+                unlockAchievements(userMovements, totalMovements, time);
             }
         });
 
 
+    }
 
+    private AchievementsClient mAchievementsClient;
+    private LeaderboardsClient mLeaderboardsClient;
+
+    private void unlockAchievements(int nbCoup, int nbTotal, long miliseconds)
+    {
+        // if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
+         int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+        if (status == ConnectionResult.SUCCESS) {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            if(account != null) {
+                GamesClient mGamesClient = Games.getGamesClient(this, account);
+
+                mGamesClient.setViewForPopups(findViewById(android.R.id.content));
+                mGamesClient.setGravityForPopups(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+
+                mAchievementsClient = Games.getAchievementsClient(this, account);
+                mLeaderboardsClient = Games.getLeaderboardsClient(this, account);
+
+                mAchievementsClient.unlock("CgkI0IyI-JIUEAIQMg");
+
+
+                mAchievementsClient.increment(getString(R.string.achievement_beginner), (int) (Math.log(nbCoup + 1) / Math.log(2)));
+                mAchievementsClient.increment(getString(R.string.achievement_expert), (int) (Math.log(nbCoup + 1) / Math.log(2)));
+                if (nbTotal == 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_1));
+                } else if (nbTotal == Math.pow(2, 2) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_2));
+                } else if (nbTotal == Math.pow(2, 3) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_3));
+                } else if (nbTotal == Math.pow(2, 4) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_4));
+                } else if (nbTotal == Math.pow(2, 5) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_5));
+                    if (nbCoup == Math.pow(2, 5) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_5));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_5_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 6) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_6));
+                    if (nbCoup == Math.pow(2, 6) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_6));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_6_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 7) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_7));
+                    if (nbCoup == Math.pow(2, 7) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_7));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_7_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 8) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_8));
+                    if (nbCoup == Math.pow(2, 8) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_8));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_8_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 9) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_9));
+                    if (nbCoup == Math.pow(2, 9) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_9));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_9_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 10) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_10));
+                    if (nbCoup == Math.pow(2, 10) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_10));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_10_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 11) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_11));
+                    if (nbCoup == Math.pow(2, 11) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_11));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_11_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 12) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_12));
+                    if (nbCoup == Math.pow(2, 12) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_12));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_12_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 13) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_13));
+                    if (nbCoup == Math.pow(2, 13) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_13));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_13_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 14) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_14));
+                    if (nbCoup == Math.pow(2, 14) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_14));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_14_disks), miliseconds);
+                } else if (nbTotal == Math.pow(2, 15) - 1) {
+                    mAchievementsClient.unlock(getString(R.string.achievement_level_15));
+                    if (nbCoup == Math.pow(2, 15) - 1)
+                        mAchievementsClient.unlock(getString(R.string.achievement_perfect_15));
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_15_disks), miliseconds);
+                }
+
+                if (nbTotal == nbCoup) {
+                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_perfect_score), (int) (Math.log(nbCoup + 1) / Math.log(2)));
+                }
+            }
+        }
     }
 }

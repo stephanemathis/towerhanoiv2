@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.games.AchievementsClient;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesClient;
 
 import fr.mathis.tourhanoipro.core.tools.Tools;
 import fr.mathis.tourhanoipro.ui.tuto.TutoPagerAdapter;
@@ -124,15 +126,19 @@ public class TutoActivity extends AppCompatActivity {
         if (connectPlayGames) {
             int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
             if (status == ConnectionResult.SUCCESS) {
-
-                GoogleSignInOptions signInOptions = GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN;
                 GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-                if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
+
+                if (account != null) {
+                    GamesClient mGamesClient = Games.getGamesClient(this, account);
+
+                    mGamesClient.setViewForPopups(findViewById(android.R.id.content));
+                    mGamesClient.setGravityForPopups(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
 
                     AchievementsClient mAchievementsClient = Games.getAchievementsClient(this, account);
                     mAchievementsClient.unlock(getString(id));
                 }
             }
+
         }
     }
 }

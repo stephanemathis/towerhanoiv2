@@ -373,6 +373,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
@@ -399,85 +400,6 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 }
 
         }
-    }
-
-    public void onGameFinished(int nbCoup, int nbTotal, long miliseconds)
-    {
-        if (mPlayersClient != null) {
-            mAchievementsClient.increment(getString(R.string.achievement_beginner), (int) (Math.log(nbCoup + 1) / Math.log(2)));
-            mAchievementsClient.increment(getString(R.string.achievement_expert), (int) (Math.log(nbCoup + 1) / Math.log(2)));
-            if (nbTotal == 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_1));
-            } else if (nbTotal == Math.pow(2, 2) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_2));
-            } else if (nbTotal == Math.pow(2, 3) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_3));
-            } else if (nbTotal == Math.pow(2, 4) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_4));
-            } else if (nbTotal == Math.pow(2, 5) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_5));
-                if (nbCoup == Math.pow(2, 5) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_5));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_5_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 6) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_6));
-                if (nbCoup == Math.pow(2, 6) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_6));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_6_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 7) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_7));
-                if (nbCoup == Math.pow(2, 7) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_7));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_7_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 8) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_8));
-                if (nbCoup == Math.pow(2, 8) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_8));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_8_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 9) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_9));
-                if (nbCoup == Math.pow(2, 9) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_9));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_9_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 10) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_10));
-                if (nbCoup == Math.pow(2, 10) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_10));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_10_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 11) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_11));
-                if (nbCoup == Math.pow(2, 11) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_11));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_11_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 12) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_12));
-                if (nbCoup == Math.pow(2, 12) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_12));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_12_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 13) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_13));
-                if (nbCoup == Math.pow(2, 13) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_13));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_13_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 14) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_14));
-                if (nbCoup == Math.pow(2, 14) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_14));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_14_disks), miliseconds);
-            } else if (nbTotal == Math.pow(2, 15) - 1) {
-                mAchievementsClient.unlock(getString(R.string.achievement_level_15));
-                if (nbCoup == Math.pow(2, 15) - 1)
-                    mAchievementsClient.unlock(getString(R.string.achievement_perfect_15));
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_15_disks), miliseconds);
-            }
-
-            if (nbTotal == nbCoup) {
-                mLeaderboardsClient.submitScore(getString(R.string.leaderboard_perfect_score), (int) (Math.log(nbCoup + 1) / Math.log(2)));
-            }
-        }
-
-
-
     }
 
     //endregion
