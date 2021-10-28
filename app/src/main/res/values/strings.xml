@@ -1,56 +1,58 @@
 <resources>
-    <string name="app_name">Tour de Hanoi Pro</string>
+    <string name="app_name">Tower of Hanoi Pro</string>
     <string name="nothing"></string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Non connecté</string>
+    <string name="nav_header_title">Not connected</string>
     <string name="nav_header_subtitle"></string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="play_games_connection_error">Impossible de se connecter à Play Games</string>
-    <string name="pick_a_color">Choisissez une couleur</string>
+    <string name="play_games_connection_error">Unable to sign in to Play Games</string>
+    <string name="pick_a_color">Pick a color</string>
 
-    <string name="menu_home">Nouvelle partie</string>
+    <string name="menu_home">New game</string>
 
-    <string name="menu_settings">Paramètres</string>
-    <string name="menu_connect">Se connecter</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_connect">Sign in</string>
     <string name="menu_play_games">Play Games</string>
-    <string name="menu_achivements">Succès</string>
-    <string name="menu_leaderboards">Classements</string>
-    <string name="menu_tuto">Tutoriel</string>
+    <string name="menu_achivements">Achievements</string>
+    <string name="menu_leaderboards">Leaderboards</string>
+    <string name="menu_tuto">Tutorial</string>
 
-    <string name="disk_nb_picker_title">Nombre de disques</string>
-    <string name="disk_nb_picker_ok">C\'est parti !</string>
-    <string name="disk_nb_picker_cancel">Annuler</string>
-    <string name="pref_drawer_title">Menu latéral</string>
-    <string name="pref_drawer_touch">Bloquer l\'ouverture par glissement du menu latéral</string>
-    <string name="pref_drawer_touch_off">Vous pouvez glisser votre doigt pour ouvrir</string>
-    <string name="pref_drawer_touch_on">Vous devez cliquer sur l\'icône pour ouvrir</string>
-    <string name="pref_theme_title">Thème</string>
-    <string name="pref_theme_dark">Thème sombre</string>
-    <string name="pref_theme_style">Couleur</string>
+    <string name="disk_nb_picker_title">Number of disks</string>
+    <string name="disk_nb_picker_ok">Let\'s go !</string>
+    <string name="disk_nb_picker_cancel">Cancel</string>
+    <string name="pref_drawer_title">Drawer menu</string>
+    <string name="pref_drawer_touch">Lock the drawer menu</string>
+    <string name="pref_drawer_touch_off">You can swipe to open the menu</string>
+    <string name="pref_drawer_touch_on">You need to click on the menu icon to open it</string>
+    <string name="pref_theme_title">Theme</string>
+    <string name="pref_theme_dark">Dark theme</string>
+    <string name="pref_theme_dark_option_dark">Night mode</string>
+    <string name="pref_theme_dark_option_light">Light mode</string>
+    <string name="pref_theme_style">Color</string>
     <string name="pref_key_color">prefKeyColor</string>
 
-    <string name="quick_touch_enable">Activer le mode Touche Rapide</string>
-    <string name="quick_touch_delete">Désactiver le mode Touche Rapide</string>
-    <string name="quick_touch_update">Modifier la zone</string>
-    <string name="quick_touch_help">Besoin d\'aide ?</string>
-    <string name="quick_touch_first">Tracez une zone sur l\'écran en suivant le trait violet</string>
-    <string name="quick_touch_second">Glissez votre doigt à l\'intérieur de la zone pour contrôler les disques !</string>
+    <string name="quick_touch_enable">Enable Quick touch mode</string>
+    <string name="quick_touch_delete">Disable quick touch mode</string>
+    <string name="quick_touch_update">Update bounds</string>
+    <string name="quick_touch_help">Need help ?</string>
+    <string name="quick_touch_first">Draw a line on the screen,\nfollow the dotted line</string>
+    <string name="quick_touch_second">Move your finder inside the rectangle to control the disks !</string>
 
-    <string name="congrats_done">Terminé !</string>
-    <string name="congrats_summary">La tour était formée de :tower disques.</string>
-    <string name="congrats_seconds">secondes</string>
-    <string name="congrats_perfect">Score parfait !</string>
-    <string name="congrats_mouvements">mouvements</string>
+    <string name="congrats_done">Tower solved !</string>
+    <string name="congrats_summary">The tower was formed from :tower disk:plurial.</string>
+    <string name="congrats_seconds">seconds</string>
+    <string name="congrats_perfect">Perfect score !</string>
+    <string name="congrats_mouvements">moves</string>
     <string name="congrats_sec">sec</string>
     <string name="congrats_min">min</string>
 
-    <string name="tuto_skip">Passer</string>
-    <string name="tuto_skip_end">Passer</string>
-    <string name="tuto_help1">Le but du jeu est de réussir à déplacer tous les disques sur la tour de droite.</string>
-    <string name="tuto_help2">Vous n\'avez pas le droit de déplacer deux disques en même temps.</string>
-    <string name="tuto_help3">Un disque ne peut être qu\'au dessus d\'un disque plus grand.</string>
-    <string name="tuto_app_name"><b>Tours</b> de <b>Hanoi</b></string>
+    <string name="tuto_skip">Skip</string>
+    <string name="tuto_skip_end">Skip</string>
+    <string name="tuto_help1">Your goal is to move all the disks to the right tower.</string>
+    <string name="tuto_help2">You can only move one disk at a time.</string>
+    <string name="tuto_help3">A disk can only be on top of a bigger one.</string>
+    <string name="tuto_app_name"><b>Tower</b> of <b>Hanoi</b></string>
 
 </resources>

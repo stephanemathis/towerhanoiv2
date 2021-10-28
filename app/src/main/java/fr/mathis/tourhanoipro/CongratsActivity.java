@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
@@ -26,11 +28,12 @@ import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.LeaderboardsClient;
 
 import fr.mathis.tourhanoipro.core.tools.Tools;
+import fr.mathis.tourhanoipro.ui.home.HomeFragment;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
-public class CongratsActivity extends Activity {
+public class CongratsActivity extends AppCompatActivity {
 
     int userMovements;
     int totalMovements;
@@ -100,16 +103,16 @@ public class CongratsActivity extends Activity {
 
         TextView tvTowerSize = (TextView) findViewById(R.id.tv_towerSize);
         int towerDiskCount = (int)(Math.log(totalMovements + 1) / Math.log(2));
-        tvTowerSize.setText(getString(R.string.congrats_summary).replace(":tower", "" + towerDiskCount));
+        tvTowerSize.setText(getString(R.string.congrats_summary).replace(":tower", "" + towerDiskCount).replace(":plurial", towerDiskCount > 1 ? "s" : ""));
 
-        RelativeLayout container =findViewById(R.id.fl_container);
+        RelativeLayout container = findViewById(R.id.fl_container);
 
         findViewById(R.id.fabRestart).setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
-                i.putExtra("more", false);
+                i.putExtra(HomeFragment.RESULT_INCREMENT_DISK, false);
                 setResult(1, i);
                 finish();
             }
@@ -120,7 +123,7 @@ public class CongratsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
-                i.putExtra("more", true);
+                i.putExtra(HomeFragment.RESULT_INCREMENT_DISK, true);
                 setResult(1, i);
                 finish();
             }
@@ -185,7 +188,7 @@ public class CongratsActivity extends Activity {
     private void unlockAchievements(int nbCoup, int nbTotal, long miliseconds)
     {
         // if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
-         int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
         if (status == ConnectionResult.SUCCESS) {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
             if(account != null) {
@@ -196,9 +199,6 @@ public class CongratsActivity extends Activity {
 
                 mAchievementsClient = Games.getAchievementsClient(this, account);
                 mLeaderboardsClient = Games.getLeaderboardsClient(this, account);
-
-                mAchievementsClient.unlock("CgkI0IyI-JIUEAIQMg");
-
 
                 mAchievementsClient.increment(getString(R.string.achievement_beginner), (int) (Math.log(nbCoup + 1) / Math.log(2)));
                 mAchievementsClient.increment(getString(R.string.achievement_expert), (int) (Math.log(nbCoup + 1) / Math.log(2)));

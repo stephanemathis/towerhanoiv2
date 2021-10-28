@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="transparent_background_gray">#40ffffff</color>
+    <color name="congratsTextColor">#ffffff</color>
+    <color name="congratsLightTextColor">#d0d0d0</color>
 </resources>
 

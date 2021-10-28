@@ -17,12 +17,23 @@ public class HomeViewModel extends ViewModel {
 
     private final MutableLiveData<GameAction> selectedItem = new MutableLiveData<GameAction>();
 
+    private final MutableLiveData<Integer> diskCountUpdate = new MutableLiveData<Integer>();
+
     public void sendEvent(GameAction item) {
         selectedItem.setValue(item);
     }
     public LiveData<GameAction> getEvent() {
         return selectedItem;
     }
+
+    public void sendDiskCountUpdate(int diskCount) {
+        diskCountUpdate.setValue(diskCount);
+    }
+
+    public LiveData<Integer> getDiskCountUpdate() {
+        return diskCountUpdate;
+    }
+
 
     //#region Getter & Setter
 

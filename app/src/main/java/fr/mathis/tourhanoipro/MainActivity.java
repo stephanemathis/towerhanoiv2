@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     private ImageView ivDrawerLogo;
     private TextView tvDrawerTitle;
     private TextView tvDrawerSubtitle;
+    private TextView tvDiskNumber;
     NavController navController;
 
     private MenuItem miConnect;
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         miAchievements = navigationView.getMenu().findItem(R.id.nav_achivements);
 
         FrameLayout flDiskNumber = (FrameLayout) navigationView.getMenu().findItem(R.id.nav_home).getActionView();
-        final TextView tvDiskNumber = (TextView) flDiskNumber.findViewById(R.id.tvDiskNumber);
+        tvDiskNumber = (TextView) flDiskNumber.findViewById(R.id.tvDiskNumber);
 
         flDiskNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                         PrefHelper.SaveInt(MainActivity.this, PrefHelper.KEY_DISK_COUNT, newVal);
                         mDiskCount = newVal;
-                        tvDiskNumber.setText(mDiskCount + "");
+                        refreshDiskCountPicker();
 
                         startNewGame();
                     }
@@ -164,6 +165,15 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             DataManager.MemorizeValue("showTutoFirstTime2", true, getApplicationContext());
             showTutorial(false);
         }
+
+        viewModel.getDiskCountUpdate().observe(this, diskCount -> {
+            mDiskCount = diskCount;
+            refreshDiskCountPicker();
+        });
+    }
+
+    private void refreshDiskCountPicker() {
+        tvDiskNumber.setText(mDiskCount + "");
     }
 
     public void drawerTutoClick(MenuItem menuItem) {

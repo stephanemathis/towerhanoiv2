@@ -2,8 +2,8 @@
 <resources>
     <string-array name="dark_modes">
         <item>Auto</item>
-        <item>Mode nuit</item>
-        <item>Mode clair</item>
+        <item>@string/pref_theme_dark_option_dark</item>
+        <item>@string/pref_theme_dark_option_light</item>
     </string-array>
 
     <string-array name="dark_modes_values">

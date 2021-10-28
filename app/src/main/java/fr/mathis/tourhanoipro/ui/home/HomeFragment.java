@@ -52,6 +52,8 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     View step1;
     View step2;
 
+    public static final String RESULT_INCREMENT_DISK = "incrementDisk";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,16 +61,18 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         congratsLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    boolean more = false;
+                    boolean incrementDisk = false;
 
                     Intent i = result.getData();
                     if(i != null)
-                        more = i.getBooleanExtra("more", false);
+                        incrementDisk = i.getBooleanExtra(RESULT_INCREMENT_DISK, false);
                     int diskCount = PrefHelper.ReadInt(getContext(), PrefHelper.KEY_DISK_COUNT, -1);
 
-                    if(more) {
-                        diskCount++;
+                    if(incrementDisk) {
+                        if(diskCount < 20)
+                            diskCount++;
                         PrefHelper.SaveInt(getContext(), PrefHelper.KEY_DISK_COUNT, diskCount);
+                        viewModel.sendDiskCountUpdate(diskCount);
                     }
                     ArrayList<String> savedGames = viewModel.getAllGames();
                     savedGames.set(viewModel.getCurrentGameIndex(), gvMain.saveGameAsString());
