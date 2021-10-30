@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
      * Méthode appelé sur le clic de Se connecter dans le drawer
      */
     public void drawerConnectClick(MenuItem menuItem) {
-
+        PrefHelper.SaveBool(this, "allowToSignInExplicitly", true);
         signInSilently();
     }
 
@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     protected void onResume() {
         super.onResume();
 
-            requestSignIn();
+        requestSignIn();
 
     }
 
@@ -277,55 +277,63 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
     private void onConnected(GoogleSignInAccount _signedInAccount) {
 
-        miConnect.setVisible(false);
-        miLeaderboard.setVisible(true);
-        miAchievements.setVisible(true);
+        runOnUiThread(() -> {
+            miConnect.setVisible(false);
+            miLeaderboard.setVisible(true);
+            miAchievements.setVisible(true);
 
-        PlayersClient d = Games.getPlayersClient(this, _signedInAccount);
+            PlayersClient d = Games.getPlayersClient(this, _signedInAccount);
 
-        GamesClient mGamesClient = Games.getGamesClient(this, _signedInAccount);
-        mGamesClient.setViewForPopups(findViewById(android.R.id.content));
-        mGamesClient.setGravityForPopups(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+            GamesClient mGamesClient = Games.getGamesClient(this, _signedInAccount);
+            mGamesClient.setViewForPopups(findViewById(android.R.id.content));
+            mGamesClient.setGravityForPopups(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
 
-        mAchievementsClient = Games.getAchievementsClient(this, _signedInAccount);
-        mLeaderboardsClient = Games.getLeaderboardsClient(this, _signedInAccount);
-        mPlayersClient = Games.getPlayersClient(this, _signedInAccount);
+            mAchievementsClient = Games.getAchievementsClient(this, _signedInAccount);
+            mLeaderboardsClient = Games.getLeaderboardsClient(this, _signedInAccount);
+            mPlayersClient = Games.getPlayersClient(this, _signedInAccount);
 
-        d.getCurrentPlayer()
-                .addOnCompleteListener(new OnCompleteListener<Player>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Player> task) {
-                        if (task.isSuccessful() && !mPlayerInfoLoaded) {
+            d.getCurrentPlayer()
+                    .addOnCompleteListener(new OnCompleteListener<Player>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Player> task) {
+                            if (task.isSuccessful() && !mPlayerInfoLoaded) {
 
-                            Player player = task.getResult();
+                                runOnUiThread(() -> {
 
-                            tvDrawerTitle.setText(player.getDisplayName());
-                            tvDrawerSubtitle.setText(player.getTitle());
+                                    Player player = task.getResult();
 
-                            Uri uri = player.getIconImageUri();
-                            if (uri != null)
-                                ImageManager.create(MainActivity.this).loadImage(ivDrawerLogo, uri);
+                                    tvDrawerTitle.setText(player.getDisplayName());
+                                    tvDrawerSubtitle.setText(player.getTitle());
 
-                            mPlayerInfoLoaded = true;
+                                    Uri uri = player.getIconImageUri();
+                                    if (uri != null)
+                                        ImageManager.create(MainActivity.this).loadImage(ivDrawerLogo, uri);
 
-                            miConnect.setVisible(false);
-                            miLeaderboard.setVisible(true);
-                            miAchievements.setVisible(true);
-                        } else {
-                            Exception e = task.getException();
+                                    mPlayerInfoLoaded = true;
+
+                                    miConnect.setVisible(false);
+                                    miLeaderboard.setVisible(true);
+                                    miAchievements.setVisible(true);
+                                });
+                            } else {
+                                Exception e = task.getException();
+                            }
                         }
-                    }
-                });
+                    });
+        });
+
     }
 
     private void onDisconnected() {
-        miConnect.setVisible(true);
-        miLeaderboard.setVisible(false);
-        miAchievements.setVisible(false);
+        runOnUiThread(() -> {
+            miConnect.setVisible(true);
+            miLeaderboard.setVisible(false);
+            miAchievements.setVisible(false);
 
-        mAchievementsClient = null;
-        mLeaderboardsClient = null;
-        mPlayersClient = null;
+            mAchievementsClient = null;
+            mLeaderboardsClient = null;
+            mPlayersClient = null;
+        });
     }
 
     private void signInSilently() {
@@ -361,7 +369,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                                             // See [sign-in best practices](http://developers.google.com/games/services/checklist) for guidance on how and when to implement Interactive Sign-in,
                                             // and [Performing Interactive Sign-in](http://developers.google.com/games/services/android/signin#performing_interactive_sign-in) for details on how to implement
                                             // Interactive Sign-in.
-                                            startSignInIntent();
+                                            boolean allowToSignInExplicitly = PrefHelper.ReadBool(MainActivity.this, "allowToSignInExplicitly", true);
+                                            if (allowToSignInExplicitly)
+                                                startSignInIntent();
+                                            else
+                                                onDisconnected();
                                         }
                                     }
                                 });
@@ -391,6 +403,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 onConnected(signedInAccount);
             } else {
                 mTryReconnectAutomatically = false;
+                PrefHelper.SaveBool(this, "allowToSignInExplicitly", false);
                 onDisconnected();
 
                 String message = result.getStatus().getStatusMessage();
