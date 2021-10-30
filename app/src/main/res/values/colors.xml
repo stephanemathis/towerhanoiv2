@@ -29,13 +29,13 @@
     <color name="colorPrimaryDark4">#004ba0</color>
     <color name="colorAccent4">#63a4ff</color>
 
-    <color name="colorPrimary5">#1a237e</color>
-    <color name="colorPrimaryDark5">#000051</color>
-    <color name="colorAccent5">#534bae</color>
+    <color name="colorPrimary5">#00796b</color>
+    <color name="colorPrimaryDark5">#004c40</color>
+    <color name="colorAccent5">#48a999</color>
 
-    <color name="colorPrimary6">#00796b</color>
-    <color name="colorPrimaryDark6">#004c40</color>
-    <color name="colorAccent6">#48a999</color>
+    <color name="colorPrimary6">#6d4c41</color>
+    <color name="colorPrimaryDark6">#40241a</color>
+    <color name="colorAccent6">#9c786c</color>
 
     <color name="colorPrimary7">#2e7d32</color>
     <color name="colorPrimaryDark7">#005005</color>

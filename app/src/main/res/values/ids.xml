@@ -73,6 +73,8 @@
     <string name="achievement_perfect_19" translatable="false">CgkI0IyI-JIUEAIQOw</string>
     <!--achievement Perfect 20-->
     <string name="achievement_perfect_20" translatable="false">CgkI0IyI-JIUEAIQPA</string>
+    <!--achievement Amazed-->
+    <string name="achievement_amazed" translatable="false">CgkI0IyI-JIUEAIQMQ</string>
     <!--achievement Level 16-->
     <string name="achievement_level_16" translatable="false">CgkI0IyI-JIUEAIQPQ</string>
     <!--achievement Level 17-->

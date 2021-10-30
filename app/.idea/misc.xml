@@ -16,7 +16,7 @@
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_logoproperproper.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_lolopropre.xml" value="0.33" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_newicon.xml" value="0.21822916666666667" />
-        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/activity_congrats.xml" value="0.13134057971014493" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/activity_congrats.xml" value="0.25" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/activity_tuto.xml" value="0.3854166666666667" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/content_main.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/fragment_home.xml" value="0.20208333333333334" />
@@ -30,6 +30,7 @@
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/menu/main.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.221875" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.221875" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/xml/settings.xml" value="0.18802083333333333" />
       </map>
     </option>
   </component>

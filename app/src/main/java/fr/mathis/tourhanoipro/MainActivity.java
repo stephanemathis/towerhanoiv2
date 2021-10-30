@@ -36,7 +36,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -60,7 +59,6 @@ import fr.mathis.tourhanoipro.ui.picker.NumberPickerDialog;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
 import fr.mathis.tourhanoipro.view.game.GameView;
-import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
 
 
 public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {
@@ -198,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         // Puis gère son affichage
         NavDestination n = navController.getCurrentDestination();
 
-        if(n.getId() != R.id.nav_home)
+        if (n.getId() != R.id.nav_home)
             navController.navigateUp();
         else
             viewModel.sendEvent(new GameAction(true));
@@ -253,14 +251,17 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     protected void onResume() {
         super.onResume();
 
-        requestSignIn();
+            requestSignIn();
+
     }
 
     private void requestSignIn() {
+
         if (mTryReconnectAutomatically && !tutorialShownWaitForConnectionAfterResume)
             signInSilently();
         else
             onDisconnected();
+
     }
 
     @Override
@@ -344,7 +345,6 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 GoogleSignInClient signInClient = GoogleSignIn.getClient(this, signInOptions);
 
 
-
                 signInClient
                         .silentSignIn()
                         .addOnCompleteListener(
@@ -394,18 +394,17 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 onDisconnected();
 
                 String message = result.getStatus().getStatusMessage();
-                if (message == null || message.isEmpty()) {
+                if (message != null && !message.isEmpty()) {
                     new AlertDialog.Builder(this).setMessage(message)
                             .setNeutralButton(android.R.string.ok, null).show();
                 }
             }
-        }
-        else if(requestCode == RESULT_TUTORIAL) {
+        } else if (requestCode == RESULT_TUTORIAL) {
 
-                if (tutorialShownWaitForConnectionAfterResume) {
-                    tutorialShownWaitForConnectionAfterResume = false;
-                    requestSignIn();
-                }
+            if (tutorialShownWaitForConnectionAfterResume) {
+                tutorialShownWaitForConnectionAfterResume = false;
+                requestSignIn();
+            }
 
         }
     }
@@ -435,15 +434,12 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
     @Override
     public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-        if(destination.getId() == R.id.nav_home)
-        {
-            if(TextUtils.isEmpty(this.currentMainTitle))
+        if (destination.getId() == R.id.nav_home) {
+            if (TextUtils.isEmpty(this.currentMainTitle))
                 setTitle(R.string.app_name);
             else
                 setTitle(this.currentMainTitle);
-        }
-        else if(destination.getId() == R.id.nav_settings)
-        {
+        } else if (destination.getId() == R.id.nav_settings) {
             setTitle(R.string.menu_settings);
         }
     }

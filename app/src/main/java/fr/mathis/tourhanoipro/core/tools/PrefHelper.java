@@ -29,6 +29,14 @@ public class PrefHelper {
         return mgr.getBoolean(key, defaultValue);
     }
 
+    public static void SaveBool(Context context, String key, boolean value) {
+        SharedPreferences mgr = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = mgr.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+
     public static String ReadString(Context context, String key, String defaultValue) {
         SharedPreferences mgr = PreferenceManager.getDefaultSharedPreferences(context);
         return mgr.getString(key, defaultValue);
