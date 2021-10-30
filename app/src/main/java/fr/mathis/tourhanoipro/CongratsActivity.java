@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -105,7 +106,7 @@ public class CongratsActivity extends AppCompatActivity {
         int towerDiskCount = (int)(Math.log(totalMovements + 1) / Math.log(2));
         tvTowerSize.setText(getString(R.string.congrats_summary).replace(":tower", "" + towerDiskCount).replace(":plurial", towerDiskCount > 1 ? "s" : ""));
 
-        RelativeLayout container = findViewById(R.id.fl_container);
+        ViewGroup container = findViewById(R.id.fl_container);
 
         findViewById(R.id.fabRestart).setOnClickListener(new OnClickListener() {
 
