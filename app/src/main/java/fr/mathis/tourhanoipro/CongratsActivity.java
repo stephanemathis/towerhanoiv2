@@ -162,7 +162,7 @@ public class CongratsActivity extends AppCompatActivity {
                 colors.add(Color.parseColor("#FFBB33"));
                 colors.add(Color.parseColor("#AA66CC"));
 
-                Long time = 2000L;
+                Long animationTime = 2000L;
 
                 konfetti.build()
                         .addColors(colors)
@@ -173,7 +173,7 @@ public class CongratsActivity extends AppCompatActivity {
                         .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
                         .addSizes(new Size(12, 10f), new Size(10, 10f), new Size(14, 10f))
                         .setPosition(-50f, konfetti.getWidth() + 50f, -50f, -50f)
-                        .streamFor(200, time);
+                        .streamFor(200, animationTime);
 
 
                 unlockAchievements(userMovements, totalMovements, time);
