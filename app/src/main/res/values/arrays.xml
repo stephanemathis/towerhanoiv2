@@ -12,6 +12,16 @@
         <item>always_off</item>
     </string-array>
 
+    <string-array name="mouvements_mode">
+        <item>@string/pref_mouvement_swipe</item>
+        <item>@string/pref_mouvement_touch</item>
+    </string-array>
+
+    <string-array name="mouvements_mode_values">
+        <item>swipe</item>
+        <item>touch</item>
+    </string-array>
+
     <array name="themeColors">
         <item>@color/colorPrimary0</item>
         <item>@color/colorPrimary1</item>

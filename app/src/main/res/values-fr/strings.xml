@@ -33,6 +33,9 @@
     <string name="pref_theme_style">Couleur</string>
     <string name="pref_key_color">prefKeyColor</string>
     <string name="pref_gameplay">Options</string>
+    <string name="pref_mouvement">Mode de déplacement</string>
+    <string name="pref_mouvement_swipe">Swipe</string>
+    <string name="pref_mouvement_touch">Toucher</string>
 
     <string name="quick_touch_enable">Activer le mode Touche Rapide</string>
     <string name="quick_touch_delete">Désactiver le mode Touche Rapide</string>

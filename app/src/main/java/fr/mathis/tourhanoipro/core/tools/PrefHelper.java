@@ -10,6 +10,7 @@ public class PrefHelper {
     public static String KEY_DRAWER_LOCKED = "pref_key_drawer_touch_enabled";
     public static String KEY_DARK_THEME = "pref_key_dark_theme";
     public static String KEY_THEME_INDEX = "pref_key_theme_index";
+    public static String KEY_MOUVEMENT = "pref_key_mouvement_mode";
     public static int DEFAULT_THEME_INDEX = 3;
 
     public static int ReadInt(Context context, String key, int defaultValue) {

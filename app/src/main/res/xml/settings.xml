@@ -9,7 +9,16 @@
             android:key="pref_key_drawer_touch_enabled"
             android:switchTextOff="@string/pref_drawer_touch_off"
             android:switchTextOn="@string/pref_drawer_touch_on"
+            android:icon="@drawable/ic_baseline_menu_open_24"
             android:title="@string/pref_drawer_touch" />
+
+        <ListPreference
+            android:entries="@array/mouvements_mode"
+            android:entryValues="@array/mouvements_mode_values"
+            android:key="pref_key_mouvement_mode"
+            android:icon="@drawable/ic_baseline_mouse_24"
+            android:title="@string/pref_mouvement"
+            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_theme_title">
@@ -18,11 +27,13 @@
             android:entries="@array/dark_modes"
             android:entryValues="@array/dark_modes_values"
             android:key="pref_key_dark_theme"
+            android:icon="@drawable/ic_baseline_dark_mode_24"
             android:title="@string/pref_theme_dark"
             app:useSimpleSummaryProvider="true"/>
         <Preference
             android:id="@+id/prefThemeStyle"
             android:title="@string/pref_theme_style"
+            android:icon="@drawable/ic_baseline_palette_24"
             android:key="@string/pref_key_color"></Preference>
     </PreferenceCategory>
 
