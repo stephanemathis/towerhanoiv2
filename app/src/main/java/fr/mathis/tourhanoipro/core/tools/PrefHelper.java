@@ -36,9 +36,15 @@ public class PrefHelper {
         editor.commit();
     }
 
-
     public static String ReadString(Context context, String key, String defaultValue) {
         SharedPreferences mgr = PreferenceManager.getDefaultSharedPreferences(context);
         return mgr.getString(key, defaultValue);
+    }
+
+    public static void SaveString(Context context, String key, String value) {
+        SharedPreferences mgr = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = mgr.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 }

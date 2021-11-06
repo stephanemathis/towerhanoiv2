@@ -13,6 +13,10 @@ public class AppApplication extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
+        String currentThemeMode = PrefHelper.ReadString(this, PrefHelper.KEY_DARK_THEME, null);
+        if(currentThemeMode == null)
+            PrefHelper.SaveString(this, PrefHelper.KEY_DARK_THEME, "auto");
+
         Tools.updateThemeMode(this);
 
         // Initialise le nombre de disque
