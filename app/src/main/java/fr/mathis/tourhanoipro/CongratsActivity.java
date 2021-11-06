@@ -215,17 +215,14 @@ public class CongratsActivity extends AppCompatActivity {
                     mAchievementsClient.unlock(getString(R.string.achievement_level_5));
                     if (nbCoup == Math.pow(2, 5) - 1)
                         mAchievementsClient.unlock(getString(R.string.achievement_perfect_5));
-                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_5_disks), miliseconds);
                 } else if (nbTotal == Math.pow(2, 6) - 1) {
                     mAchievementsClient.unlock(getString(R.string.achievement_level_6));
                     if (nbCoup == Math.pow(2, 6) - 1)
                         mAchievementsClient.unlock(getString(R.string.achievement_perfect_6));
-                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_6_disks), miliseconds);
                 } else if (nbTotal == Math.pow(2, 7) - 1) {
                     mAchievementsClient.unlock(getString(R.string.achievement_level_7));
                     if (nbCoup == Math.pow(2, 7) - 1)
                         mAchievementsClient.unlock(getString(R.string.achievement_perfect_7));
-                    mLeaderboardsClient.submitScore(getString(R.string.leaderboard_fastest_for_7_disks), miliseconds);
                 } else if (nbTotal == Math.pow(2, 8) - 1) {
                     mAchievementsClient.unlock(getString(R.string.achievement_level_8));
                     if (nbCoup == Math.pow(2, 8) - 1)
