@@ -87,6 +87,12 @@
     <string name="achievement_level_20" translatable="false">CgkI0IyI-JIUEAIQQQ</string>
     <!--leaderboard Perfect score-->
     <string name="leaderboard_perfect_score" translatable="false">CgkI0IyI-JIUEAIQFQ</string>
+    <!--leaderboard Fastest for 5 disks-->
+    <string name="leaderboard_fastest_for_5_disks" translatable="false">CgkI0IyI-JIUEAIQFg</string>
+    <!--leaderboard Fastest for 6 disks-->
+    <string name="leaderboard_fastest_for_6_disks" translatable="false">CgkI0IyI-JIUEAIQFw</string>
+    <!--leaderboard Fastest for 7 disks-->
+    <string name="leaderboard_fastest_for_7_disks" translatable="false">CgkI0IyI-JIUEAIQGA</string>
     <!--leaderboard Fastest for 8 disks-->
     <string name="leaderboard_fastest_for_8_disks" translatable="false">CgkI0IyI-JIUEAIQGQ</string>
     <!--leaderboard Fastest for 9 disks-->
