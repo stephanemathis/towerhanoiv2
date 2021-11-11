@@ -145,6 +145,10 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                         mDiskCount = newVal;
                         refreshDiskCountPicker();
 
+                        if(mDiskCount == 70 && mAchievementsClient != null) {
+                            mAchievementsClient.unlock(getString(R.string.achievement_are_you_crazy));
+                        }
+
                         startNewGame();
                     }
                 });
