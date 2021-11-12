@@ -119,6 +119,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     public void onResume() {
 
         gvMain.launchGame(viewModel.getAllGames().get(0));
+        gvMain.setTouchMode(PrefHelper.ReadString(getContext(), PrefHelper.KEY_MOUVEMENT, "swipe"));
 
         super.onResume();
     }

@@ -26,7 +26,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import java.util.ArrayList;
 
-import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
@@ -79,6 +78,9 @@ public class GameView extends View {
     float latestTouchPositionY;
     Point _qtStartEdgeBuilding = null;
     Point _qtEndEdgeBuilding = null;
+    private static int TOUCH_MODE_SWIPE = 0;
+    private static int TOUCH_MODE_TAP = 1;
+    int touchMode = TOUCH_MODE_SWIPE;
 
     // listeners
     TurnListener _turnListener;
@@ -130,7 +132,7 @@ public class GameView extends View {
         _reusableRect = new Rect(0, 0, 0, 0);
 
 
-        _backgroundColor =  Color.WHITE;
+        _backgroundColor = Color.WHITE;
 
         _elementsPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         _elementsPaint.setStyle(Paint.Style.FILL);
@@ -211,6 +213,7 @@ public class GameView extends View {
     }
 
     public void launchGame(String value) {
+
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
         colors.add(Color.parseColor("#33B5E5"));
@@ -294,6 +297,16 @@ public class GameView extends View {
         return res;
     }
 
+    public void setTouchMode(String mode) {
+        if (mode.compareTo("swipe") == 0)
+            touchMode = TOUCH_MODE_SWIPE;
+        else
+            touchMode = TOUCH_MODE_TAP;
+    }
+
+    int tapModeFrom = -1;
+    int tapModeTo = -1;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -365,6 +378,7 @@ public class GameView extends View {
              *
              * latestTouchPositionX = event.getX(); latestTouchPositionY = event.getY(); } else if (event.getAction() == MotionEvent.ACTION_UP) { _isQtEditMode = false; _bitmapPaint = null; } this.invalidate(); }
              */ else {
+
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
                     if (_isQtEditMode) {
@@ -414,8 +428,42 @@ public class GameView extends View {
                             else
                                 _startAndEndTouchPoint[0] = new Point(_viewWidth / 2 + _viewWidth / 6 + _viewWidth / 6, _viewHeight * 2 / 5);
                         }
-
                     }
+
+                    if (touchMode == TOUCH_MODE_TAP) {
+                        if (tapModeFrom == -1) {
+                            if (_startAndEndTouchPoint[0].x < _viewWidth / 3) {
+                                tapModeFrom = 0;
+                                _startAndEndTouchPoint[0] = new Point(_viewWidth / 6, _viewHeight * 2 / 5);
+                            } else if (_startAndEndTouchPoint[0].x < _viewWidth * 2 / 3) {
+                                tapModeFrom = 1;
+                                _startAndEndTouchPoint[0] = new Point(_viewWidth / 2, _viewHeight * 2 / 5);
+                            } else {
+                                tapModeFrom = 2;
+                                _startAndEndTouchPoint[0] = new Point(_viewWidth / 2 + _viewWidth / 6 + _viewWidth / 6, _viewHeight * 2 / 5);
+                            }
+                        } else {
+                            if (_startAndEndTouchPoint[0].x < _viewWidth / 3)
+                                tapModeTo = 0;
+                            else if (_startAndEndTouchPoint[0].x < _viewWidth * 2 / 3)
+                                tapModeTo = 1;
+                            else
+                                tapModeTo = 2;
+                        }
+
+                        if (tapModeFrom != -1) {
+                            if (_currentGameField.getTowers().get(tapModeFrom).getCircles().size() == 0)
+                                tapModeFrom = -1;
+                        }
+
+                        if (tapModeFrom != -1 && tapModeTo != -1) {
+                            moveOneCircle(tapModeFrom, tapModeTo);
+                            tapModeFrom = -1;
+                            tapModeTo = -1;
+                            _startAndEndTouchPoint = new Point[2];
+                        }
+                    }
+
 
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     Point p = new Point((int) event.getX(), (int) event.getY());
@@ -445,53 +493,56 @@ public class GameView extends View {
                         latestTouchPositionX = event.getX();
                         latestTouchPositionY = event.getY();
                     } else if (_currentTouchIsInquickTouchZone) {
-                        int t, w, h, l;
-                        t = _currentGameField.getQtCopy().getTop();
-                        w = _currentGameField.getQtCopy().getWidth();
-                        h = _currentGameField.getQtCopy().getHeight();
-                        l = _currentGameField.getQtCopy().getLeft();
+                        if (touchMode == TOUCH_MODE_SWIPE) {
+                            int t, w, h, l;
+                            t = _currentGameField.getQtCopy().getTop();
+                            w = _currentGameField.getQtCopy().getWidth();
+                            h = _currentGameField.getQtCopy().getHeight();
+                            l = _currentGameField.getQtCopy().getLeft();
 
-                        if (p.x < l)
-                            p.x = l;
-                        if (p.x > l + w)
-                            p.x = l + w;
-                        if (p.y < t)
-                            p.y = t;
-                        if (p.y > t + h)
-                            p.y = t + h;
+                            if (p.x < l)
+                                p.x = l;
+                            if (p.x > l + w)
+                                p.x = l + w;
+                            if (p.y < t)
+                                p.y = t;
+                            if (p.y > t + h)
+                                p.y = t + h;
 
-                        p.x = p.x - l;
+                            p.x = p.x - l;
 
-                        if (p.x < w / 3)
-                            _startAndEndTouchPoint[1] = new Point(_viewWidth / 6, _viewHeight * 2 / 5);
-                        else if (p.x < w * 2 / 3)
-                            _startAndEndTouchPoint[1] = new Point(_viewWidth / 2, _viewHeight * 2 / 5);
-                        else
-                            _startAndEndTouchPoint[1] = new Point(_viewWidth / 2 + _viewWidth / 6 + _viewWidth / 6, _viewHeight * 2 / 5);
-
+                            if (p.x < w / 3)
+                                _startAndEndTouchPoint[1] = new Point(_viewWidth / 6, _viewHeight * 2 / 5);
+                            else if (p.x < w * 2 / 3)
+                                _startAndEndTouchPoint[1] = new Point(_viewWidth / 2, _viewHeight * 2 / 5);
+                            else
+                                _startAndEndTouchPoint[1] = new Point(_viewWidth / 2 + _viewWidth / 6 + _viewWidth / 6, _viewHeight * 2 / 5);
+                        }
                     } else {
-                        _startAndEndTouchPoint[1] = new Point((int) event.getX(), (int) event.getY());
-                        int historySize = event.getHistorySize();
-                        for (int i = 0; i < historySize; i++) {
-                            float historicalX = event.getHistoricalX(i);
-                            float historicalY = event.getHistoricalY(i);
+                        if (touchMode == TOUCH_MODE_SWIPE) {
+                            _startAndEndTouchPoint[1] = new Point((int) event.getX(), (int) event.getY());
+                            int historySize = event.getHistorySize();
+                            for (int i = 0; i < historySize; i++) {
+                                float historicalX = event.getHistoricalX(i);
+                                float historicalY = event.getHistoricalY(i);
 
-                            float dx = Math.abs(event.getHistoricalX(i) - latestTouchPositionX);
-                            float dy = Math.abs(event.getHistoricalY(i) - latestTouchPositionY);
+                                float dx = Math.abs(event.getHistoricalX(i) - latestTouchPositionX);
+                                float dy = Math.abs(event.getHistoricalY(i) - latestTouchPositionY);
 
-                            if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                                _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, (historicalX + latestTouchPositionX) / 2, (historicalY + latestTouchPositionY) / 2);
+                                if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+                                    _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, (historicalX + latestTouchPositionX) / 2, (historicalY + latestTouchPositionY) / 2);
+                                    latestTouchPositionX = historicalX;
+                                    latestTouchPositionY = historicalY;
+                                }
+
+                                _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, historicalX, historicalY);
                                 latestTouchPositionX = historicalX;
                                 latestTouchPositionY = historicalY;
                             }
-
-                            _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, historicalX, historicalY);
-                            latestTouchPositionX = historicalX;
-                            latestTouchPositionY = historicalY;
+                            _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, event.getX(), event.getY());
+                            latestTouchPositionX = event.getX();
+                            latestTouchPositionY = event.getY();
                         }
-                        _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, event.getX(), event.getY());
-                        latestTouchPositionX = event.getX();
-                        latestTouchPositionY = event.getY();
                     }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
 
@@ -500,15 +551,16 @@ public class GameView extends View {
                         _isMovingQuickTouch = false;
                         _bitmapPaint = null;
                     } else {
-
                         if (_currentTouchIsInquickTouchZone)
                             if (_helpListener != null)
                                 _helpListener.stepPassed(1);
 
-                        moveOneCircle(_startAndEndTouchPoint);
-                        _startAndEndTouchPoint = new Point[2];
-                        _currentTouchIsInquickTouchZone = false;
-                        _fingerLinePath = new Path();
+                        if (touchMode == TOUCH_MODE_SWIPE) {
+                            moveOneCircle(_startAndEndTouchPoint);
+                            _startAndEndTouchPoint = new Point[2];
+                            _currentTouchIsInquickTouchZone = false;
+                            _fingerLinePath = new Path();
+                        }
                     }
                 }
 
@@ -540,34 +592,39 @@ public class GameView extends View {
             else
                 endTower = 2;
 
-            if (startTower != endTower) {
+            moveOneCircle(startTower, endTower);
+        }
+    }
 
-                if (_currentGameSavedDurationlastGame == -1)
-                    _currentGameSavedDurationlastGame = System.currentTimeMillis();
+    private void moveOneCircle(int startTower, int endTower) {
 
-                int nbCirclesStartTower = _currentGameField.getTowers().get(startTower).getCircles().size();
-                ClassCircle toMove = null;
-                ClassCircle toBeSecond = null;
-                if (nbCirclesStartTower > 0) {
-                    boolean isAllowed = true;
-                    toMove = _currentGameField.getTowers().get(startTower).getCircles().get(nbCirclesStartTower - 1);
-                    if (_currentGameField.getTowers().get(endTower).getCircles().size() > 0) {
-                        toBeSecond = _currentGameField.getTowers().get(endTower).getCircles().get(_currentGameField.getTowers().get(endTower).getCircles().size() - 1);
+        if (startTower != endTower) {
+
+            if (_currentGameSavedDurationlastGame == -1)
+                _currentGameSavedDurationlastGame = System.currentTimeMillis();
+
+            int nbCirclesStartTower = _currentGameField.getTowers().get(startTower).getCircles().size();
+            ClassCircle toMove = null;
+            ClassCircle toBeSecond = null;
+            if (nbCirclesStartTower > 0) {
+                boolean isAllowed = true;
+                toMove = _currentGameField.getTowers().get(startTower).getCircles().get(nbCirclesStartTower - 1);
+                if (_currentGameField.getTowers().get(endTower).getCircles().size() > 0) {
+                    toBeSecond = _currentGameField.getTowers().get(endTower).getCircles().get(_currentGameField.getTowers().get(endTower).getCircles().size() - 1);
+                }
+                if (toBeSecond != null && toMove.getId() > toBeSecond.getId()) {
+                    isAllowed = false;
+                }
+                if (isAllowed) {
+                    _currentGameField.getTowers().get(startTower).getCircles().remove(nbCirclesStartTower - 1);
+                    _currentGameField.getTowers().get(endTower).getCircles().add(toMove);
+                    _currentGameMovesCount++;
+
+                    if (_turnListener != null) {
+                        _turnListener.turnPlayed(_currentGameMovesCount, _currentGameRequiredMinCount);
                     }
-                    if (toBeSecond != null && toMove.getId() > toBeSecond.getId()) {
-                        isAllowed = false;
-                    }
-                    if (isAllowed) {
-                        _currentGameField.getTowers().get(startTower).getCircles().remove(nbCirclesStartTower - 1);
-                        _currentGameField.getTowers().get(endTower).getCircles().add(toMove);
-                        _currentGameMovesCount++;
+                    CheckGameWin();
 
-                        if (_turnListener != null) {
-                            _turnListener.turnPlayed(_currentGameMovesCount, _currentGameRequiredMinCount);
-                        }
-                        CheckGameWin();
-
-                    }
                 }
             }
         }
