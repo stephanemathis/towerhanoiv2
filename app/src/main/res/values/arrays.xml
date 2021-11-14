@@ -34,4 +34,19 @@
         <item>@color/colorPrimary8</item>
         <item>@color/colorPrimary9</item>
     </array>
+
+
+    <array name="diskColor_classic">
+        <item>@color/colorDisk1</item>
+        <item>@color/colorDisk2</item>
+        <item>@color/colorDisk3</item>
+        <item>@color/colorDisk4</item>
+        <item>@color/colorDisk5</item>
+    </array>
+
+    <array name="diskColor_new">
+        <item>@color/colorDiskNew1</item>
+        <item>@color/colorDiskNew2</item>
+        <item>@color/colorDiskNew3</item>
+    </array>
 </resources>

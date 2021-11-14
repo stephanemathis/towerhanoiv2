@@ -35,6 +35,10 @@
             android:title="@string/pref_theme_style"
             android:icon="@drawable/ic_baseline_palette_24"
             android:key="@string/pref_key_color"></Preference>
+        <Preference
+            android:id="@+id/prefThemeStyleDisk"
+            android:title="@string/pref_theme_style_disk"
+            android:key="@string/pref_key_color_disk"></Preference>
     </PreferenceCategory>
 
 </PreferenceScreen>

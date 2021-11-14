@@ -32,8 +32,10 @@ public class AppApplication extends android.app.Application {
             DataManager.SaveAllGames(savedGames, this);
         }
 
+        // Le mode de sélection des disques
         String currentMouvementMode = PrefHelper.ReadString(this, PrefHelper.KEY_MOUVEMENT, null);
         if(currentMouvementMode == null)
             PrefHelper.SaveString(this, PrefHelper.KEY_MOUVEMENT, "swipe");
+
     }
 }

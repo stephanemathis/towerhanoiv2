@@ -41,6 +41,7 @@ public class GameView extends View {
     public static int MODE_GOAL = 0;
     public static int MODE_MULTIPLE = 1;
     public static int MODE_SIZE = 2;
+    public static int MODE_COLOR_PICKER = 3;
 
     private static final float TOUCH_TOLERANCE = 4;
 
@@ -159,6 +160,14 @@ public class GameView extends View {
         theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
         helpLineColor = typedValue.data;
 
+        diskColors = new int[]{
+                Color.parseColor("#33B5E5"),
+                Color.parseColor("#99CC00"),
+                Color.parseColor("#FF4444"),
+                Color.parseColor("#FFBB33"),
+                Color.parseColor("#AA66CC"),
+        };
+
         createNewGame(5);
     }
 
@@ -183,13 +192,6 @@ public class GameView extends View {
             towers.add(tower);
         }
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(Color.parseColor("#33B5E5"));
-        colors.add(Color.parseColor("#99CC00"));
-        colors.add(Color.parseColor("#FF4444"));
-        colors.add(Color.parseColor("#FFBB33"));
-        colors.add(Color.parseColor("#AA66CC"));
-
         _currentGameDiskNumber = size;
         _currentGameMovesCount = 0;
         _currentGameRequiredMinCount = (int) (Math.pow(2, _currentGameDiskNumber) - 1);
@@ -197,7 +199,7 @@ public class GameView extends View {
             _turnListener.turnPlayed(0, _currentGameRequiredMinCount);
         }
         for (int i = _currentGameDiskNumber; i > 0; i--) {
-            towers.get(0).getCircles().add(new ClassCircle(i, colors.get(i % 5)));
+            towers.get(0).getCircles().add(new ClassCircle(i, diskColors[i % diskColors.length]));
         }
 
         _currentGameField.setTowers(towers);
@@ -212,15 +214,13 @@ public class GameView extends View {
         this.invalidate();
     }
 
+    public void setColorPalette(int[] _colors) {
+        diskColors = _colors;
+    }
+
+    int[] diskColors;
+
     public void launchGame(String value) {
-
-
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(Color.parseColor("#33B5E5"));
-        colors.add(Color.parseColor("#99CC00"));
-        colors.add(Color.parseColor("#FF4444"));
-        colors.add(Color.parseColor("#FFBB33"));
-        colors.add(Color.parseColor("#AA66CC"));
 
         String[] values = value.split(";");
 
@@ -246,7 +246,7 @@ public class GameView extends View {
                     for (String c : circles) {
                         if (i != 0) {
                             if (c != null && c.length() != 0 && c.compareTo("n") != 0) {
-                                ClassCircle circle = new ClassCircle(Integer.parseInt(c), colors.get(Integer.parseInt(c) % 5));
+                                ClassCircle circle = new ClassCircle(Integer.parseInt(c), diskColors[Integer.parseInt(c) % diskColors.length]);
                                 tower.getCircles().add(circle);
                             }
                         }
@@ -732,19 +732,17 @@ public class GameView extends View {
             int x = 0;
             int y = _viewHeight;
             int i = 1;
-
             if (_currentGameField != null) {
-                for (ClassTower tower : _currentGameField.getTowers()) {
-                    x = (_viewWidth * i / 3) - ((_viewWidth * 1 / 3) / 2);
+                if (_currentGameMode == MODE_COLOR_PICKER) {
+                    x = _viewWidth / 2;
                     y = _viewHeight;
+                    ClassTower tower = _currentGameField.getTowers().get(0);
                     for (ClassCircle cercle : tower.getCircles()) {
 
-                        int circleWidth = (_viewWidth * 1 / 3 - 10) * ((cercle.getId()) * 100 / _currentGameDiskNumber) / 100;
-                        if (circleWidth == 0)
-                            circleWidth = 2;
+                        int circleWidth = (_viewWidth - 10) * ((cercle.getId()) * 100 / _currentGameDiskNumber) / 100;
 
                         int circleHeight = Tools.convertDpToPixel(10.0f);
-                        circleHeight = _viewWidth / 3 / 10;
+                        circleHeight = _viewWidth / 5;
 
                         if (circleHeight * _currentGameDiskNumber > _viewHeight) {
                             circleHeight = (int) (_viewHeight * 0.95f) / _currentGameDiskNumber;
@@ -752,24 +750,48 @@ public class GameView extends View {
 
                         _elementsPaint.setColor(cercle.getColor());
                         _reusableRect.set(x - (circleWidth / 2), y - (circleHeight), x + (circleWidth / 2), y);
-
-                        if (selectedCircle.getId() == cercle.getId() || (_currentGameMode == MODE_GOAL && i == 1)) {
-                            _elementsPaint.setAlpha(selectedCircle.getId() == cercle.getId() ? 40 : 150);
-                        } else {
-                            _elementsPaint.setAlpha(255);
-                        }
+                        _elementsPaint.setAlpha(255);
                         canvas.drawRect(_reusableRect, _elementsPaint);
                         y -= circleHeight;
-
                     }
+                } else {
+                    for (ClassTower tower : _currentGameField.getTowers()) {
+                        x = (_viewWidth * i / 3) - ((_viewWidth * 1 / 3) / 2);
+                        y = _viewHeight;
+                        for (ClassCircle cercle : tower.getCircles()) {
 
-                    if (i != 3) {
-                        _elementsPaint.setStrokeWidth(1);
-                        _elementsPaint.setColor(Color.parseColor("#AAAAAA"));
-                        canvas.drawLine((_viewWidth * i / 3), 0, (_viewWidth * i / 3), _viewHeight, _elementsPaint);
-                        _elementsPaint.setStrokeWidth(Tools.convertDpToPixel(1.0f));
+                            int circleWidth = (_viewWidth * 1 / 3 - 10) * ((cercle.getId()) * 100 / _currentGameDiskNumber) / 100;
+                            if (circleWidth == 0)
+                                circleWidth = 2;
+
+                            int circleHeight = Tools.convertDpToPixel(10.0f);
+                            circleHeight = _viewWidth / 3 / 10;
+
+                            if (circleHeight * _currentGameDiskNumber > _viewHeight) {
+                                circleHeight = (int) (_viewHeight * 0.95f) / _currentGameDiskNumber;
+                            }
+
+                            _elementsPaint.setColor(cercle.getColor());
+                            _reusableRect.set(x - (circleWidth / 2), y - (circleHeight), x + (circleWidth / 2), y);
+
+                            if (selectedCircle.getId() == cercle.getId() || (_currentGameMode == MODE_GOAL && i == 1)) {
+                                _elementsPaint.setAlpha(selectedCircle.getId() == cercle.getId() ? 40 : 150);
+                            } else {
+                                _elementsPaint.setAlpha(255);
+                            }
+                            canvas.drawRect(_reusableRect, _elementsPaint);
+                            y -= circleHeight;
+
+                        }
+
+                        if (i != 3) {
+                            _elementsPaint.setStrokeWidth(1);
+                            _elementsPaint.setColor(Color.parseColor("#AAAAAA"));
+                            canvas.drawLine((_viewWidth * i / 3), 0, (_viewWidth * i / 3), _viewHeight, _elementsPaint);
+                            _elementsPaint.setStrokeWidth(Tools.convertDpToPixel(1.0f));
+                        }
+                        i++;
                     }
-                    i++;
                 }
             }
 

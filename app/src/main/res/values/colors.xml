@@ -48,4 +48,17 @@
     <color name="colorPrimary9">#9e9e9e</color>
     <color name="colorPrimaryDark9">#707070</color>
     <color name="colorAccent9">#9e9e9e</color>
+
+
+    <color name="colorDisk1">#33B5E5</color>
+    <color name="colorDisk2">#99CC00</color>
+    <color name="colorDisk3">#FF4444</color>
+    <color name="colorDisk4">#FFBB33</color>
+    <color name="colorDisk5">#AA66CC</color>
+
+    <color name="colorDiskNew1">#FF4444</color>
+    <color name="colorDiskNew2">#FBD842</color>
+    <color name="colorDiskNew3">#33B5E5</color>
+
+
 </resources>

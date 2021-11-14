@@ -31,7 +31,9 @@
     <string name="pref_theme_dark_option_dark">Dark mode</string>
     <string name="pref_theme_dark_option_light">Light mode</string>
     <string name="pref_theme_style">Color</string>
-    <string name="pref_key_color">prefKeyColor</string>
+    <string name="pref_theme_style_disk">Disk color</string>
+    <string name="pref_key_color" translatable="false">prefKeyColor</string>
+    <string name="pref_key_color_disk" translatable="false">prefKeyColorDisk</string>
     <string name="pref_gameplay">Gameplay</string>
     <string name="pref_mouvement">Interaction mode</string>
     <string name="pref_mouvement_swipe">Swipe</string>
