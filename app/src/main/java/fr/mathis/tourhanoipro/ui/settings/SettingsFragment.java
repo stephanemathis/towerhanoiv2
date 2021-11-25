@@ -83,6 +83,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 rvColors.setVerticalScrollBarEnabled(false);
                 rvColors.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
+                bottomSheetDialog.findViewById(R.id.bottomSheetClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog.hide();
+                    }
+                });
+
                 rvColors.setAdapter(new DiskColorPickerAdpater(LayoutInflater.from(getActivity()), getContext(), position -> {
                     PrefHelper.SaveInt(getContext(), PrefHelper.KEY_THEME_DISK_INDEX, position);
                     bottomSheetDialog.hide();

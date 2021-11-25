@@ -138,20 +138,6 @@ public class Tools {
 
     public static int DISK_COLOR_COUNT = 3;
 
-    public static String getColorName(int index) {
-
-        switch (index) {
-            case 0:
-                return "Classic";
-            case 1:
-                return "New";
-            case 2:
-                return "Auto";
-            default:
-                return null;
-        }
-    }
-
     public static int[] getDiskColors(Context context, int index) {
 
         if (index == -1) {

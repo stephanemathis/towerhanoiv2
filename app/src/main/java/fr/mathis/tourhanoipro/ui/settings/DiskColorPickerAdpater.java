@@ -40,8 +40,6 @@ public class DiskColorPickerAdpater extends RecyclerView.Adapter {
         int[] colors = Tools.getDiskColors(context, position);
         holderT.gv.setColorPalette(colors);
         holderT.gv.createNewGame(6);
-
-        holderT.tv.setText(Tools.getColorName(position));
     }
 
     @Override
@@ -51,13 +49,11 @@ public class DiskColorPickerAdpater extends RecyclerView.Adapter {
 
     class DiskColorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView tv;
         GameView gv;
 
         public DiskColorViewHolder(View itemView) {
             super(itemView);
 
-            tv = itemView.findViewById(R.id.tvColorDiskTitle);
             gv = itemView.findViewById(R.id.gvColorDisk);
 
             itemView.findViewById(R.id.vClickableArea).setOnClickListener(this);

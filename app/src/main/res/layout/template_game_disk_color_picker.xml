@@ -3,34 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clipChildren="false">
 
     <FrameLayout
         android:id="@+id/vClickableArea"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:foreground="?selectableItemBackgroundBorderless"
         android:padding="8dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <fr.mathis.tourhanoipro.view.game.GameView
+            android:id="@+id/gvColorDisk"
+            android:layout_width="144dp"
+            android:layout_height="105dp"
+            android:layout_centerHorizontal="true" />
 
-            <TextView
-                android:id="@+id/tvColorDiskTitle"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/gvColorDisk"
-                android:layout_marginBottom="4dp" />
-
-            <fr.mathis.tourhanoipro.view.game.GameView
-                android:id="@+id/gvColorDisk"
-                android:layout_width="144dp"
-                android:layout_height="105dp"
-                android:layout_below="@id/tvColorDiskTitle"
-                android:layout_centerHorizontal="true"
-                android:background="@color/cardview_light_background" />
-        </RelativeLayout>
     </FrameLayout>
 </FrameLayout>
