@@ -27,11 +27,15 @@
     <string name="pref_drawer_touch_off">Vous pouvez glisser votre doigt pour ouvrir</string>
     <string name="pref_drawer_touch_on">Vous devez cliquer sur l\'icône pour ouvrir</string>
     <string name="pref_theme_title">Thème</string>
-    <string name="pref_theme_dark">Thème sombre</string>
-    <string name="pref_theme_dark_option_dark">Mode nuit</string>
+    <string name="pref_theme_dark">Thème clair/sombre</string>
+    <string name="pref_theme_dark_option_dark">Mode sombre</string>
     <string name="pref_theme_dark_option_light">Mode clair</string>
     <string name="pref_theme_style">Couleur</string>
-    <string name="pref_key_color">prefKeyColor</string>
+    <string name="pref_theme_style_disk">Couleur des disques</string>
+    <string name="pref_gameplay">Options</string>
+    <string name="pref_mouvement">Mode de déplacement</string>
+    <string name="pref_mouvement_swipe">Swipe</string>
+    <string name="pref_mouvement_touch">Toucher</string>
 
     <string name="quick_touch_enable">Activer le mode Touche Rapide</string>
     <string name="quick_touch_delete">Désactiver le mode Touche Rapide</string>

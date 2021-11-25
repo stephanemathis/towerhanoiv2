@@ -10,6 +10,8 @@ public class PrefHelper {
     public static String KEY_DRAWER_LOCKED = "pref_key_drawer_touch_enabled";
     public static String KEY_DARK_THEME = "pref_key_dark_theme";
     public static String KEY_THEME_INDEX = "pref_key_theme_index";
+    public static String KEY_MOUVEMENT = "pref_key_mouvement_mode";
+    public static String KEY_THEME_DISK_INDEX = "pref_key_theme_disk_index";
     public static int DEFAULT_THEME_INDEX = 3;
 
     public static int ReadInt(Context context, String key, int defaultValue) {
@@ -36,9 +38,15 @@ public class PrefHelper {
         editor.commit();
     }
 
-
     public static String ReadString(Context context, String key, String defaultValue) {
         SharedPreferences mgr = PreferenceManager.getDefaultSharedPreferences(context);
         return mgr.getString(key, defaultValue);
+    }
+
+    public static void SaveString(Context context, String key, String value) {
+        SharedPreferences mgr = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = mgr.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 }

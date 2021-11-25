@@ -2,6 +2,7 @@ package fr.mathis.tourhanoipro.core.tools;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -10,6 +11,8 @@ import androidx.core.content.res.ResourcesCompat;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import fr.mathis.tourhanoipro.R;
@@ -65,11 +68,10 @@ public class Tools {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
 
-    public static void applyColoredTheme(Context context)
-    {
+    public static void applyColoredTheme(Context context) {
         int index = PrefHelper.ReadInt(context, PrefHelper.KEY_THEME_INDEX, PrefHelper.DEFAULT_THEME_INDEX);
 
-        int[] themes = new int[] {
+        int[] themes = new int[]{
                 R.style.AppThemeColored0,
                 R.style.AppThemeColored1,
                 R.style.AppThemeColored2,
@@ -85,30 +87,31 @@ public class Tools {
         context.getTheme().applyStyle(themes[index], true);
     }
 
-    public static int[] getRandomColorPalette(Context context)
-    {
-        int[][] colors = new int[][] {
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent0, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary0, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark0, null) },
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent1, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary1, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark1, null) },
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent2, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary2, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark2, null) },
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent3, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary3, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark3, null) },
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent4, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary4, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark4, null) },
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent5, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary5, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark5, null) },
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent6, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary6, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark6, null) },
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent7, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary7, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark7, null) },
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent8, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary8, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark8, null) },
-                new int[] { ResourcesCompat.getColor(context.getResources(), R.color.colorAccent9, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary9, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark9, null) },
-
+    public static int[][] getColorPalette(Context context) {
+        int[][] colors = new int[][]{
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent0, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary0, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark0, null)},
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent1, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary1, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark1, null)},
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent2, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary2, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark2, null)},
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent3, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary3, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark3, null)},
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent4, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary4, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark4, null)},
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent5, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary5, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark5, null)},
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent6, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary6, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark6, null)},
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent7, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary7, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark7, null)},
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent8, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary8, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark8, null)},
+                new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent9, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary9, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark9, null)},
         };
 
-        return colors[new Random().nextInt(10)];
+        return colors;
     }
 
-    public static void applyTranslucentColoredTheme(Context context)
-    {
+    public static int[] getRandomColorPalette(Context context) {
+        return getColorPalette(context)[new Random().nextInt(10)];
+    }
+
+    public static void applyTranslucentColoredTheme(Context context) {
         int index = PrefHelper.ReadInt(context, PrefHelper.KEY_THEME_INDEX, PrefHelper.DEFAULT_THEME_INDEX);
 
-        int[] themes = new int[] {
+        int[] themes = new int[]{
                 R.style.AppThemeTranslucentColored0,
                 R.style.AppThemeTranslucentColored1,
                 R.style.AppThemeTranslucentColored2,
@@ -126,10 +129,33 @@ public class Tools {
 
     public static int findIntIndex(int[] _array, int _value) {
         int index = 0;
-        for(; index < _array.length; index++) {
-            if(_array[index] == _value)
+        for (; index < _array.length; index++) {
+            if (_array[index] == _value)
                 break;
         }
         return index;
+    }
+
+    public static int DISK_COLOR_COUNT = 3;
+
+    public static int[] getDiskColors(Context context, int index) {
+
+        if (index == -1) {
+            index = PrefHelper.ReadInt(context, PrefHelper.KEY_THEME_DISK_INDEX, 0);
+        }
+
+        int[] colors;
+
+        if (index == 0) {
+            colors = context.getResources().getIntArray(R.array.diskColor_classic);
+        } else if (index == 1) {
+            colors = context.getResources().getIntArray(R.array.diskColor_new);
+        } else {
+            int[] t = getColorPalette(context)[PrefHelper.ReadInt(context, PrefHelper.KEY_THEME_INDEX, PrefHelper.DEFAULT_THEME_INDEX)];
+            int[] newColors = new int[]{t[0], t[2]};
+            return newColors;
+        }
+
+        return colors;
     }
 }

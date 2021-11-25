@@ -12,6 +12,16 @@
         <item>always_off</item>
     </string-array>
 
+    <string-array name="mouvements_mode">
+        <item>@string/pref_mouvement_swipe</item>
+        <item>@string/pref_mouvement_touch</item>
+    </string-array>
+
+    <string-array name="mouvements_mode_values">
+        <item>swipe</item>
+        <item>touch</item>
+    </string-array>
+
     <array name="themeColors">
         <item>@color/colorPrimary0</item>
         <item>@color/colorPrimary1</item>
@@ -23,5 +33,20 @@
         <item>@color/colorPrimary7</item>
         <item>@color/colorPrimary8</item>
         <item>@color/colorPrimary9</item>
+    </array>
+
+
+    <array name="diskColor_classic">
+        <item>@color/colorDisk1</item>
+        <item>@color/colorDisk2</item>
+        <item>@color/colorDisk3</item>
+        <item>@color/colorDisk4</item>
+        <item>@color/colorDisk5</item>
+    </array>
+
+    <array name="diskColor_new">
+        <item>@color/colorDiskNew1</item>
+        <item>@color/colorDiskNew2</item>
+        <item>@color/colorDiskNew3</item>
     </array>
 </resources>

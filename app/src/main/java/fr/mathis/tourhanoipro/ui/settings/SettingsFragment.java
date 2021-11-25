@@ -3,9 +3,17 @@ package fr.mathis.tourhanoipro.ui.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.ArrayList;
 
 import dev.sasikanth.colorsheet.ColorSheet;
 import fr.mathis.tourhanoipro.MainActivity;
@@ -40,7 +48,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
                 final Function1 listener = (new Function1() {
                     public Object invoke(Object var1) {
-                        this.invoke(((Number)var1).intValue());
+                        this.invoke(((Number) var1).intValue());
                         return Unit.INSTANCE;
                     }
 
@@ -61,6 +69,37 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 return true;
             }
         });
+
+
+        Preference colorDiskPref = findPreference(getString(R.string.pref_key_color_disk));
+        colorDiskPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+                bottomSheetDialog.setContentView(R.layout.bottom_sheet_disk_color_picker);
+
+                RecyclerView rvColors = bottomSheetDialog.findViewById(R.id.rvColors);
+                rvColors.setHasFixedSize(true);
+                rvColors.setVerticalScrollBarEnabled(false);
+                rvColors.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+                bottomSheetDialog.findViewById(R.id.bottomSheetClose).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog.hide();
+                    }
+                });
+
+                rvColors.setAdapter(new DiskColorPickerAdpater(LayoutInflater.from(getActivity()), getContext(), position -> {
+                    PrefHelper.SaveInt(getContext(), PrefHelper.KEY_THEME_DISK_INDEX, position);
+                    bottomSheetDialog.hide();
+                }));
+
+                bottomSheetDialog.show();
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -74,10 +113,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.compareTo(PrefHelper.KEY_DARK_THEME) == 0) {
             Tools.updateThemeMode(this.getContext());
-        }
-        else if (key.compareTo(PrefHelper.KEY_DRAWER_LOCKED) == 0) {
+        } else if (key.compareTo(PrefHelper.KEY_DRAWER_LOCKED) == 0) {
             MainActivity activity = (MainActivity) getActivity();
             activity.updateDrawerLockMode();
         }
+    }
+
+    public interface IDiskColorSelected {
+        void selected(int position);
     }
 }

@@ -26,7 +26,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import java.util.ArrayList;
 
-import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
@@ -42,6 +41,7 @@ public class GameView extends View {
     public static int MODE_GOAL = 0;
     public static int MODE_MULTIPLE = 1;
     public static int MODE_SIZE = 2;
+    public static int MODE_COLOR_PICKER = 3;
 
     private static final float TOUCH_TOLERANCE = 4;
 
@@ -79,6 +79,9 @@ public class GameView extends View {
     float latestTouchPositionY;
     Point _qtStartEdgeBuilding = null;
     Point _qtEndEdgeBuilding = null;
+    private static int TOUCH_MODE_SWIPE = 0;
+    private static int TOUCH_MODE_TAP = 1;
+    int touchMode = TOUCH_MODE_SWIPE;
 
     // listeners
     TurnListener _turnListener;
@@ -130,7 +133,7 @@ public class GameView extends View {
         _reusableRect = new Rect(0, 0, 0, 0);
 
 
-        _backgroundColor =  Color.WHITE;
+        _backgroundColor = Color.WHITE;
 
         _elementsPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         _elementsPaint.setStyle(Paint.Style.FILL);
@@ -157,6 +160,14 @@ public class GameView extends View {
         theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
         helpLineColor = typedValue.data;
 
+        diskColors = new int[]{
+                Color.parseColor("#33B5E5"),
+                Color.parseColor("#99CC00"),
+                Color.parseColor("#FF4444"),
+                Color.parseColor("#FFBB33"),
+                Color.parseColor("#AA66CC"),
+        };
+
         createNewGame(5);
     }
 
@@ -181,13 +192,6 @@ public class GameView extends View {
             towers.add(tower);
         }
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(Color.parseColor("#33B5E5"));
-        colors.add(Color.parseColor("#99CC00"));
-        colors.add(Color.parseColor("#FF4444"));
-        colors.add(Color.parseColor("#FFBB33"));
-        colors.add(Color.parseColor("#AA66CC"));
-
         _currentGameDiskNumber = size;
         _currentGameMovesCount = 0;
         _currentGameRequiredMinCount = (int) (Math.pow(2, _currentGameDiskNumber) - 1);
@@ -195,7 +199,7 @@ public class GameView extends View {
             _turnListener.turnPlayed(0, _currentGameRequiredMinCount);
         }
         for (int i = _currentGameDiskNumber; i > 0; i--) {
-            towers.get(0).getCircles().add(new ClassCircle(i, colors.get(i % 5)));
+            towers.get(0).getCircles().add(new ClassCircle(i, diskColors[i % diskColors.length]));
         }
 
         _currentGameField.setTowers(towers);
@@ -210,14 +214,13 @@ public class GameView extends View {
         this.invalidate();
     }
 
-    public void launchGame(String value) {
+    public void setColorPalette(int[] _colors) {
+        diskColors = _colors;
+    }
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(Color.parseColor("#33B5E5"));
-        colors.add(Color.parseColor("#99CC00"));
-        colors.add(Color.parseColor("#FF4444"));
-        colors.add(Color.parseColor("#FFBB33"));
-        colors.add(Color.parseColor("#AA66CC"));
+    int[] diskColors;
+
+    public void launchGame(String value) {
 
         String[] values = value.split(";");
 
@@ -243,7 +246,7 @@ public class GameView extends View {
                     for (String c : circles) {
                         if (i != 0) {
                             if (c != null && c.length() != 0 && c.compareTo("n") != 0) {
-                                ClassCircle circle = new ClassCircle(Integer.parseInt(c), colors.get(Integer.parseInt(c) % 5));
+                                ClassCircle circle = new ClassCircle(Integer.parseInt(c), diskColors[Integer.parseInt(c) % diskColors.length]);
                                 tower.getCircles().add(circle);
                             }
                         }
@@ -293,6 +296,16 @@ public class GameView extends View {
 
         return res;
     }
+
+    public void setTouchMode(String mode) {
+        if (mode.compareTo("swipe") == 0)
+            touchMode = TOUCH_MODE_SWIPE;
+        else
+            touchMode = TOUCH_MODE_TAP;
+    }
+
+    int tapModeFrom = -1;
+    int tapModeTo = -1;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -365,6 +378,7 @@ public class GameView extends View {
              *
              * latestTouchPositionX = event.getX(); latestTouchPositionY = event.getY(); } else if (event.getAction() == MotionEvent.ACTION_UP) { _isQtEditMode = false; _bitmapPaint = null; } this.invalidate(); }
              */ else {
+
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
                     if (_isQtEditMode) {
@@ -414,8 +428,42 @@ public class GameView extends View {
                             else
                                 _startAndEndTouchPoint[0] = new Point(_viewWidth / 2 + _viewWidth / 6 + _viewWidth / 6, _viewHeight * 2 / 5);
                         }
-
                     }
+
+                    if (touchMode == TOUCH_MODE_TAP) {
+                        if (tapModeFrom == -1) {
+                            if (_startAndEndTouchPoint[0].x < _viewWidth / 3) {
+                                tapModeFrom = 0;
+                                _startAndEndTouchPoint[0] = new Point(_viewWidth / 6, _viewHeight * 2 / 5);
+                            } else if (_startAndEndTouchPoint[0].x < _viewWidth * 2 / 3) {
+                                tapModeFrom = 1;
+                                _startAndEndTouchPoint[0] = new Point(_viewWidth / 2, _viewHeight * 2 / 5);
+                            } else {
+                                tapModeFrom = 2;
+                                _startAndEndTouchPoint[0] = new Point(_viewWidth / 2 + _viewWidth / 6 + _viewWidth / 6, _viewHeight * 2 / 5);
+                            }
+                        } else {
+                            if (_startAndEndTouchPoint[0].x < _viewWidth / 3)
+                                tapModeTo = 0;
+                            else if (_startAndEndTouchPoint[0].x < _viewWidth * 2 / 3)
+                                tapModeTo = 1;
+                            else
+                                tapModeTo = 2;
+                        }
+
+                        if (tapModeFrom != -1) {
+                            if (_currentGameField.getTowers().get(tapModeFrom).getCircles().size() == 0)
+                                tapModeFrom = -1;
+                        }
+
+                        if (tapModeFrom != -1 && tapModeTo != -1) {
+                            moveOneCircle(tapModeFrom, tapModeTo);
+                            tapModeFrom = -1;
+                            tapModeTo = -1;
+                            _startAndEndTouchPoint = new Point[2];
+                        }
+                    }
+
 
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     Point p = new Point((int) event.getX(), (int) event.getY());
@@ -445,53 +493,56 @@ public class GameView extends View {
                         latestTouchPositionX = event.getX();
                         latestTouchPositionY = event.getY();
                     } else if (_currentTouchIsInquickTouchZone) {
-                        int t, w, h, l;
-                        t = _currentGameField.getQtCopy().getTop();
-                        w = _currentGameField.getQtCopy().getWidth();
-                        h = _currentGameField.getQtCopy().getHeight();
-                        l = _currentGameField.getQtCopy().getLeft();
+                        if (touchMode == TOUCH_MODE_SWIPE) {
+                            int t, w, h, l;
+                            t = _currentGameField.getQtCopy().getTop();
+                            w = _currentGameField.getQtCopy().getWidth();
+                            h = _currentGameField.getQtCopy().getHeight();
+                            l = _currentGameField.getQtCopy().getLeft();
 
-                        if (p.x < l)
-                            p.x = l;
-                        if (p.x > l + w)
-                            p.x = l + w;
-                        if (p.y < t)
-                            p.y = t;
-                        if (p.y > t + h)
-                            p.y = t + h;
+                            if (p.x < l)
+                                p.x = l;
+                            if (p.x > l + w)
+                                p.x = l + w;
+                            if (p.y < t)
+                                p.y = t;
+                            if (p.y > t + h)
+                                p.y = t + h;
 
-                        p.x = p.x - l;
+                            p.x = p.x - l;
 
-                        if (p.x < w / 3)
-                            _startAndEndTouchPoint[1] = new Point(_viewWidth / 6, _viewHeight * 2 / 5);
-                        else if (p.x < w * 2 / 3)
-                            _startAndEndTouchPoint[1] = new Point(_viewWidth / 2, _viewHeight * 2 / 5);
-                        else
-                            _startAndEndTouchPoint[1] = new Point(_viewWidth / 2 + _viewWidth / 6 + _viewWidth / 6, _viewHeight * 2 / 5);
-
+                            if (p.x < w / 3)
+                                _startAndEndTouchPoint[1] = new Point(_viewWidth / 6, _viewHeight * 2 / 5);
+                            else if (p.x < w * 2 / 3)
+                                _startAndEndTouchPoint[1] = new Point(_viewWidth / 2, _viewHeight * 2 / 5);
+                            else
+                                _startAndEndTouchPoint[1] = new Point(_viewWidth / 2 + _viewWidth / 6 + _viewWidth / 6, _viewHeight * 2 / 5);
+                        }
                     } else {
-                        _startAndEndTouchPoint[1] = new Point((int) event.getX(), (int) event.getY());
-                        int historySize = event.getHistorySize();
-                        for (int i = 0; i < historySize; i++) {
-                            float historicalX = event.getHistoricalX(i);
-                            float historicalY = event.getHistoricalY(i);
+                        if (touchMode == TOUCH_MODE_SWIPE) {
+                            _startAndEndTouchPoint[1] = new Point((int) event.getX(), (int) event.getY());
+                            int historySize = event.getHistorySize();
+                            for (int i = 0; i < historySize; i++) {
+                                float historicalX = event.getHistoricalX(i);
+                                float historicalY = event.getHistoricalY(i);
 
-                            float dx = Math.abs(event.getHistoricalX(i) - latestTouchPositionX);
-                            float dy = Math.abs(event.getHistoricalY(i) - latestTouchPositionY);
+                                float dx = Math.abs(event.getHistoricalX(i) - latestTouchPositionX);
+                                float dy = Math.abs(event.getHistoricalY(i) - latestTouchPositionY);
 
-                            if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                                _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, (historicalX + latestTouchPositionX) / 2, (historicalY + latestTouchPositionY) / 2);
+                                if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+                                    _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, (historicalX + latestTouchPositionX) / 2, (historicalY + latestTouchPositionY) / 2);
+                                    latestTouchPositionX = historicalX;
+                                    latestTouchPositionY = historicalY;
+                                }
+
+                                _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, historicalX, historicalY);
                                 latestTouchPositionX = historicalX;
                                 latestTouchPositionY = historicalY;
                             }
-
-                            _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, historicalX, historicalY);
-                            latestTouchPositionX = historicalX;
-                            latestTouchPositionY = historicalY;
+                            _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, event.getX(), event.getY());
+                            latestTouchPositionX = event.getX();
+                            latestTouchPositionY = event.getY();
                         }
-                        _fingerLinePath.quadTo(latestTouchPositionX, latestTouchPositionY, event.getX(), event.getY());
-                        latestTouchPositionX = event.getX();
-                        latestTouchPositionY = event.getY();
                     }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
 
@@ -500,15 +551,16 @@ public class GameView extends View {
                         _isMovingQuickTouch = false;
                         _bitmapPaint = null;
                     } else {
-
                         if (_currentTouchIsInquickTouchZone)
                             if (_helpListener != null)
                                 _helpListener.stepPassed(1);
 
-                        moveOneCircle(_startAndEndTouchPoint);
-                        _startAndEndTouchPoint = new Point[2];
-                        _currentTouchIsInquickTouchZone = false;
-                        _fingerLinePath = new Path();
+                        if (touchMode == TOUCH_MODE_SWIPE) {
+                            moveOneCircle(_startAndEndTouchPoint);
+                            _startAndEndTouchPoint = new Point[2];
+                            _currentTouchIsInquickTouchZone = false;
+                            _fingerLinePath = new Path();
+                        }
                     }
                 }
 
@@ -540,34 +592,39 @@ public class GameView extends View {
             else
                 endTower = 2;
 
-            if (startTower != endTower) {
+            moveOneCircle(startTower, endTower);
+        }
+    }
 
-                if (_currentGameSavedDurationlastGame == -1)
-                    _currentGameSavedDurationlastGame = System.currentTimeMillis();
+    private void moveOneCircle(int startTower, int endTower) {
 
-                int nbCirclesStartTower = _currentGameField.getTowers().get(startTower).getCircles().size();
-                ClassCircle toMove = null;
-                ClassCircle toBeSecond = null;
-                if (nbCirclesStartTower > 0) {
-                    boolean isAllowed = true;
-                    toMove = _currentGameField.getTowers().get(startTower).getCircles().get(nbCirclesStartTower - 1);
-                    if (_currentGameField.getTowers().get(endTower).getCircles().size() > 0) {
-                        toBeSecond = _currentGameField.getTowers().get(endTower).getCircles().get(_currentGameField.getTowers().get(endTower).getCircles().size() - 1);
+        if (startTower != endTower) {
+
+            if (_currentGameSavedDurationlastGame == -1)
+                _currentGameSavedDurationlastGame = System.currentTimeMillis();
+
+            int nbCirclesStartTower = _currentGameField.getTowers().get(startTower).getCircles().size();
+            ClassCircle toMove = null;
+            ClassCircle toBeSecond = null;
+            if (nbCirclesStartTower > 0) {
+                boolean isAllowed = true;
+                toMove = _currentGameField.getTowers().get(startTower).getCircles().get(nbCirclesStartTower - 1);
+                if (_currentGameField.getTowers().get(endTower).getCircles().size() > 0) {
+                    toBeSecond = _currentGameField.getTowers().get(endTower).getCircles().get(_currentGameField.getTowers().get(endTower).getCircles().size() - 1);
+                }
+                if (toBeSecond != null && toMove.getId() > toBeSecond.getId()) {
+                    isAllowed = false;
+                }
+                if (isAllowed) {
+                    _currentGameField.getTowers().get(startTower).getCircles().remove(nbCirclesStartTower - 1);
+                    _currentGameField.getTowers().get(endTower).getCircles().add(toMove);
+                    _currentGameMovesCount++;
+
+                    if (_turnListener != null) {
+                        _turnListener.turnPlayed(_currentGameMovesCount, _currentGameRequiredMinCount);
                     }
-                    if (toBeSecond != null && toMove.getId() > toBeSecond.getId()) {
-                        isAllowed = false;
-                    }
-                    if (isAllowed) {
-                        _currentGameField.getTowers().get(startTower).getCircles().remove(nbCirclesStartTower - 1);
-                        _currentGameField.getTowers().get(endTower).getCircles().add(toMove);
-                        _currentGameMovesCount++;
+                    CheckGameWin();
 
-                        if (_turnListener != null) {
-                            _turnListener.turnPlayed(_currentGameMovesCount, _currentGameRequiredMinCount);
-                        }
-                        CheckGameWin();
-
-                    }
                 }
             }
         }
@@ -675,19 +732,17 @@ public class GameView extends View {
             int x = 0;
             int y = _viewHeight;
             int i = 1;
-
             if (_currentGameField != null) {
-                for (ClassTower tower : _currentGameField.getTowers()) {
-                    x = (_viewWidth * i / 3) - ((_viewWidth * 1 / 3) / 2);
+                if (_currentGameMode == MODE_COLOR_PICKER) {
+                    x = _viewWidth / 2;
                     y = _viewHeight;
+                    ClassTower tower = _currentGameField.getTowers().get(0);
                     for (ClassCircle cercle : tower.getCircles()) {
 
-                        int circleWidth = (_viewWidth * 1 / 3 - 10) * ((cercle.getId()) * 100 / _currentGameDiskNumber) / 100;
-                        if (circleWidth == 0)
-                            circleWidth = 2;
+                        int circleWidth = (_viewWidth - 10) * ((cercle.getId()) * 100 / _currentGameDiskNumber) / 100;
 
                         int circleHeight = Tools.convertDpToPixel(10.0f);
-                        circleHeight = _viewWidth / 3 / 10;
+                        circleHeight = _viewWidth / 5;
 
                         if (circleHeight * _currentGameDiskNumber > _viewHeight) {
                             circleHeight = (int) (_viewHeight * 0.95f) / _currentGameDiskNumber;
@@ -695,24 +750,48 @@ public class GameView extends View {
 
                         _elementsPaint.setColor(cercle.getColor());
                         _reusableRect.set(x - (circleWidth / 2), y - (circleHeight), x + (circleWidth / 2), y);
-
-                        if (selectedCircle.getId() == cercle.getId() || (_currentGameMode == MODE_GOAL && i == 1)) {
-                            _elementsPaint.setAlpha(selectedCircle.getId() == cercle.getId() ? 40 : 150);
-                        } else {
-                            _elementsPaint.setAlpha(255);
-                        }
+                        _elementsPaint.setAlpha(255);
                         canvas.drawRect(_reusableRect, _elementsPaint);
                         y -= circleHeight;
-
                     }
+                } else {
+                    for (ClassTower tower : _currentGameField.getTowers()) {
+                        x = (_viewWidth * i / 3) - ((_viewWidth * 1 / 3) / 2);
+                        y = _viewHeight;
+                        for (ClassCircle cercle : tower.getCircles()) {
 
-                    if (i != 3) {
-                        _elementsPaint.setStrokeWidth(1);
-                        _elementsPaint.setColor(Color.parseColor("#AAAAAA"));
-                        canvas.drawLine((_viewWidth * i / 3), 0, (_viewWidth * i / 3), _viewHeight, _elementsPaint);
-                        _elementsPaint.setStrokeWidth(Tools.convertDpToPixel(1.0f));
+                            int circleWidth = (_viewWidth * 1 / 3 - 10) * ((cercle.getId()) * 100 / _currentGameDiskNumber) / 100;
+                            if (circleWidth == 0)
+                                circleWidth = 2;
+
+                            int circleHeight = Tools.convertDpToPixel(10.0f);
+                            circleHeight = _viewWidth / 3 / 10;
+
+                            if (circleHeight * _currentGameDiskNumber > _viewHeight) {
+                                circleHeight = (int) (_viewHeight * 0.95f) / _currentGameDiskNumber;
+                            }
+
+                            _elementsPaint.setColor(cercle.getColor());
+                            _reusableRect.set(x - (circleWidth / 2), y - (circleHeight), x + (circleWidth / 2), y);
+
+                            if (selectedCircle.getId() == cercle.getId() || (_currentGameMode == MODE_GOAL && i == 1)) {
+                                _elementsPaint.setAlpha(selectedCircle.getId() == cercle.getId() ? 40 : 150);
+                            } else {
+                                _elementsPaint.setAlpha(255);
+                            }
+                            canvas.drawRect(_reusableRect, _elementsPaint);
+                            y -= circleHeight;
+
+                        }
+
+                        if (i != 3) {
+                            _elementsPaint.setStrokeWidth(1);
+                            _elementsPaint.setColor(Color.parseColor("#AAAAAA"));
+                            canvas.drawLine((_viewWidth * i / 3), 0, (_viewWidth * i / 3), _viewHeight, _elementsPaint);
+                            _elementsPaint.setStrokeWidth(Tools.convertDpToPixel(1.0f));
+                        }
+                        i++;
                     }
-                    i++;
                 }
             }
 

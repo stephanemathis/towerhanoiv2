@@ -26,6 +26,7 @@ import fr.mathis.tourhanoipro.MainActivity;
 import fr.mathis.tourhanoipro.R;
 import fr.mathis.tourhanoipro.core.tools.DataManager;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
+import fr.mathis.tourhanoipro.core.tools.Tools;
 import fr.mathis.tourhanoipro.view.game.GameView;
 import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
@@ -64,12 +65,12 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
                     boolean incrementDisk = false;
 
                     Intent i = result.getData();
-                    if(i != null)
+                    if (i != null)
                         incrementDisk = i.getBooleanExtra(RESULT_INCREMENT_DISK, false);
                     int diskCount = PrefHelper.ReadInt(getContext(), PrefHelper.KEY_DISK_COUNT, -1);
 
-                    if(incrementDisk) {
-                        if(diskCount < 20)
+                    if (incrementDisk) {
+                        if (diskCount < 20)
                             diskCount++;
                         PrefHelper.SaveInt(getContext(), PrefHelper.KEY_DISK_COUNT, diskCount);
                         viewModel.sendDiskCountUpdate(diskCount);
@@ -98,6 +99,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
         gvMain.setTurnListener(this);
         gvMain.setQuickTouchListener(this);
+        gvMain.setColorPalette(Tools.getDiskColors(getContext(), -1));
 
         return root;
     }
@@ -110,14 +112,15 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         viewModel.init(getActivity());
 
         viewModel.getEvent().observe(requireActivity(), action -> {
-            if(action.isRestart())
+            if (action.isRestart())
                 gvMain.launchGame(viewModel.getAllGames().get(0));
         });
     }
 
     @Override
     public void onResume() {
-
+        gvMain.setTouchMode(PrefHelper.ReadString(getContext(), PrefHelper.KEY_MOUVEMENT, "swipe"));
+        gvMain.setColorPalette(Tools.getDiskColors(getContext(), PrefHelper.ReadInt(getContext(), PrefHelper.KEY_THEME_DISK_INDEX, 0)));
         gvMain.launchGame(viewModel.getAllGames().get(0));
 
         super.onResume();
@@ -129,7 +132,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     public void onPause() {
         super.onPause();
 
-        if(!skipSave) {
+        if (!skipSave) {
             viewModel.getAllGames().set(viewModel.getCurrentGameIndex(), gvMain.saveGameAsString());
             DataManager.SaveAllGames(viewModel.getAllGames(), getActivity().getApplicationContext());
         }
@@ -203,7 +206,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     @Override
     public void turnPlayed(int nbCoup, int nbTotal) {
 
-        ((MainActivity)getActivity()).updateMainTitle(nbCoup + " / " + nbTotal);
+        ((MainActivity) getActivity()).updateMainTitle(nbCoup + " / " + nbTotal);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class NumberPickerDialog extends DialogFragment {
     public NumberPickerDialog(int currentValue)  {
         super();
 
-        mCurrentValue = currentValue;
+        mCurrentValue = currentValue == 70 ? 21 : currentValue;
     }
 
     private NumberPicker.OnValueChangeListener valueChangeListener;

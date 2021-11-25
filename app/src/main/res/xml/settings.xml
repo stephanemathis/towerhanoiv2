@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <PreferenceCategory android:title="@string/pref_drawer_title">
+    <PreferenceCategory android:title="@string/pref_gameplay">
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="pref_key_drawer_touch_enabled"
+            android:switchTextOff="@string/pref_drawer_touch_off"
+            android:switchTextOn="@string/pref_drawer_touch_on"
+            android:icon="@drawable/ic_baseline_menu_open_24"
+            android:title="@string/pref_drawer_touch" />
 
+        <ListPreference
+            android:entries="@array/mouvements_mode"
+            android:entryValues="@array/mouvements_mode_values"
+            android:key="pref_key_mouvement_mode"
+            android:icon="@drawable/ic_baseline_mouse_24"
+            android:title="@string/pref_mouvement"
+            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
-    <SwitchPreferenceCompat
-        android:defaultValue="false"
-        android:key="pref_key_drawer_touch_enabled"
-        android:switchTextOff="@string/pref_drawer_touch_off"
-        android:switchTextOn="@string/pref_drawer_touch_on"
-        android:title="@string/pref_drawer_touch" />
+
     <PreferenceCategory android:title="@string/pref_theme_title">
-
+        <ListPreference
+            android:defaultValue="false"
+            android:entries="@array/dark_modes"
+            android:entryValues="@array/dark_modes_values"
+            android:key="pref_key_dark_theme"
+            android:icon="@drawable/ic_baseline_dark_mode_24"
+            android:title="@string/pref_theme_dark"
+            app:useSimpleSummaryProvider="true"/>
+        <Preference
+            android:id="@+id/prefThemeStyle"
+            android:title="@string/pref_theme_style"
+            android:icon="@drawable/ic_baseline_palette_24"
+            android:key="@string/pref_key_color"></Preference>
+        <Preference
+            android:id="@+id/prefThemeStyleDisk"
+            android:title="@string/pref_theme_style_disk"
+            android:key="@string/pref_key_color_disk"></Preference>
     </PreferenceCategory>
-    <ListPreference
-        android:defaultValue="false"
-        android:entries="@array/dark_modes"
-        android:entryValues="@array/dark_modes_values"
-        android:key="pref_key_dark_theme"
-        android:title="@string/pref_theme_dark" />
-    <Preference
-        android:id="@+id/prefThemeStyle"
-        android:title="@string/pref_theme_style"
-        android:key="@string/pref_key_color"></Preference>
+
 </PreferenceScreen>

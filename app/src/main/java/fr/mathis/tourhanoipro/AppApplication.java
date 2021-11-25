@@ -13,6 +13,11 @@ public class AppApplication extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
+        // Initialise le thème
+        String currentThemeMode = PrefHelper.ReadString(this, PrefHelper.KEY_DARK_THEME, null);
+        if(currentThemeMode == null)
+            PrefHelper.SaveString(this, PrefHelper.KEY_DARK_THEME, "auto");
+
         Tools.updateThemeMode(this);
 
         // Initialise le nombre de disque
@@ -26,5 +31,11 @@ public class AppApplication extends android.app.Application {
             savedGames.add(GameView.getNewSaveData(this, PrefHelper.ReadInt(this, PrefHelper.KEY_DISK_COUNT, -1)));
             DataManager.SaveAllGames(savedGames, this);
         }
+
+        // Le mode de sélection des disques
+        String currentMouvementMode = PrefHelper.ReadString(this, PrefHelper.KEY_MOUVEMENT, null);
+        if(currentMouvementMode == null)
+            PrefHelper.SaveString(this, PrefHelper.KEY_MOUVEMENT, "swipe");
+
     }
 }
