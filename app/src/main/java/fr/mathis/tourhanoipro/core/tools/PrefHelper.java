@@ -66,6 +66,14 @@ public class PrefHelper {
             SaveString(context, "qt"+orientation, s);
     }
 
+    public static void ClearQtPosition(Context context, int orientation) {
+        SharedPreferences mgr = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = mgr.edit();
+        editor.remove("qt"+orientation);
+        editor.commit();
+
+    }
+
     public static QuickTouch GetQtPosition(Context context, int orientation) {
 
         String savedQtSting = ReadString(context, "qt"+orientation, null);

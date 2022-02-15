@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         gvMain.setColorPalette(Tools.getDiskColors(getContext(), PrefHelper.ReadInt(getContext(), PrefHelper.KEY_THEME_DISK_INDEX, 0)));
 
         QuickTouch savedQt = PrefHelper.GetQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation);
-        if(savedQt != null)
+        if (savedQt != null)
             gvMain.setQt(savedQt);
 
         gvMain.launchGame(viewModel.getAllGames().get(0));
@@ -195,6 +195,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
             case MENU_QUICK_TOUCH_REMOVE:
                 gvMain.activateQuickTouchMode();
                 cleanHelpPopup();
+                PrefHelper.ClearQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation);
 
                 menuItemSmallTouchRemove.setVisible(false);
                 menuItemSmallTouchModify.setVisible(false);
