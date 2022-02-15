@@ -30,6 +30,11 @@ public class ClassField implements Serializable {
 		qt = null;
 	}
 
+	public QuickTouch getQt() {
+		return this.qt;
+
+	}
+
 	public QuickTouch getQtCopy() {
 		if (this.qt == null)
 			return null;

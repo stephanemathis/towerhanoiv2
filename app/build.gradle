@@ -55,6 +55,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'com.caverock:androidsvg-aar:1.4'
+
 }
 
 task wrapper(type: Wrapper){

@@ -4,6 +4,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import android.util.Base64;
+
+import fr.mathis.tourhanoipro.view.game.model.QuickTouch;
+
 public class PrefHelper {
 
     public static String KEY_DISK_COUNT = "key_disk_count";
@@ -49,4 +59,55 @@ public class PrefHelper {
         editor.putString(key, value);
         editor.commit();
     }
+
+    public static void SaveQtPosition(Context context, int orientation, QuickTouch qt) {
+        String s = toString(qt);
+        if(s != null)
+            SaveString(context, "qt"+orientation, s);
+    }
+
+    public static QuickTouch GetQtPosition(Context context, int orientation) {
+
+        String savedQtSting = ReadString(context, "qt"+orientation, null);
+        QuickTouch qt = null;
+
+        if(savedQtSting != null)
+            qt = (QuickTouch) fromString(savedQtSting);
+
+        return qt;
+    }
+
+
+    private static Object fromString(String s) {
+        try {
+            byte b[] = Base64.decode(s, 0);
+            ByteArrayInputStream bi = new ByteArrayInputStream(b);
+            ObjectInputStream si = null;
+
+            si = new ObjectInputStream(bi);
+
+
+            return si.readObject();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    private static String toString(Serializable o) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = null;
+            oos = new ObjectOutputStream( baos );
+            oos.writeObject( o );
+            oos.close();
+            return Base64.encodeToString(baos.toByteArray(), 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

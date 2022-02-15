@@ -349,7 +349,7 @@ public class GameView extends View {
                         if (_helpListener != null)
                             _helpListener.stepPassed(0);
                         if (_quickTouchListener != null)
-                            _quickTouchListener.quickTouchConstructed();
+                            _quickTouchListener.quickTouchConstructed(qt);
                     } else {
                         _currentGameField.setQt(null);
                         _qtEndEdgeBuilding = null;
@@ -550,6 +550,7 @@ public class GameView extends View {
                         _isQtEditMode = false;
                         _isMovingQuickTouch = false;
                         _bitmapPaint = null;
+                        _quickTouchListener.quickTouchUpdated(this.getQt());
                     } else {
                         if (_currentTouchIsInquickTouchZone)
                             if (_helpListener != null)
@@ -999,7 +1000,7 @@ public class GameView extends View {
         } else {
             height = desiredHeight;
         }
-
+/*
         if (_currentGameField != null && _currentGameField.getQtCopy() != null) {
             QuickTouch resizedQt = _currentGameField.getQtCopy();
 
@@ -1044,7 +1045,7 @@ public class GameView extends View {
                 this.setQt(resizedQt);
             }
         }
-
+*/
         _viewHeight = height;
         _viewWidth = width;
 

@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     private PlayersClient mPlayersClient;
 
     private DrawerLayout mDrawer;
-    private LinearLayout llDrawer;
+    private FrameLayout llDrawer;
     private ImageView ivDrawerLogo;
     private TextView tvDrawerTitle;
     private TextView tvDrawerSubtitle;
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         viewModel.init(this);
 
-        llDrawer = (LinearLayout) navigationView.getHeaderView(0);
+        llDrawer = (FrameLayout) navigationView.getHeaderView(0);
         ivDrawerLogo = llDrawer.findViewById(R.id.ivDrawerLogo);
         tvDrawerTitle = llDrawer.findViewById(R.id.tvDrawerTitle);
         tvDrawerSubtitle = llDrawer.findViewById(R.id.tvDrawerSubtitle);

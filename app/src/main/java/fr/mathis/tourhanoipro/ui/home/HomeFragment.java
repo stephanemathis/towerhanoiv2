@@ -27,10 +27,12 @@ import fr.mathis.tourhanoipro.R;
 import fr.mathis.tourhanoipro.core.tools.DataManager;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
+import fr.mathis.tourhanoipro.view.MorphView;
 import fr.mathis.tourhanoipro.view.game.GameView;
 import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
+import fr.mathis.tourhanoipro.view.game.model.QuickTouch;
 
 public class HomeFragment extends Fragment implements TurnListener, QuickTouchListener {
 
@@ -121,6 +123,11 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     public void onResume() {
         gvMain.setTouchMode(PrefHelper.ReadString(getContext(), PrefHelper.KEY_MOUVEMENT, "swipe"));
         gvMain.setColorPalette(Tools.getDiskColors(getContext(), PrefHelper.ReadInt(getContext(), PrefHelper.KEY_THEME_DISK_INDEX, 0)));
+
+        QuickTouch savedQt = PrefHelper.GetQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation);
+        if(savedQt != null)
+            gvMain.setQt(savedQt);
+
         gvMain.launchGame(viewModel.getAllGames().get(0));
 
         super.onResume();
@@ -234,10 +241,17 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     }
 
     @Override
-    public void quickTouchConstructed() {
+    public void quickTouchConstructed(QuickTouch _qt) {
 
         menuItemSmallTouchRemove.setVisible(true);
         menuItemSmallTouchModify.setVisible(true);
+
+        this.quickTouchUpdated(_qt);
+    }
+
+    @Override
+    public void quickTouchUpdated(QuickTouch _qt) {
+        PrefHelper.SaveQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation, _qt);
     }
 
     //#endregion
