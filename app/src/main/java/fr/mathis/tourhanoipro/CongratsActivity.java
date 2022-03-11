@@ -155,12 +155,7 @@ public class CongratsActivity extends AppCompatActivity {
             @Override
             public void onGlobalLayout() {
 
-                ArrayList<Integer> colors = new ArrayList<Integer>();
-                colors.add(Color.parseColor("#33B5E5"));
-                colors.add(Color.parseColor("#99CC00"));
-                colors.add(Color.parseColor("#FF4444"));
-                colors.add(Color.parseColor("#FFBB33"));
-                colors.add(Color.parseColor("#AA66CC"));
+                int[] colors = Tools.getKonfettiColors(CongratsActivity.this, -1);
 
                 Long animationTime = 2000L;
 

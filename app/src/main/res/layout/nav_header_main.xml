@@ -6,12 +6,12 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <fr.mathis.tourhanoipro.view.MorphView
-        android:id="@+id/gameView2"
+        android:id="@+id/mvHeader"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         app:pointCount="15"
-        app:randomSpeed="12dp"
-        app:speed="12dp"
+        app:randomSpeed="8dp"
+        app:speed="8dp"
         app:verticalOrientation="false" />
 
     <LinearLayout

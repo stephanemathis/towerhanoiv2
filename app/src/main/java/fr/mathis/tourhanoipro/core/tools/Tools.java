@@ -2,9 +2,12 @@ package fr.mathis.tourhanoipro.core.tools;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.View;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -87,6 +90,25 @@ public class Tools {
         context.getTheme().applyStyle(themes[index], true);
     }
 
+    public static void applyTranslucidColoredTheme(Context context) {
+        int index = PrefHelper.ReadInt(context, PrefHelper.KEY_THEME_INDEX, PrefHelper.DEFAULT_THEME_INDEX);
+
+        int[] themes = new int[]{
+                R.style.AppThemeTranslucentColored0,
+                R.style.AppThemeTranslucentColored1,
+                R.style.AppThemeTranslucentColored2,
+                R.style.AppThemeTranslucentColored3,
+                R.style.AppThemeTranslucentColored4,
+                R.style.AppThemeTranslucentColored5,
+                R.style.AppThemeTranslucentColored6,
+                R.style.AppThemeTranslucentColored7,
+                R.style.AppThemeTranslucentColored8,
+                R.style.AppThemeTranslucentColored9
+        };
+
+        context.getTheme().applyStyle(themes[index], true);
+    }
+
     public static int[][] getColorPalette(Context context) {
         int[][] colors = new int[][]{
                 new int[]{ResourcesCompat.getColor(context.getResources(), R.color.colorAccent0, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimary0, null), ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryDark0, null)},
@@ -157,5 +179,21 @@ public class Tools {
         }
 
         return colors;
+    }
+
+    public static int[] getKonfettiColors(Context context, int index) {
+        if(index == 2) {
+            return getColorPalette(context)[PrefHelper.ReadInt(context, PrefHelper.KEY_THEME_INDEX, PrefHelper.DEFAULT_THEME_INDEX)];
+        }
+        else
+            return getDiskColors(context, index);
+    }
+
+    @ColorInt
+    private static int darkenColor(@ColorInt int color, float ratio) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= ratio;
+        return Color.HSVToColor(hsv);
     }
 }

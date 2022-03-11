@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -114,24 +115,52 @@ public class MorphView extends View {
 
         mTimer = new TimerIntegration();
         mColorMap = new HashMap<>();
+
+        mlogIndex = mRandom.nextInt(100);
     }
 
-    private void initData() {
-        mPoints.clear();
+    int mlogIndex = -1;
+
+    private void initData(boolean fromResize) {
+
+        if (_viewWidth == 0 || _viewHeight == 0)
+            return;
 
         int generatedPoint = 0;
 
-        for (int i = 0; i < mPointCount; i++) {
-            mPoints.add(new MorphPoint(
-                    mRandom.nextFloat() * _viewWidth,
-                    mRandom.nextFloat() * _viewHeight,
-                    mRandom.nextFloat() * 10 + 7,
-                    mRandom.nextInt(360),
-                    mSpeed + mRandom.nextFloat() * mRandomSpeed,
-                    generatedPoint)
-            );
+        if (fromResize && mPoints.size() > 0) {
 
-            generatedPoint++;
+            for (int i = 0; i < mPoints.size(); i++) {
+                MorphPoint point = mPoints.get(i);
+
+                if (point.dx != 0 || point.dy != 0) {
+                    if (point.x > _viewWidth)
+                        point.x = _viewWidth;
+                    if (point.y > _viewHeight)
+                        point.y = _viewHeight;
+                    generatedPoint++;
+                } else {
+                    mPoints.removeElementAt(i);
+                    i--;
+                }
+            }
+        } else {
+
+            mPoints.clear();
+            mColorMap.clear();
+
+            for (int i = 0; i < mPointCount; i++) {
+                mPoints.add(new MorphPoint(
+                        mRandom.nextFloat() * _viewWidth,
+                        mRandom.nextFloat() * _viewHeight,
+                        mRandom.nextFloat() * 10 + 7,
+                        mRandom.nextInt(360),
+                        mSpeed + mRandom.nextFloat() * mRandomSpeed,
+                        generatedPoint)
+                );
+
+                generatedPoint++;
+            }
         }
 
         for (int x = -mPointSpace; x < _viewWidth + mPointSpace; x = x + mPointSpace) {
@@ -147,7 +176,6 @@ public class MorphView extends View {
             mPoints.add(new MorphPoint(_viewWidth + mPointSpace, y, 40, 0, 0, generatedPoint));
             generatedPoint++;
         }
-
     }
 
     private void update() {
@@ -165,6 +193,11 @@ public class MorphView extends View {
 
             point.x = point.x + point.dx * deltaTime;
             point.y = point.y + point.dy * deltaTime;
+
+            if (point.dx > 0 && point.dy > 0 && (point.x > _viewWidth || point.x < 0 || point.y > _viewHeight || point.y < 0)) {
+                point.x = mRandom.nextInt(_viewWidth);
+                point.y = mRandom.nextInt(_viewHeight);
+            }
         }
 
         DelaunayTriangulator delaunayTriangulator = new DelaunayTriangulator((Vector<Vector2D>) (Vector<?>) mPoints);
@@ -180,6 +213,19 @@ public class MorphView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (canvas != null) {
+
+            int height = getHeight();
+            int width = getWidth();
+
+            if (height != _viewHeight || width != _viewWidth) {
+                _viewHeight = getHeight();
+                _viewWidth = getWidth();
+                initData(true);
+            }
+
+            if (mPoints.size() == 0)
+                initData(false);
+
             update();
 
             mToKeepKeys.clear();
@@ -276,12 +322,12 @@ public class MorphView extends View {
             height = desiredHeight;
         }
 
-        _viewHeight = height;
-        _viewWidth = width;
-
         setMeasuredDimension(width, height);
+    }
 
-        initData();
+    public void start() {
+        mPoints.clear();
+        invalidate();
     }
 
     class MorphPoint extends Vector2D {
@@ -327,6 +373,7 @@ public class MorphView extends View {
             long currentTime = System.currentTimeMillis();
             return (currentTime - startTime);
         }
+
     }
 
     public static int convertDpToPixel(float dp) {
