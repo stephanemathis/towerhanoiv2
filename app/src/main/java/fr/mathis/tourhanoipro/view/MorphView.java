@@ -3,12 +3,15 @@ package fr.mathis.tourhanoipro.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -35,6 +38,7 @@ public class MorphView extends View {
 
     boolean mOrientationVertical;
     float mSpeed;
+    boolean mShowPoint;
     float mRandomSpeed;
     int mPointCount;
 
@@ -52,6 +56,7 @@ public class MorphView extends View {
     Map<Double, Paint> mColorMap;
     int mThemeColor;
     ArrayList<Double> mToKeepKeys;
+    Bitmap mGradientBitmap;
 
 
     public MorphView(Context context) {
@@ -85,6 +90,8 @@ public class MorphView extends View {
         theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
         mThemeColor = typedValue.data;
 
+        Drawable drawable = null;
+
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MorphView, defStyleAttr, 0);
         try {
             if (a != null) {
@@ -92,6 +99,8 @@ public class MorphView extends View {
                 mSpeed = a.getDimension(R.styleable.MorphView_speed, convertDpToPixel(24));
                 mRandomSpeed = a.getDimension(R.styleable.MorphView_speed, convertDpToPixel(24));
                 mPointCount = a.getInt(R.styleable.MorphView_pointCount, 20);
+                mShowPoint = a.getBoolean(R.styleable.MorphView_showPoint, true);
+                drawable = a.getDrawable(R.styleable.MorphView_drawable);
             }
         } finally {
             if (a != null)
@@ -117,6 +126,34 @@ public class MorphView extends View {
         mColorMap = new HashMap<>();
 
         mlogIndex = mRandom.nextInt(100);
+
+        if (drawable == null) {
+            theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+            int dark = mThemeColor = typedValue.data;
+
+            theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+            int medium = mThemeColor = typedValue.data;
+
+            theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+            int light = mThemeColor = typedValue.data;
+
+            drawable = new GradientDrawable(
+                    mOrientationVertical ? GradientDrawable.Orientation.TOP_BOTTOM : GradientDrawable.Orientation.LEFT_RIGHT,
+                    new int[]{dark, medium, light});
+        }
+
+        mGradientBitmap = this.createGradiantBitmap(drawable);
+    }
+
+    private Bitmap createGradiantBitmap(Drawable drawable) {
+
+
+        Bitmap mutableBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(mutableBitmap);
+        drawable.setBounds(0, 0, 100, 100);
+        drawable.draw(canvas);
+
+        return mutableBitmap;
     }
 
     int mlogIndex = -1;
@@ -243,7 +280,7 @@ public class MorphView extends View {
                     p.setStyle(Paint.Style.FILL);
                     p.setAntiAlias(false);
 
-                    double modifierColor;
+                    /*double modifierColor;
                     float shaderXTop, shaderXBottom, shaderYTop, shaderYBottom;
                     if (mOrientationVertical) {
                         double avgY = (triangle.a.y + triangle.b.y + triangle.c.y) / 3d;
@@ -275,15 +312,30 @@ public class MorphView extends View {
                     float colorModifier = (float) (0.6f + (modifierColor) * 0.6);
                     p.setColor(darkenColor(mThemeColor, colorModifier));
                     p.setShader(new LinearGradient(shaderXTop, shaderYTop, shaderXBottom, shaderYBottom, darkenColor(mThemeColor, colorModifier + 0.07f * colorModifier), darkenColor(mThemeColor, colorModifier - 0.07f * colorModifier), Shader.TileMode.CLAMP));
+                    */
 
+                    double avgY = (triangle.a.y + triangle.b.y + triangle.c.y) / 3d;
+                    double avgX = (triangle.a.x + triangle.b.x + triangle.c.x) / 3d;
+                    int indexX = (int) (avgX / (float) _viewWidth * 100);
+                    int indexY = (int) (avgY / (float) _viewHeight * 100);
+
+                    if (indexX < 0) indexX = 0;
+                    if (indexY < 0) indexY = 0;
+                    if (indexX >= 100) indexX = 99;
+                    if (indexY >= 100) indexY = 99;
+
+                    int color = mGradientBitmap.getPixel(indexX, indexY);
+
+                    p.setColor(color);
                     mColorMap.put(colorKey, p);
                 }
                 canvas.drawPath(mTrianglePath, mColorMap.get(colorKey));
                 mToKeepKeys.add(colorKey);
             }
-
-            for (MorphPoint point : mPoints) {
-                canvas.drawCircle((float) point.x, (float) point.y, point.radius, mPointPaint);
+            if (this.mShowPoint) {
+                for (MorphPoint point : mPoints) {
+                    canvas.drawCircle((float) point.x, (float) point.y, point.radius, mPointPaint);
+                }
             }
             mColorMap.keySet().retainAll(mToKeepKeys);
 
