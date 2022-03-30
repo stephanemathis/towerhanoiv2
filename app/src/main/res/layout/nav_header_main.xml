@@ -11,10 +11,9 @@
         android:layout_height="fill_parent"
         app:drawable="@drawable/side_nav_bar"
         app:pointCount="80"
+        app:randomSpeed="0dp"
         app:showPoint="false"
-        app:randomSpeed="8dp"
-        app:speed="8dp"
-        app:verticalOrientation="false" />
+        app:speed="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

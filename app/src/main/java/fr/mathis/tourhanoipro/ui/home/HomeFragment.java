@@ -41,10 +41,12 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     static final int MENU_QUICK_TOUCH_ENABLE = 1;
     static final int MENU_QUICK_TOUCH_MODIFY = 4;
     static final int MENU_QUICK_TOUCH_REMOVE = 5;
+    static final int MENU_UNDO = 6;
 
     private MenuItem menuItemSmallTouchEnable;
     private MenuItem menuItemSmallTouchModify;
     private MenuItem menuItemSmallTouchRemove;
+    private MenuItem menuItemSmallUndo;
 
     private ActivityResultLauncher<Intent> congratsLauncher;
     private HomeViewModel viewModel;
@@ -154,6 +156,10 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
         menu.clear();
 
+        menuItemSmallUndo = menu.add(0, MENU_UNDO, 0, R.string.undo);
+        menuItemSmallUndo.setIcon(R.drawable.ic_action_undo);
+        menuItemSmallUndo.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
         menuItemSmallTouchEnable = menu.add(0, MENU_QUICK_TOUCH_ENABLE, 0, R.string.quick_touch_enable);
         menuItemSmallTouchEnable.setIcon(R.drawable.ic_action_smalltouch);
         menuItemSmallTouchEnable.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -173,6 +179,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         menu.findItem(MENU_QUICK_TOUCH_REMOVE).setVisible((gvMain != null && gvMain.getQt() != null));
         menu.findItem(MENU_QUICK_TOUCH_MODIFY).setVisible((gvMain != null && gvMain.getQt() != null));
         menu.findItem(MENU_QUICK_TOUCH_ENABLE).setVisible((gvMain == null || gvMain.getQt() == null));
+        menu.findItem(MENU_UNDO).setVisible(false);
 
         super.onPrepareOptionsMenu(menu);
     }
@@ -201,6 +208,11 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
                 menuItemSmallTouchModify.setVisible(false);
                 menuItemSmallTouchEnable.setVisible(true);
                 break;
+            case MENU_UNDO:
+                gvMain.undo();
+                if (menuItemSmallUndo != null)
+                    menuItemSmallUndo.setVisible(false);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -215,6 +227,8 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     public void turnPlayed(int nbCoup, int nbTotal) {
 
         ((MainActivity) getActivity()).updateMainTitle(nbCoup + " / " + nbTotal);
+        if (menuItemSmallUndo != null)
+            menuItemSmallUndo.setVisible(nbCoup > 0 && !gvMain.isFinished());
     }
 
     @Override

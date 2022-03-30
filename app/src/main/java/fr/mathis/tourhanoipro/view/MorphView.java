@@ -339,7 +339,7 @@ public class MorphView extends View {
             }
             mColorMap.keySet().retainAll(mToKeepKeys);
 
-            if (mPoints.size() > 0)
+            if (mPoints.size() > 0 && mSpeed > 0 && mRandomSpeed > 0)
                 invalidate();
         }
     }

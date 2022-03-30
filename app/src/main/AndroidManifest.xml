@@ -11,12 +11,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppThemeColored3">
-        <activity
-            android:name=".view.MorphViewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:label="@string/title_activity_morph_view"
-            android:theme="@style/AppThemeColored3.Fullscreen" />
 
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
@@ -42,11 +36,16 @@
         <activity
             android:name=".CongratsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/AppThemeTranslucentColored3"></activity>
+            android:theme="@style/AppThemeTranslucentColored3" />
         <activity
             android:name=".TutoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeTranslucentColored3" />
+        <activity
+            android:name=".MorphViewShowcaseActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:theme="@style/AppThemeColored3.Fullscreen" />
     </application>
 
 </manifest>

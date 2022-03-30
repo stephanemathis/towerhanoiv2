@@ -59,4 +59,6 @@
     <string name="tuto_help3">Un disque ne peut être qu\'au dessus d\'un disque plus grand.</string>
     <string name="tuto_app_name"><b>Tours</b> de <b>Hanoi</b></string>
 
+    <string name="next">Next</string>
+    <string name="undo">Annuler le dernier coup</string>
 </resources>

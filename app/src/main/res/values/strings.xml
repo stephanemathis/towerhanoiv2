@@ -60,8 +60,8 @@
     <string name="tuto_help2">You can only move one disk at a time.</string>
     <string name="tuto_help3">A disk can only be on top of a bigger one.</string>
     <string name="tuto_app_name"><b>Tower</b> of <b>Hanoi</b></string>
-    <string name="title_activity_morph_view">MorphViewActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="next">Next</string>
+    <string name="undo">Undo</string>
 
 </resources>

@@ -597,6 +597,9 @@ public class GameView extends View {
         }
     }
 
+    int lastMovedStartTower = -1;
+    int lastMovedEndTower = -1;
+
     private void moveOneCircle(int startTower, int endTower) {
 
         if (startTower != endTower) {
@@ -617,6 +620,8 @@ public class GameView extends View {
                     isAllowed = false;
                 }
                 if (isAllowed) {
+                    lastMovedStartTower = startTower;
+                    lastMovedEndTower = endTower;
                     _currentGameField.getTowers().get(startTower).getCircles().remove(nbCirclesStartTower - 1);
                     _currentGameField.getTowers().get(endTower).getCircles().add(toMove);
                     _currentGameMovesCount++;
@@ -1157,6 +1162,17 @@ public class GameView extends View {
         _moveBitmap = getBitmapFromVectorDrawable(getContext(), R.drawable.ic_action_drag);
 
         invalidate();
+    }
+
+    public void undo() {
+        if (lastMovedEndTower != -1 && lastMovedStartTower != -1) {
+            _currentGameMovesCount -= 2;
+            moveOneCircle(lastMovedEndTower, lastMovedStartTower);
+
+            lastMovedEndTower = -1;
+            lastMovedStartTower = -1;
+            invalidate();
+        }
     }
 
     private Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {

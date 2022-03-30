@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             @Override
             public boolean onLongClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this, MorphViewActivity.class);
+                Intent intent = new Intent(MainActivity.this, MorphViewShowcaseActivity.class);
                 startActivity(intent);
 
                 return true;
