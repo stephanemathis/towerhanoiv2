@@ -2,13 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.mathis.tourhanoipro">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeColored3"
-        android:name=".AppApplication">
+        android:theme="@style/AppThemeColored3">
 
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
@@ -22,27 +24,28 @@
 
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="CongratsActivity"
+            android:name=".CongratsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/AppThemeTranslucentColored3"  >
-        </activity>
-
+            android:theme="@style/AppThemeTranslucentColored3" />
         <activity
             android:name=".TutoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeTranslucentColored3" />
+        <activity
+            android:name=".MorphViewShowcaseActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:theme="@style/AppThemeColored3.Fullscreen" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

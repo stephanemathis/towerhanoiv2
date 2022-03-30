@@ -4,11 +4,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable-night/ic_action_smalltouch_daynight.xml" value="0.21458333333333332" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable-night/morph1.xml" value="0.3416666666666667" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable-night/morph2.xml" value="0.3416666666666667" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21822916666666667" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/bg_round_gray.xml" value="0.28541666666666665" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_action_drag.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_action_smalltouch.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_action_smalltouch_daynight.xml" value="0.21458333333333332" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_action_smalltouch_transparent.xml" value="0.2265625" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_baseline_menu_open_24.xml" value="0.22239583333333332" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_fab_more.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_fab_refresh.xml" value="0.221875" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_fab_restart.xml" value="0.221875" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_launcher_background.xml" value="0.221875" />
@@ -17,7 +22,13 @@
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_logoproperproper.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_lolopropre.xml" value="0.33" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/ic_newicon.xml" value="0.21822916666666667" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/morph1.xml" value="0.3416666666666667" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/morph2.xml" value="0.3416666666666667" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/morph3.xml" value="0.3416666666666667" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/drawable/side_nav_bar.xml" value="0.28541666666666665" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/activity_congrats.xml" value="0.25" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/activity_morph_view.xml" value="0.4109375" />
+        <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/activity_morph_view_showcase.xml" value="0.2520833333333333" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/activity_tuto.xml" value="0.3854166666666667" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/bottom_sheet_disk_color_picker.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/mathi/Documents/Android/Hanoi/app/src/main/res/layout/content_main.xml" value="0.20208333333333334" />

@@ -29,9 +29,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,6 +58,8 @@ import fr.mathis.tourhanoipro.ui.home.HomeViewModel;
 import fr.mathis.tourhanoipro.ui.picker.NumberPickerDialog;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
+import fr.mathis.tourhanoipro.view.MorphView;
+import fr.mathis.tourhanoipro.view.MorphViewActivity;
 import fr.mathis.tourhanoipro.view.game.GameView;
 
 
@@ -76,10 +78,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     private PlayersClient mPlayersClient;
 
     private DrawerLayout mDrawer;
-    private LinearLayout llDrawer;
+    private FrameLayout llDrawer;
     private ImageView ivDrawerLogo;
     private TextView tvDrawerTitle;
     private TextView tvDrawerSubtitle;
+    private MorphView mvHeader;
     private TextView tvDiskNumber;
     NavController navController;
 
@@ -111,10 +114,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         viewModel.init(this);
 
-        llDrawer = (LinearLayout) navigationView.getHeaderView(0);
+        llDrawer = (FrameLayout) navigationView.getHeaderView(0);
         ivDrawerLogo = llDrawer.findViewById(R.id.ivDrawerLogo);
         tvDrawerTitle = llDrawer.findViewById(R.id.tvDrawerTitle);
         tvDrawerSubtitle = llDrawer.findViewById(R.id.tvDrawerSubtitle);
+        mvHeader = llDrawer.findViewById(R.id.mvHeader);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -145,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                         mDiskCount = newVal;
                         refreshDiskCountPicker();
 
-                        if(mDiskCount == 70 && mAchievementsClient != null) {
+                        if (mDiskCount == 70 && mAchievementsClient != null) {
                             mAchievementsClient.unlock(getString(R.string.achievement_are_you_crazy));
                         }
 
@@ -154,6 +158,17 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 });
 
                 numberPicker.show(getSupportFragmentManager(), "tag");
+            }
+        });
+
+        mvHeader.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, MorphViewShowcaseActivity.class);
+                startActivity(intent);
+
+                return true;
             }
         });
 
@@ -257,6 +272,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
         requestSignIn();
 
+        mvHeader.start();
     }
 
     private void requestSignIn() {

@@ -27,10 +27,12 @@ import fr.mathis.tourhanoipro.R;
 import fr.mathis.tourhanoipro.core.tools.DataManager;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
+import fr.mathis.tourhanoipro.view.MorphView;
 import fr.mathis.tourhanoipro.view.game.GameView;
 import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
+import fr.mathis.tourhanoipro.view.game.model.QuickTouch;
 
 public class HomeFragment extends Fragment implements TurnListener, QuickTouchListener {
 
@@ -39,10 +41,12 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     static final int MENU_QUICK_TOUCH_ENABLE = 1;
     static final int MENU_QUICK_TOUCH_MODIFY = 4;
     static final int MENU_QUICK_TOUCH_REMOVE = 5;
+    static final int MENU_UNDO = 6;
 
     private MenuItem menuItemSmallTouchEnable;
     private MenuItem menuItemSmallTouchModify;
     private MenuItem menuItemSmallTouchRemove;
+    private MenuItem menuItemSmallUndo;
 
     private ActivityResultLauncher<Intent> congratsLauncher;
     private HomeViewModel viewModel;
@@ -121,6 +125,11 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     public void onResume() {
         gvMain.setTouchMode(PrefHelper.ReadString(getContext(), PrefHelper.KEY_MOUVEMENT, "swipe"));
         gvMain.setColorPalette(Tools.getDiskColors(getContext(), PrefHelper.ReadInt(getContext(), PrefHelper.KEY_THEME_DISK_INDEX, 0)));
+
+        QuickTouch savedQt = PrefHelper.GetQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation);
+        if (savedQt != null)
+            gvMain.setQt(savedQt);
+
         gvMain.launchGame(viewModel.getAllGames().get(0));
 
         super.onResume();
@@ -147,6 +156,10 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
         menu.clear();
 
+        menuItemSmallUndo = menu.add(0, MENU_UNDO, 0, R.string.undo);
+        menuItemSmallUndo.setIcon(R.drawable.ic_action_undo);
+        menuItemSmallUndo.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
         menuItemSmallTouchEnable = menu.add(0, MENU_QUICK_TOUCH_ENABLE, 0, R.string.quick_touch_enable);
         menuItemSmallTouchEnable.setIcon(R.drawable.ic_action_smalltouch);
         menuItemSmallTouchEnable.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -166,6 +179,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         menu.findItem(MENU_QUICK_TOUCH_REMOVE).setVisible((gvMain != null && gvMain.getQt() != null));
         menu.findItem(MENU_QUICK_TOUCH_MODIFY).setVisible((gvMain != null && gvMain.getQt() != null));
         menu.findItem(MENU_QUICK_TOUCH_ENABLE).setVisible((gvMain == null || gvMain.getQt() == null));
+        menu.findItem(MENU_UNDO).setVisible(gvMain.canUndo());
 
         super.onPrepareOptionsMenu(menu);
     }
@@ -188,10 +202,16 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
             case MENU_QUICK_TOUCH_REMOVE:
                 gvMain.activateQuickTouchMode();
                 cleanHelpPopup();
+                PrefHelper.ClearQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation);
 
                 menuItemSmallTouchRemove.setVisible(false);
                 menuItemSmallTouchModify.setVisible(false);
                 menuItemSmallTouchEnable.setVisible(true);
+                break;
+            case MENU_UNDO:
+                gvMain.undo();
+                if (menuItemSmallUndo != null)
+                    menuItemSmallUndo.setVisible(false);
                 break;
         }
 
@@ -207,6 +227,8 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     public void turnPlayed(int nbCoup, int nbTotal) {
 
         ((MainActivity) getActivity()).updateMainTitle(nbCoup + " / " + nbTotal);
+        if (menuItemSmallUndo != null)
+            menuItemSmallUndo.setVisible(gvMain.canUndo());
     }
 
     @Override
@@ -234,10 +256,17 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     }
 
     @Override
-    public void quickTouchConstructed() {
+    public void quickTouchConstructed(QuickTouch _qt) {
 
         menuItemSmallTouchRemove.setVisible(true);
         menuItemSmallTouchModify.setVisible(true);
+
+        this.quickTouchUpdated(_qt);
+    }
+
+    @Override
+    public void quickTouchUpdated(QuickTouch _qt) {
+        PrefHelper.SaveQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation, _qt);
     }
 
     //#endregion

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/fullscreenBackgroundColor"
+    android:theme="@style/ThemeOverlay.TourDeHanoiPro.FullscreenContainer"
+    tools:context=".MorphViewShowcaseActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <FrameLayout
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true">
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:drawable="@drawable/side_nav_bar"
+            app:pointCount="200"
+            app:randomSpeed="8dp"
+            app:showPoint="true"
+            app:speed="8dp" />
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:pointCount="15"
+            app:randomSpeed="8dp"
+            app:speed="8dp"
+            app:verticalOrientation="false" />
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:drawable="@drawable/morph1"
+            app:pointCount="100"
+            app:randomSpeed="8dp"
+            app:showPoint="false"
+            app:speed="8dp" />
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:drawable="@drawable/morph2"
+            app:pointCount="100"
+            app:randomSpeed="8dp"
+            app:showPoint="false"
+            app:speed="8dp" />
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:drawable="@drawable/morph3"
+            app:pointCount="100"
+            app:randomSpeed="8dp"
+            app:showPoint="false"
+            app:speed="8dp" />
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:drawable="@drawable/morph4"
+            app:pointCount="100"
+            app:randomSpeed="8dp"
+            app:showPoint="false"
+            app:speed="8dp" />
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:drawable="@drawable/morph5"
+            app:pointCount="100"
+            app:randomSpeed="8dp"
+            app:showPoint="false"
+            app:speed="8dp" />
+
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:drawable="@drawable/morph6"
+            app:pointCount="100"
+            app:randomSpeed="8dp"
+            app:showPoint="false"
+            app:speed="8dp" />
+
+    </FrameLayout>
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="@style/Widget.AppThemeColored3.ButtonBar.Fullscreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <Button
+                android:id="@+id/dummy_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/next" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>

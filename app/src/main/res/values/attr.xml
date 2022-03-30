@@ -7,4 +7,13 @@
         <attr name="duration" format="integer" />
         <attr name="fadeFactor" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="MorphView">
+        <attr name="verticalOrientation" format="boolean" />
+        <attr name="speed" format="dimension" />
+        <attr name="randomSpeed" format="dimension" />
+        <attr name="pointCount" format="integer" />
+        <attr name="showPoint" format="boolean" />
+        <attr name="drawable" format="reference" />
+    </declare-styleable>
 </resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/fullscreenBackgroundColor"
+    android:theme="@style/ThemeOverlay.TourDeHanoiPro.FullscreenContainer"
+    tools:context=".view.MorphViewActivity">
+
+    <FrameLayout
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:keepScreenOn="true" />
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:drawable="@drawable/side_nav_bar"
+            app:pointCount="200"
+            app:randomSpeed="8dp"
+            app:showPoint="true"
+            app:speed="8dp" />
+
+        <fr.mathis.tourhanoipro.view.MorphView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            app:drawable="@mipmap/ic_launcher"
+            app:pointCount="200"
+            app:randomSpeed="8dp"
+            app:showPoint="false"
+            app:speed="8dp" />
+
+    </FrameLayout>
+</FrameLayout>

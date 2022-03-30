@@ -174,6 +174,8 @@ public class GameView extends View {
     public void createNewGame(int size) {
         _currentGameSessionDuration = 0;
         _currentGameSavedDurationlastGame = -1;
+        lastMovedEndTower = -1;
+        lastMovedStartTower = -1;
 
         QuickTouch q = null;
 
@@ -349,7 +351,7 @@ public class GameView extends View {
                         if (_helpListener != null)
                             _helpListener.stepPassed(0);
                         if (_quickTouchListener != null)
-                            _quickTouchListener.quickTouchConstructed();
+                            _quickTouchListener.quickTouchConstructed(qt);
                     } else {
                         _currentGameField.setQt(null);
                         _qtEndEdgeBuilding = null;
@@ -550,6 +552,7 @@ public class GameView extends View {
                         _isQtEditMode = false;
                         _isMovingQuickTouch = false;
                         _bitmapPaint = null;
+                        _quickTouchListener.quickTouchUpdated(this.getQt());
                     } else {
                         if (_currentTouchIsInquickTouchZone)
                             if (_helpListener != null)
@@ -596,6 +599,9 @@ public class GameView extends View {
         }
     }
 
+    int lastMovedStartTower = -1;
+    int lastMovedEndTower = -1;
+
     private void moveOneCircle(int startTower, int endTower) {
 
         if (startTower != endTower) {
@@ -616,6 +622,8 @@ public class GameView extends View {
                     isAllowed = false;
                 }
                 if (isAllowed) {
+                    lastMovedStartTower = startTower;
+                    lastMovedEndTower = endTower;
                     _currentGameField.getTowers().get(startTower).getCircles().remove(nbCirclesStartTower - 1);
                     _currentGameField.getTowers().get(endTower).getCircles().add(toMove);
                     _currentGameMovesCount++;
@@ -666,6 +674,8 @@ public class GameView extends View {
         }
 
         if (win) {
+            lastMovedEndTower = -1;
+            lastMovedStartTower = -1;
             if (_turnListener != null) {
                 _turnListener.gameFinished(_currentGameMovesCount, _currentGameRequiredMinCount, (_currentGameSessionDuration + (System.currentTimeMillis() - _currentGameSavedDurationlastGame)));
             }
@@ -999,7 +1009,7 @@ public class GameView extends View {
         } else {
             height = desiredHeight;
         }
-
+/*
         if (_currentGameField != null && _currentGameField.getQtCopy() != null) {
             QuickTouch resizedQt = _currentGameField.getQtCopy();
 
@@ -1044,7 +1054,7 @@ public class GameView extends View {
                 this.setQt(resizedQt);
             }
         }
-
+*/
         _viewHeight = height;
         _viewWidth = width;
 
@@ -1156,6 +1166,21 @@ public class GameView extends View {
         _moveBitmap = getBitmapFromVectorDrawable(getContext(), R.drawable.ic_action_drag);
 
         invalidate();
+    }
+
+    public void undo() {
+        if (lastMovedEndTower != -1 && lastMovedStartTower != -1) {
+            _currentGameMovesCount -= 2;
+            moveOneCircle(lastMovedEndTower, lastMovedStartTower);
+
+            lastMovedEndTower = -1;
+            lastMovedStartTower = -1;
+            invalidate();
+        }
+    }
+
+    public boolean canUndo() {
+        return this.lastMovedEndTower != -1 && lastMovedStartTower != -1 && _currentGameMovesCount > 0 && !isFinished();
     }
 
     private Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
