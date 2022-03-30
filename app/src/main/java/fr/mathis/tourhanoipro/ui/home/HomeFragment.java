@@ -179,7 +179,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         menu.findItem(MENU_QUICK_TOUCH_REMOVE).setVisible((gvMain != null && gvMain.getQt() != null));
         menu.findItem(MENU_QUICK_TOUCH_MODIFY).setVisible((gvMain != null && gvMain.getQt() != null));
         menu.findItem(MENU_QUICK_TOUCH_ENABLE).setVisible((gvMain == null || gvMain.getQt() == null));
-        menu.findItem(MENU_UNDO).setVisible(false);
+        menu.findItem(MENU_UNDO).setVisible(gvMain.canUndo());
 
         super.onPrepareOptionsMenu(menu);
     }
@@ -228,7 +228,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
         ((MainActivity) getActivity()).updateMainTitle(nbCoup + " / " + nbTotal);
         if (menuItemSmallUndo != null)
-            menuItemSmallUndo.setVisible(nbCoup > 0 && !gvMain.isFinished());
+            menuItemSmallUndo.setVisible(gvMain.canUndo());
     }
 
     @Override

@@ -16,8 +16,8 @@ android {
         applicationId "fr.mathis.tourhanoipro"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 27
-        versionName "1.3"
+        versionCode 31
+        versionName "1.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
     }

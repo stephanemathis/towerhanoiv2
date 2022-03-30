@@ -174,6 +174,8 @@ public class GameView extends View {
     public void createNewGame(int size) {
         _currentGameSessionDuration = 0;
         _currentGameSavedDurationlastGame = -1;
+        lastMovedEndTower = -1;
+        lastMovedStartTower = -1;
 
         QuickTouch q = null;
 
@@ -672,6 +674,8 @@ public class GameView extends View {
         }
 
         if (win) {
+            lastMovedEndTower = -1;
+            lastMovedStartTower = -1;
             if (_turnListener != null) {
                 _turnListener.gameFinished(_currentGameMovesCount, _currentGameRequiredMinCount, (_currentGameSessionDuration + (System.currentTimeMillis() - _currentGameSavedDurationlastGame)));
             }
@@ -1173,6 +1177,10 @@ public class GameView extends View {
             lastMovedStartTower = -1;
             invalidate();
         }
+    }
+
+    public boolean canUndo() {
+        return this.lastMovedEndTower != -1 && lastMovedStartTower != -1 && _currentGameMovesCount > 0 && !isFinished();
     }
 
     private Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
