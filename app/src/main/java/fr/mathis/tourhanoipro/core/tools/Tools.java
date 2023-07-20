@@ -190,7 +190,7 @@ public class Tools {
     }
 
     @ColorInt
-    private static int darkenColor(@ColorInt int color, float ratio) {
+    public static int darkenColor(@ColorInt int color, float ratio) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
         hsv[2] *= ratio;

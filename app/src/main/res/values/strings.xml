@@ -26,6 +26,9 @@
     <string name="pref_drawer_touch">Lock the drawer menu</string>
     <string name="pref_drawer_touch_off">You can swipe to open the menu</string>
     <string name="pref_drawer_touch_on">You need to click on the menu icon to open it</string>
+    <string name="pref_numbered_disks">Show number on disks</string>
+    <string name="pref_numbered_disks_off">Numbers are hidden</string>
+    <string name="pref_numbered_disks_on">Numbers are visible</string>
     <string name="pref_theme_title">Theme</string>
     <string name="pref_theme_dark">Light/Dark theme</string>
     <string name="pref_theme_dark_option_dark">Dark mode</string>

@@ -26,6 +26,9 @@
     <string name="pref_drawer_touch">Bloquer l\'ouverture par glissement du menu latéral</string>
     <string name="pref_drawer_touch_off">Vous pouvez glisser votre doigt pour ouvrir</string>
     <string name="pref_drawer_touch_on">Vous devez cliquer sur l\'icône pour ouvrir</string>
+    <string name="pref_numbered_disks">Afficher le n° sur les disques</string>
+    <string name="pref_numbered_disks_off">Les numéros sont cachés</string>
+    <string name="pref_numbered_disks_on">Les numéros sont visibles</string>
     <string name="pref_theme_title">Thème</string>
     <string name="pref_theme_dark">Thème clair/sombre</string>
     <string name="pref_theme_dark_option_dark">Mode sombre</string>

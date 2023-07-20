@@ -4,14 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fr.mathis.tourhanoipro.view.game.GameView
-        android:id="@+id/gv_main"
+    <View
+        android:id="@+id/view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
+        android:background="?attr/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+    <ImageView
+        android:id="@+id/bottomSpacer"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <fr.mathis.tourhanoipro.view.WaveView
+        android:id="@+id/wave"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleY="-1"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/bottomSpacer" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/rl_help"
@@ -103,5 +125,14 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <fr.mathis.tourhanoipro.view.game.GameView
+        android:id="@+id/gv_main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomSpacer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

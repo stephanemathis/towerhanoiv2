@@ -19,6 +19,14 @@
             android:icon="@drawable/ic_baseline_mouse_24"
             android:title="@string/pref_mouvement"
             app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="pref_key_numbered_disks"
+            android:switchTextOff="@string/pref_numbered_disks_off"
+            android:switchTextOn="@string/pref_numbered_disks_on"
+            android:icon="@drawable/ic_baseline_numbers_24"
+            android:title="@string/pref_numbered_disks" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_theme_title">

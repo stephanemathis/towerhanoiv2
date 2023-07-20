@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -68,11 +69,14 @@ public class GameView extends View {
     int _viewHeight;
     int _viewWidth;
     Rect _reusableRect;
+    RectF _reusableRectF;
     Paint _elementsPaint;
     Paint _fingerLinePaint;
     Paint _bitmapPaint;
     Path _fingerLinePath;
     int helpLineColor;
+    Path _diskRoundPath;
+    float[] _diskCorners;
 
     // touch variables
     float latestTouchPositionX;
@@ -131,7 +135,7 @@ public class GameView extends View {
         _isMovingQuickTouch = false;
         _isQtEditMode = false;
         _reusableRect = new Rect(0, 0, 0, 0);
-
+        _reusableRectF = new RectF(0, 0, 0, 0);
 
         _backgroundColor = Color.WHITE;
 
@@ -167,6 +171,15 @@ public class GameView extends View {
                 Color.parseColor("#FFBB33"),
                 Color.parseColor("#AA66CC"),
         };
+
+        _diskCorners = new float[]{
+                Tools.convertDpToPixel(2), Tools.convertDpToPixel(2),        // Top left radius in px
+                Tools.convertDpToPixel(2), Tools.convertDpToPixel(2),        // Top right radius in px
+                Tools.convertDpToPixel(2), Tools.convertDpToPixel(2),          // Bottom right radius in px
+                Tools.convertDpToPixel(2), Tools.convertDpToPixel(2)           // Bottom left radius in px
+        };
+
+        _diskRoundPath = new Path();
 
         createNewGame(5);
     }
@@ -221,6 +234,7 @@ public class GameView extends View {
     }
 
     int[] diskColors;
+    boolean showNumberedDisks;
 
     public void launchGame(String value) {
 
@@ -742,6 +756,12 @@ public class GameView extends View {
             int x = 0;
             int y = _viewHeight;
             int i = 1;
+            int circleHeight = (int)(_viewWidth / 20);
+
+            if (circleHeight * _currentGameDiskNumber > _viewHeight) {
+                circleHeight = (int) (_viewHeight * 0.85f) / _currentGameDiskNumber;
+            }
+
             if (_currentGameField != null) {
                 if (_currentGameMode == MODE_COLOR_PICKER) {
                     x = _viewWidth / 2;
@@ -751,7 +771,6 @@ public class GameView extends View {
 
                         int circleWidth = (_viewWidth - 10) * ((cercle.getId()) * 100 / _currentGameDiskNumber) / 100;
 
-                        int circleHeight = Tools.convertDpToPixel(10.0f);
                         circleHeight = _viewWidth / 5;
 
                         if (circleHeight * _currentGameDiskNumber > _viewHeight) {
@@ -768,32 +787,41 @@ public class GameView extends View {
                     for (ClassTower tower : _currentGameField.getTowers()) {
                         x = (_viewWidth * i / 3) - ((_viewWidth * 1 / 3) / 2);
                         y = _viewHeight;
+
+                        int barWidth = Tools.convertDpToPixel(8.0f);
+
+                        _elementsPaint.setStrokeWidth(barWidth);
+                        _elementsPaint.setColor(Color.parseColor("#AAAAAA"));
+                        canvas.drawLine((_viewWidth * i / 3) - (_viewWidth * 1/6), _viewHeight - Math.min(circleHeight * (_currentGameDiskNumber + 1), 0.90f * _viewHeight), (_viewWidth * i / 3)- (_viewWidth * 1/6), _viewHeight , _elementsPaint);
+                        _elementsPaint.setStrokeWidth(Tools.convertDpToPixel(1.0f));
+
                         for (ClassCircle cercle : tower.getCircles()) {
 
-                            int circleWidth = (_viewWidth * 1 / 3 - 10) * ((cercle.getId()) * 100 / _currentGameDiskNumber) / 100;
-                            if (circleWidth == 0)
-                                circleWidth = 2;
-
-                            int circleHeight = Tools.convertDpToPixel(10.0f);
-                            circleHeight = _viewWidth / 3 / 10;
-
-                            if (circleHeight * _currentGameDiskNumber > _viewHeight) {
-                                circleHeight = (int) (_viewHeight * 0.95f) / _currentGameDiskNumber;
-                            }
-
+                            int circleWidth = this.getCircleWidth(cercle, _viewWidth, _currentGameDiskNumber);
                             _elementsPaint.setColor(cercle.getColor());
-                            _reusableRect.set(x - (circleWidth / 2), y - (circleHeight), x + (circleWidth / 2), y);
+                            _reusableRectF.set(x - (circleWidth / 2), y - (circleHeight), x + (circleWidth / 2), y);
 
                             if (selectedCircle.getId() == cercle.getId() || (_currentGameMode == MODE_GOAL && i == 1)) {
                                 _elementsPaint.setAlpha(selectedCircle.getId() == cercle.getId() ? 40 : 150);
-                            } else {
-                                _elementsPaint.setAlpha(255);
                             }
-                            canvas.drawRect(_reusableRect, _elementsPaint);
+
+                            _diskRoundPath.reset();
+                            _diskRoundPath.addRoundRect(_reusableRectF, _diskCorners, Path.Direction.CW);
+                            canvas.drawPath(_diskRoundPath, _elementsPaint);
+
                             y -= circleHeight;
 
-                        }
+                            _elementsPaint.setColor(Color.WHITE);
+                            if (selectedCircle.getId() == cercle.getId() || (_currentGameMode == MODE_GOAL && i == 1)) {
+                                _elementsPaint.setAlpha(selectedCircle.getId() == cercle.getId() ? 40 : 150);
+                            }
 
+                            if(this.showNumberedDisks) {
+                                _elementsPaint.setTextSize(circleHeight * 0.4f);
+                                _elementsPaint.getTextBounds(cercle.getId() + "", 0, (cercle.getId() + "").length(), _reusableRect);
+                                canvas.drawText(cercle.getId() + "", x - _reusableRect.exactCenterX(), y + circleHeight / 2f - _reusableRect.exactCenterY(), _elementsPaint);
+                            }
+                        }
                         if (i != 3) {
                             _elementsPaint.setStrokeWidth(1);
                             _elementsPaint.setColor(Color.parseColor("#AAAAAA"));
@@ -816,16 +844,7 @@ public class GameView extends View {
                     }
                 }
 
-                int circleWidth = (_viewWidth * 1 / 3 - 10) * ((selectedCircle.getId()) * 100 / _currentGameDiskNumber) / 100;
-                if (circleWidth < 2)
-                    circleWidth = 2;
-
-                int circleHeight = Tools.convertDpToPixel(10.0f);
-                circleHeight = _viewWidth / 3 / 10;
-
-                if (circleHeight * _currentGameDiskNumber > _viewHeight) {
-                    circleHeight = (int) (_viewHeight * 0.95) / _currentGameDiskNumber;
-                }
+                int circleWidth = this.getCircleWidth(selectedCircle, _viewWidth, _currentGameDiskNumber);
 
                 if (_startAndEndTouchPoint[1] != null) {
                     x = _startAndEndTouchPoint[1].x;
@@ -837,7 +856,7 @@ public class GameView extends View {
                 _reusableRect.set(x - (circleWidth / 2), y - (circleHeight / 2), x + (circleWidth / 2), y + (circleHeight / 2));
                 _elementsPaint.setColor(selectedCircle.getColor());
                 canvas.drawRect(_reusableRect, _elementsPaint);
-
+                _elementsPaint.setTextSize(Tools.convertDpToPixel(32));
                 canvas.drawText(selectedCircle.getId() + "", _viewWidth - _elementsPaint.measureText(selectedCircle.getId() + "") - Tools.convertDpToPixel(16.0f), Tools.convertDpToPixel(34.0f), _elementsPaint);
             }
 
@@ -852,7 +871,7 @@ public class GameView extends View {
                 if (circleWidth < 2)
                     circleWidth = 2;
 
-                int circleHeight = Tools.convertDpToPixel(10.0f);
+                circleHeight = Tools.convertDpToPixel(10.0f);
                 circleHeight = _viewWidth / 3 / 10;
 
                 _reusableRect.set(x - (circleWidth / 2), y - (circleHeight / 2), x + (circleWidth / 2), y + (circleHeight / 2));
@@ -978,6 +997,15 @@ public class GameView extends View {
 
             }
         }
+    }
+
+    private int getCircleWidth(ClassCircle circle, int _viewWidth, int _currentGameDiskNumber)
+    {
+        int maxSize = (_viewWidth / 3 - 10);
+        int minSize = Tools.convertDpToPixel(12f);
+        float delta = (maxSize - minSize) / _currentGameDiskNumber;
+
+        return (int)(minSize + circle.getId() * delta);
     }
 
     @Override
@@ -1197,5 +1225,9 @@ public class GameView extends View {
 
         return bitmap;
 
+    }
+
+    public void setShowNumberedDisks(boolean showNumberedDisks) {
+        this.showNumberedDisks = showNumberedDisks;
     }
 }

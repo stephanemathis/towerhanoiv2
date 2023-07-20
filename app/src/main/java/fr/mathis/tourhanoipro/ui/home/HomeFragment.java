@@ -2,20 +2,27 @@ package fr.mathis.tourhanoipro.ui.home;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Shader;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,11 +35,15 @@ import fr.mathis.tourhanoipro.core.tools.DataManager;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
 import fr.mathis.tourhanoipro.view.MorphView;
+import fr.mathis.tourhanoipro.view.TileDrawable;
+import fr.mathis.tourhanoipro.view.WaveView;
 import fr.mathis.tourhanoipro.view.game.GameView;
 import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
 import fr.mathis.tourhanoipro.view.game.model.QuickTouch;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 public class HomeFragment extends Fragment implements TurnListener, QuickTouchListener {
 
@@ -52,6 +63,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     private HomeViewModel viewModel;
     boolean wantstoShowHelp;
 
+    WaveView wv;
     View stepContainer;
     View step0;
     View step1;
@@ -90,6 +102,12 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         setHasOptionsMenu(true);
     }
 
+    public static int getThemeAccentColor (final Context context, int attr) {
+        final TypedValue value = new TypedValue ();
+        context.getTheme ().resolveAttribute (attr, value, true);
+        return value.data;
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -104,6 +122,80 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         gvMain.setTurnListener(this);
         gvMain.setQuickTouchListener(this);
         gvMain.setColorPalette(Tools.getDiskColors(getContext(), -1));
+        gvMain.setShowNumberedDisks(PrefHelper.ReadBool(getContext(), PrefHelper.KEY_NUMBERED_DISKS, false));
+
+        wv = root.findViewById(R.id.wave);
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            wv.addWaveData(new WaveView.WaveData(
+                    (float) Tools.convertDpToPixel(200),
+                    (float) Tools.convertDpToPixel(8),
+                    (float) Tools.convertDpToPixel(50),
+                    (float) 0,
+                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorPrimary),
+                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorPrimary),
+                    1,
+                    (long) (10000), true));
+
+            wv.addWaveData(new WaveView.WaveData(
+                    (float) Tools.convertDpToPixel(200),
+                    (float) Tools.convertDpToPixel(8),
+                    (float) Tools.convertDpToPixel(50),
+                    (float) Tools.convertDpToPixel(50),
+                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorAccent),
+                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorAccent),
+                    1,
+                    (long) (20000), false));
+
+        // Légère bordure sous le gris (+4dp)
+        wv.addWaveData(new WaveView.WaveData(
+                (float) Tools.convertDpToPixel(32),
+                (float) Tools.convertDpToPixel(8),
+                (float) Tools.convertDpToPixel(24),
+                (float) Tools.convertDpToPixel(0),
+                Tools.darkenColor(HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorPrimary), 1.1f),
+                Tools.darkenColor(HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorPrimary), 1.1f),
+                1,
+                0, true));
+
+        // Gris principale
+        wv.addWaveData(new WaveView.WaveData(
+                (float) Tools.convertDpToPixel(32),
+                (float) Tools.convertDpToPixel(8),
+                (float) Tools.convertDpToPixel(20),
+                (float) 0,
+                Color.parseColor("#AAAAAA"),
+                Color.parseColor("#AAAAAA"),
+                1,
+                0, true));
+
+        wv.startAnimation();
+
+        wv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                int viewHeight = wv.getHeight();
+
+                int index = 0;
+                boolean isPortait = HomeFragment.this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+
+                if(isPortait) {
+                    wv.updateWaveFixedHeight(0, viewHeight - Tools.convertDpToPixel(8) * 2);
+                    index++;
+                }
+                wv.updateWaveFixedHeight(0 + index, isPortait ? ((viewHeight - Tools.convertDpToPixel(8) * 2) / 2f) : (viewHeight - Tools.convertDpToPixel(8) * 1.2f));
+                wv.updateWaveFixedHeight(1 + index, viewHeight / 8f + Tools.convertDpToPixel(4));
+                wv.updateWaveFixedHeight(2 + index, viewHeight / 8f);
+
+                if(isPortait) {
+                    wv.updateWaveDuration(0, 10000);
+                    wv.updateWaveDuration(1, 20000);
+                }
+                else {
+                    wv.updateWaveDuration(0, 7500);
+                }
+            }
+        });
 
         return root;
     }
@@ -125,12 +217,15 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     public void onResume() {
         gvMain.setTouchMode(PrefHelper.ReadString(getContext(), PrefHelper.KEY_MOUVEMENT, "swipe"));
         gvMain.setColorPalette(Tools.getDiskColors(getContext(), PrefHelper.ReadInt(getContext(), PrefHelper.KEY_THEME_DISK_INDEX, 0)));
+        gvMain.setShowNumberedDisks(PrefHelper.ReadBool(getContext(), PrefHelper.KEY_NUMBERED_DISKS, false));
 
         QuickTouch savedQt = PrefHelper.GetQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation);
         if (savedQt != null)
             gvMain.setQt(savedQt);
 
         gvMain.launchGame(viewModel.getAllGames().get(0));
+
+        wv.resumeAnimation();
 
         super.onResume();
     }
@@ -145,6 +240,8 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
             viewModel.getAllGames().set(viewModel.getCurrentGameIndex(), gvMain.saveGameAsString());
             DataManager.SaveAllGames(viewModel.getAllGames(), getActivity().getApplicationContext());
         }
+
+        wv.pauseAnimation();
 
         skipSave = false;
     }
