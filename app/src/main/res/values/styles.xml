@@ -10,6 +10,7 @@
             @style/Theme.MaterialComponents.DayNight.BottomSheetDialog
         </item>
 
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="android:navigationBarColor">?attr/colorPrimaryDark</item>
     </style>
 

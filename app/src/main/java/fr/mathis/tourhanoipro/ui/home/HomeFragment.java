@@ -125,6 +125,9 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
         gvMain.setShowNumberedDisks(PrefHelper.ReadBool(getContext(), PrefHelper.KEY_NUMBERED_DISKS, false));
 
         wv = root.findViewById(R.id.wave);
+
+        boolean isPortait = HomeFragment.this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
             wv.addWaveData(new WaveView.WaveData(
                     (float) Tools.convertDpToPixel(200),
@@ -144,7 +147,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
                     HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorAccent),
                     HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorAccent),
                     1,
-                    (long) (20000), false));
+                    (long) (isPortait ? 20000 : 7500), false));
 
         // Légère bordure sous le gris (+4dp)
         wv.addWaveData(new WaveView.WaveData(
@@ -177,7 +180,6 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
                 int viewHeight = wv.getHeight();
 
                 int index = 0;
-                boolean isPortait = HomeFragment.this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 
                 if(isPortait) {
                     wv.updateWaveFixedHeight(0, viewHeight - Tools.convertDpToPixel(8) * 2);
@@ -187,13 +189,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
                 wv.updateWaveFixedHeight(1 + index, viewHeight / 8f + Tools.convertDpToPixel(4));
                 wv.updateWaveFixedHeight(2 + index, viewHeight / 8f);
 
-                if(isPortait) {
-                    wv.updateWaveDuration(0, 10000);
-                    wv.updateWaveDuration(1, 20000);
-                }
-                else {
-                    wv.updateWaveDuration(0, 7500);
-                }
+
             }
         });
 
