@@ -4,6 +4,7 @@
     <color name="transparent_background_gray">#40000000</color>
     <color name="congratsTextColor">#000000</color>
     <color name="congratsLightTextColor">#808080</color>
+    <color name="highlightColorRipple">#3E000000</color>
 
     <color name="colorPrimary">#9b59b6</color>
     <color name="colorPrimaryDark">#6b2c86</color>
