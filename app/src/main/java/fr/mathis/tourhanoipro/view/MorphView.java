@@ -87,7 +87,7 @@ public class MorphView extends View {
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true);
         mThemeColor = typedValue.data;
 
         Drawable drawable = null;
@@ -128,13 +128,13 @@ public class MorphView extends View {
         mlogIndex = mRandom.nextInt(100);
 
         if (drawable == null) {
-            theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+            theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
             int dark = mThemeColor = typedValue.data;
 
-            theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+            theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true);
             int medium = mThemeColor = typedValue.data;
 
-            theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+            theme.resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
             int light = mThemeColor = typedValue.data;
 
             drawable = new GradientDrawable(

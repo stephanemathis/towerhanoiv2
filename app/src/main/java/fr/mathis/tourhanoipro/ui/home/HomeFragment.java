@@ -35,7 +35,6 @@ import fr.mathis.tourhanoipro.core.tools.DataManager;
 import fr.mathis.tourhanoipro.core.tools.PrefHelper;
 import fr.mathis.tourhanoipro.core.tools.Tools;
 import fr.mathis.tourhanoipro.view.MorphView;
-import fr.mathis.tourhanoipro.view.TileDrawable;
 import fr.mathis.tourhanoipro.view.WaveView;
 import fr.mathis.tourhanoipro.view.game.GameView;
 import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
@@ -134,8 +133,8 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
                     (float) Tools.convertDpToPixel(8),
                     (float) Tools.convertDpToPixel(50),
                     (float) 0,
-                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorPrimary),
-                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorPrimary),
+                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), androidx.appcompat.R.attr.colorPrimary),
+                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), androidx.appcompat.R.attr.colorPrimary),
                     1,
                     (long) (10000), true));
 
@@ -144,8 +143,8 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
                     (float) Tools.convertDpToPixel(8),
                     (float) Tools.convertDpToPixel(50),
                     (float) Tools.convertDpToPixel(50),
-                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorAccent),
-                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorAccent),
+                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), androidx.appcompat.R.attr.colorAccent),
+                    HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), androidx.appcompat.R.attr.colorAccent),
                     1,
                     (long) (isPortait ? 20000 : 7500), false));
 
@@ -155,8 +154,8 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
                 (float) Tools.convertDpToPixel(8),
                 (float) Tools.convertDpToPixel(24),
                 (float) Tools.convertDpToPixel(0),
-                Tools.darkenColor(HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorPrimary), 1.1f),
-                Tools.darkenColor(HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), R.attr.colorPrimary), 1.1f),
+                Tools.darkenColor(HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), androidx.appcompat.R.attr.colorPrimary), 1.1f),
+                Tools.darkenColor(HomeFragment.this.getThemeAccentColor(HomeFragment.this.getContext(), androidx.appcompat.R.attr.colorPrimary), 1.1f),
                 1,
                 0, true));
 

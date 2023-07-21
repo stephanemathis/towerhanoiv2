@@ -161,7 +161,7 @@ public class GameView extends View {
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true);
         helpLineColor = typedValue.data;
 
         diskColors = new int[]{
