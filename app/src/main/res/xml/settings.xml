@@ -45,11 +45,12 @@
             android:title="@string/pref_theme_style"></Preference>
         <Preference
             android:id="@+id/applyAppIcon"
-            android:icon="@drawable/ic_baseline_palette_24"
+            android:icon="@drawable/ic_baseline_brush_24"
             android:key="@string/pref_apply_app_icon"
             android:title="@string/pref_theme_apply_app_icon"></Preference>
         <Preference
             android:id="@+id/prefThemeStyleDisk"
+            android:icon="@drawable/ic_disk_tower"
             android:key="@string/pref_key_color_disk"
             android:title="@string/pref_theme_style_disk"></Preference>
     </PreferenceCategory>
