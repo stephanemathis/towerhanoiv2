@@ -946,8 +946,7 @@ public class GameView extends View {
                 _elementsPaint.setAlpha(255);
 
                 if (_isQtEditMode) {
-                    // Passer le thème ???
-                    int color = ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null);
+                    int color = helpLineColor;
                     _elementsPaint.setColor(color);
                     _elementsPaint.setAlpha(80);
                     canvas.drawRect(l, t, l + w, t + h, _elementsPaint);

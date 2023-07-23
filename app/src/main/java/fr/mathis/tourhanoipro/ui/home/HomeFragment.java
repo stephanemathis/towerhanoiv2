@@ -246,7 +246,7 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
     //#region Menus
 
     private void setupMenu() {
-        
+
         ((MenuHost)requireActivity()).addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
