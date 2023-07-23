@@ -4,28 +4,28 @@
 
 
     <PreferenceCategory android:title="@string/pref_gameplay">
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="pref_key_drawer_touch_enabled"
-            android:switchTextOff="@string/pref_drawer_touch_off"
-            android:switchTextOn="@string/pref_drawer_touch_on"
-            android:icon="@drawable/ic_baseline_menu_open_24"
-            android:title="@string/pref_drawer_touch" />
-
         <ListPreference
             android:entries="@array/mouvements_mode"
             android:entryValues="@array/mouvements_mode_values"
-            android:key="pref_key_mouvement_mode"
             android:icon="@drawable/ic_baseline_mouse_24"
+            android:key="pref_key_mouvement_mode"
             android:title="@string/pref_mouvement"
-            app:useSimpleSummaryProvider="true"/>
+            app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
             android:defaultValue="false"
+            android:icon="@drawable/ic_baseline_menu_open_24"
+            android:key="pref_key_drawer_touch_enabled"
+            android:switchTextOff="@string/pref_drawer_touch_off"
+            android:switchTextOn="@string/pref_drawer_touch_on"
+            android:title="@string/pref_drawer_touch" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:icon="@drawable/ic_baseline_numbers_24"
             android:key="pref_key_numbered_disks"
             android:switchTextOff="@string/pref_numbered_disks_off"
             android:switchTextOn="@string/pref_numbered_disks_on"
-            android:icon="@drawable/ic_baseline_numbers_24"
             android:title="@string/pref_numbered_disks" />
     </PreferenceCategory>
 
@@ -34,19 +34,24 @@
             android:defaultValue="false"
             android:entries="@array/dark_modes"
             android:entryValues="@array/dark_modes_values"
-            android:key="pref_key_dark_theme"
             android:icon="@drawable/ic_baseline_dark_mode_24"
+            android:key="pref_key_dark_theme"
             android:title="@string/pref_theme_dark"
-            app:useSimpleSummaryProvider="true"/>
+            app:useSimpleSummaryProvider="true" />
         <Preference
             android:id="@+id/prefThemeStyle"
-            android:title="@string/pref_theme_style"
             android:icon="@drawable/ic_baseline_palette_24"
-            android:key="@string/pref_key_color"></Preference>
+            android:key="@string/pref_key_color"
+            android:title="@string/pref_theme_style"></Preference>
+        <Preference
+            android:id="@+id/applyAppIcon"
+            android:icon="@drawable/ic_baseline_palette_24"
+            android:key="@string/pref_apply_app_icon"
+            android:title="@string/pref_theme_apply_app_icon"></Preference>
         <Preference
             android:id="@+id/prefThemeStyleDisk"
-            android:title="@string/pref_theme_style_disk"
-            android:key="@string/pref_key_color_disk"></Preference>
+            android:key="@string/pref_key_color_disk"
+            android:title="@string/pref_theme_style_disk"></Preference>
     </PreferenceCategory>
 
 </PreferenceScreen>

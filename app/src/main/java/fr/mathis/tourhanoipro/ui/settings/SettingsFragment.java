@@ -1,11 +1,15 @@
 package fr.mathis.tourhanoipro.ui.settings;
 
 
+import android.content.ComponentName;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -70,6 +74,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             }
         });
 
+        Preference applyAppIconPref = findPreference(getString(R.string.pref_apply_app_icon));
+        applyAppIconPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                Toast.makeText(SettingsFragment.this.requireContext(), getString(R.string.pref_theme_applied), Toast.LENGTH_SHORT).show();
+                SettingsFragment.this.updateAppIcon();
+
+                return true;
+            }
+        });
 
         Preference colorDiskPref = findPreference(getString(R.string.pref_key_color_disk));
         colorDiskPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -100,6 +115,26 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 return true;
             }
         });
+    }
+
+    private void updateAppIcon() {
+        FragmentActivity activity = requireActivity();
+        int index = PrefHelper.ReadInt(activity, PrefHelper.KEY_THEME_INDEX, PrefHelper.DEFAULT_THEME_INDEX);
+
+
+        String baseName = activity.getPackageName();
+        PackageManager packageManager = activity.getPackageManager();
+
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "Zero"), index == 0 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "One"), index == 1 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "Two"), index == 2 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "Three"), index == 3 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "Four"), index == 4 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "Five"), index == 5 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "Six"), index == 6 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "Seven"), index == 7 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "Eight"), index == 8 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        packageManager.setComponentEnabledSetting(new ComponentName(activity, baseName + ".LauncherAlias" + "Nine"), index == 9 ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
     }
 
     @Override
