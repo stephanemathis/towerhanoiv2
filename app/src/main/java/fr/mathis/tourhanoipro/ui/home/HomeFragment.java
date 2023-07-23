@@ -22,8 +22,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
@@ -41,8 +43,6 @@ import fr.mathis.tourhanoipro.view.game.listener.HelpListener;
 import fr.mathis.tourhanoipro.view.game.listener.QuickTouchListener;
 import fr.mathis.tourhanoipro.view.game.listener.TurnListener;
 import fr.mathis.tourhanoipro.view.game.model.QuickTouch;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
 
 public class HomeFragment extends Fragment implements TurnListener, QuickTouchListener {
 
@@ -206,6 +206,8 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
             if (action.isRestart())
                 gvMain.launchGame(viewModel.getAllGames().get(0));
         });
+
+        setupMenu();
     }
 
     @Override
@@ -243,72 +245,72 @@ public class HomeFragment extends Fragment implements TurnListener, QuickTouchLi
 
     //#region Menus
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    private void setupMenu() {
+        
+        ((MenuHost)requireActivity()).addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
 
-        menu.clear();
+                   menuItemSmallUndo = menu.add(0, MENU_UNDO, 0, R.string.undo);
+                menuItemSmallUndo.setIcon(R.drawable.ic_action_undo);
+                menuItemSmallUndo.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        menuItemSmallUndo = menu.add(0, MENU_UNDO, 0, R.string.undo);
-        menuItemSmallUndo.setIcon(R.drawable.ic_action_undo);
-        menuItemSmallUndo.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                menuItemSmallTouchEnable = menu.add(0, MENU_QUICK_TOUCH_ENABLE, 0, R.string.quick_touch_enable);
+                menuItemSmallTouchEnable.setIcon(R.drawable.ic_action_smalltouch);
+                menuItemSmallTouchEnable.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        menuItemSmallTouchEnable = menu.add(0, MENU_QUICK_TOUCH_ENABLE, 0, R.string.quick_touch_enable);
-        menuItemSmallTouchEnable.setIcon(R.drawable.ic_action_smalltouch);
-        menuItemSmallTouchEnable.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                menuItemSmallTouchModify = menu.add(0, MENU_QUICK_TOUCH_MODIFY, 0, R.string.quick_touch_update);
+                menuItemSmallTouchModify.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menuItemSmallTouchModify = menu.add(0, MENU_QUICK_TOUCH_MODIFY, 0, R.string.quick_touch_update);
-        menuItemSmallTouchModify.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                menuItemSmallTouchRemove = menu.add(0, MENU_QUICK_TOUCH_REMOVE, 0, R.string.quick_touch_delete);
+                menuItemSmallTouchRemove.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            }
 
-        menuItemSmallTouchRemove = menu.add(0, MENU_QUICK_TOUCH_REMOVE, 0, R.string.quick_touch_delete);
-        menuItemSmallTouchRemove.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            @Override public void onPrepareMenu(@NonNull Menu menu) {
 
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+                menu.findItem(MENU_QUICK_TOUCH_REMOVE).setVisible((gvMain != null && gvMain.getQt() != null));
+                menu.findItem(MENU_QUICK_TOUCH_MODIFY).setVisible((gvMain != null && gvMain.getQt() != null));
+                menu.findItem(MENU_QUICK_TOUCH_ENABLE).setVisible((gvMain == null || gvMain.getQt() == null));
+                menu.findItem(MENU_UNDO).setVisible(gvMain.canUndo());
 
-        menu.findItem(MENU_QUICK_TOUCH_REMOVE).setVisible((gvMain != null && gvMain.getQt() != null));
-        menu.findItem(MENU_QUICK_TOUCH_MODIFY).setVisible((gvMain != null && gvMain.getQt() != null));
-        menu.findItem(MENU_QUICK_TOUCH_ENABLE).setVisible((gvMain == null || gvMain.getQt() == null));
-        menu.findItem(MENU_UNDO).setVisible(gvMain.canUndo());
+                MenuProvider.super.onPrepareMenu(menu);
+            }
 
-        super.onPrepareOptionsMenu(menu);
-    }
+            @Override public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+                switch (menuItem.getItemId()) {
+                    case MENU_QUICK_TOUCH_ENABLE:
+                        gvMain.activateQuickTouchMode();
 
-        switch (item.getItemId()) {
-            case MENU_QUICK_TOUCH_ENABLE:
-                gvMain.activateQuickTouchMode();
+                        menuItemSmallTouchEnable.setVisible(false);
 
-                menuItemSmallTouchEnable.setVisible(false);
+                        initHelpPopup(true);
 
-                initHelpPopup(true);
+                        return true;
+                    case MENU_QUICK_TOUCH_MODIFY:
+                        gvMain.enterEditMode();
+                        break;
+                    case MENU_QUICK_TOUCH_REMOVE:
+                        gvMain.activateQuickTouchMode();
+                        cleanHelpPopup();
+                        PrefHelper.ClearQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation);
 
-                return true;
-            case MENU_QUICK_TOUCH_MODIFY:
-                gvMain.enterEditMode();
-                break;
-            case MENU_QUICK_TOUCH_REMOVE:
-                gvMain.activateQuickTouchMode();
-                cleanHelpPopup();
-                PrefHelper.ClearQtPosition(getContext(), getActivity().getResources().getConfiguration().orientation);
+                        menuItemSmallTouchRemove.setVisible(false);
+                        menuItemSmallTouchModify.setVisible(false);
+                        menuItemSmallTouchEnable.setVisible(true);
+                        break;
+                    case MENU_UNDO:
+                        gvMain.undo();
+                        if (menuItemSmallUndo != null)
+                            menuItemSmallUndo.setVisible(false);
+                        break;
+                }
 
-                menuItemSmallTouchRemove.setVisible(false);
-                menuItemSmallTouchModify.setVisible(false);
-                menuItemSmallTouchEnable.setVisible(true);
-                break;
-            case MENU_UNDO:
-                gvMain.undo();
-                if (menuItemSmallUndo != null)
-                    menuItemSmallUndo.setVisible(false);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-
+                return false;
+            }
+        }, this.getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
     //#endregion
