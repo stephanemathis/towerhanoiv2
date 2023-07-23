@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tour de Hanoi Pro</string>
+    <string name="app_name">Tours de Hanoi Pro</string>
     <string name="nothing"></string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
